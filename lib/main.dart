@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:woyaa/Screens/Welcome/welcome_screen.dart';
+import 'package:woyaa/screens/Welcome/welcome_screen.dart';
 import 'package:woyaa/constants.dart';
 
 void main() => runApp(const MyApp());

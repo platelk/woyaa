@@ -21,7 +21,32 @@ class SwipeScreen extends StatelessWidget {
       body: Column(
         children: [
           UserCard(user: User.users[0]),
-          ChoiceButton(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 60),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ChoiceButton(
+                    width: 60,
+                    height: 60,
+                    size: 25,
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: Icons.clear_rounded),
+                ChoiceButton(
+                    width: 60,
+                    height: 60,
+                    size: 30,
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: Icons.favorite),
+                ChoiceButton(
+                    width: 60,
+                    height: 60,
+                    size: 25,
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: Icons.watch_later),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -29,10 +54,39 @@ class SwipeScreen extends StatelessWidget {
 }
 
 class ChoiceButton extends StatelessWidget {
-  const ChoiceButton({Key? key}) : super(key: key);
+  final double width;
+  final double height;
+  final double size;
+  final Color color;
+  final IconData icon;
+
+  const ChoiceButton({
+    Key? key,
+    required this.width,
+    required this.height,
+    required this.size,
+    required this.color,
+    required this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withAlpha(50),
+            spreadRadius: 4,
+            blurRadius: 4,
+            offset: const Offset(3, 3),
+          ),
+        ],
+      ),
+      child: Icon(icon, color: color),
+    );
   }
 }
