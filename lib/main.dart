@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:woyaa/blocs/swipe/swipe_bloc.dart';
+import 'package:woyaa/models/models.dart';
 import 'package:woyaa/screens/Welcome/welcome_screen.dart';
 import 'package:woyaa/constants.dart';
 
@@ -10,7 +13,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(providers: [
+      BlocProvider(create: (_) => SwipeBloc()..add(LoadUsersEvent(users: User.users)))
+    ], child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Auth',
       theme: ThemeData(
@@ -38,6 +43,6 @@ class MyApp extends StatelessWidget {
             ),
           )),
       home: const WelcomeScreen(),
-    );
+    ));
   }
 }

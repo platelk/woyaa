@@ -20,6 +20,7 @@ class User extends Equatable {
   List<Object?> get props => [id, name, age, imageUrls, bio, jobTitle];
 
   static List<User> users = [
-    User(id: 1, name: "name", age: 29, imageUrls: ["https://bungareestation.com.au/wp-content/uploads/2019/10/Bungaree-Station-Weddings-Garden-Wedding-5.jpg"], bio: "bio", jobTitle: "jobTitle"),
+    const User(id: 1, name: "PLATEL Kevin", age: 29, imageUrls: ["assets/images/profiles/profile_pic_kevin.jpg"], bio: "bio", jobTitle: "jobTitle"),
+    const User(id: 2, name: "Zulgar", age: 31, imageUrls: ["assets/images/profiles/profile_pic_zulgar.jpg"], bio: "bio", jobTitle: "jobTitle"),
   ];
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:woyaa/models/models.dart';
-import 'package:woyaa/screens/Swipe/components/custom_appbar.dart';
+import 'package:woyaa/components/custom_appbar.dart';
 import 'package:woyaa/screens/Swipe/components/user_card.dart';
+
+import '../../blocs/swipe/swipe_bloc.dart';
+import 'components/choice_button.dart';
 
 class SwipeScreen extends StatelessWidget {
   static const String routeName = '/';
@@ -18,75 +22,87 @@ class SwipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: Column(
-        children: [
-          UserCard(user: User.users[0]),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 60),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ChoiceButton(
-                    width: 60,
-                    height: 60,
-                    size: 25,
-                    color: Theme.of(context).colorScheme.secondary,
-                    icon: Icons.clear_rounded),
-                ChoiceButton(
-                    width: 60,
-                    height: 60,
-                    size: 30,
-                    color: Theme.of(context).colorScheme.secondary,
-                    icon: Icons.favorite),
-                ChoiceButton(
-                    width: 60,
-                    height: 60,
-                    size: 25,
-                    color: Theme.of(context).colorScheme.secondary,
-                    icon: Icons.watch_later),
-              ],
-            ),
-          ),
-        ],
+      body: BlocBuilder<SwipeBloc, SwipeState>(
+        builder: (context, state) {
+          if (state is SwipeLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is! SwipeLoaded) {
+            return const Text('Something went wrong');
+          }
+          if (state is SwipeLoaded && state.users.isEmpty) {
+            return const Text('No more !');
+          }
+          return Column(
+            children: [
+              Draggable(
+                  feedback: UserCard(user: state.users[0]),
+                  childWhenDragging: state.users.length > 1 ? UserCard(user: state.users[1]) : null,
+                  child: UserCard(user: state.users[0]),
+                  onDragEnd: (drag) {
+                    if (drag.velocity.pixelsPerSecond.dx < 0) {
+                      context.read<SwipeBloc>().add(
+                          SwipeLeftEvent(user: state.users[0]));
+                    } else {
+                      context.read<SwipeBloc>().add(
+                          SwipeRightEvent(user: state.users[0]));
+                    }
+                  }
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 8.0, horizontal: 60),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: ChoiceButton(
+                              width: 60,
+                              height: 60,
+                              size: 25,
+                              color: Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .secondary,
+                              icon: Icons.clear_rounded),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: ChoiceButton(
+                              width: 80,
+                              height: 80,
+                              size: 30,
+                              color: Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .secondary,
+                              icon: Icons.favorite),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: ChoiceButton(
+                              width: 60,
+                              height: 60,
+                              size: 25,
+                              color: Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .secondary,
+                              icon: Icons.watch_later),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
-    );
-  }
-}
-
-class ChoiceButton extends StatelessWidget {
-  final double width;
-  final double height;
-  final double size;
-  final Color color;
-  final IconData icon;
-
-  const ChoiceButton({
-    Key? key,
-    required this.width,
-    required this.height,
-    required this.size,
-    required this.color,
-    required this.icon,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withAlpha(50),
-            spreadRadius: 4,
-            blurRadius: 4,
-            offset: const Offset(3, 3),
-          ),
-        ],
-      ),
-      child: Icon(icon, color: color),
     );
   }
 }

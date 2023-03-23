@@ -11,7 +11,7 @@ class UserCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height / 1.4,
+        height: MediaQuery.of(context).size.height / 1.2,
         width: MediaQuery.of(context).size.width,
         child: Stack(children: [
           Container(
@@ -58,7 +58,7 @@ class UserCard extends StatelessWidget {
                       .copyWith(color: Colors.white),
                 ),
                 Text(
-                  '${user.jobTitle}',
+                  user.jobTitle,
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       color: Colors.white, fontWeight: FontWeight.normal),
                 ),

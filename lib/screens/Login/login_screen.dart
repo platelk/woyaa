@@ -6,6 +6,15 @@ import 'components/login_form.dart';
 import 'components/login_screen_top_image.dart';
 
 class LoginScreen extends StatelessWidget {
+  static const String routeName = '/login';
+
+  static Route route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: routeName),
+      builder: (context) => const LoginScreen(),
+    );
+  }
+
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -39,6 +48,15 @@ class LoginScreen extends StatelessWidget {
 }
 
 class MobileLoginScreen extends StatelessWidget {
+  static const String routeName = '/login';
+
+  static Route route() {
+    return MaterialPageRoute(
+      settings: const RouteSettings(name: routeName),
+      builder: (context) => const LoginScreen(),
+    );
+  }
+
   const MobileLoginScreen({
     Key? key,
   }) : super(key: key);

@@ -27,48 +27,52 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-                itemCount: data.length,
-                controller: _pageController,
-                itemBuilder: (context, index) {
-                  final d = data[index];
-                  return OnBoardContent(
-                    image: d.image,
-                    title: d.title,
-                    description: d.description,
-                  );
-                }),
-          ),
-          SizedBox(
-              height: 60,
-              width: 60,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_pageController.page?.ceil() == data.length-1) {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return SwipeScreen();
-                      },
-                    ),
+      body: SafeArea(
+        minimum: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView.builder(
+                  itemCount: data.length,
+                  controller: _pageController,
+                  itemBuilder: (context, index) {
+                    final d = data[index];
+                    return OnBoardContent(
+                      image: d.image,
+                      title: d.title,
+                      description: d.description,
                     );
-                  }
-                  _pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease);
-                },
-                style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                child: SvgPicture.asset(
-                  "assetName",
-                  color: Colors.white,
-                ),
-              )),
-        ],
+                  }),
+            ),
+            SizedBox(
+                height: 60,
+                width: 60,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_pageController.page?.ceil() == data.length - 1) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SwipeScreen();
+                          },
+                        ),
+                      );
+                    }
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.ease);
+                  },
+                  style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                  child: SvgPicture.asset(
+                    "assetName",
+                    color: Colors.white,
+                  ),
+                )),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
 
