@@ -3,29 +3,26 @@ import 'package:woyaa/components/base.dart';
 
 import '../../models/user.dart';
 
-class TableScreen extends StatelessWidget {
-  const TableScreen({super.key});
+class MyTableScreen extends StatelessWidget {
+  const MyTableScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Base(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GridView.count(
+        child: ListView.builder(
           physics: const ScrollPhysics(),
           shrinkWrap: true,
-          crossAxisSpacing: 2.0,
-          mainAxisSpacing: 2.0,
           scrollDirection: Axis.vertical,
           // Create a grid with 2 columns. If you change the scrollDirection to
           // horizontal, this produces 2 rows.
-          crossAxisCount: 4,
           // Generate 100 widgets that display their index in the List.
-          children: List.generate(100, (index) {
+            itemCount: 9,
+          itemBuilder: (context, index) {
             return TableGuest(user: User.users[0]);
           }),
         ),
-      ),
     );
   }
 }

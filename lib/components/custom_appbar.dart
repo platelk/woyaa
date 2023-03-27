@@ -38,12 +38,13 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 ),
               );
             },
-            icon: Icon(Icons.person, color: Theme.of(context).primaryColor))
+            icon: Icon(Icons.person, color: Theme.of(context).primaryColor),
+        )
       ],
     );
   }
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => const Size.fromHeight(56.0);
+  Size get preferredSize => const Size.fromHeight(86.0);
 }

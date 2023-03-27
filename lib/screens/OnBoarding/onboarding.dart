@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:woyaa/screens/Home/home_screen.dart';
 import 'package:woyaa/screens/Swipe/swipe_screens.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -54,7 +55,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return SwipeScreen();
+                            return const HomeScreen();
                           },
                         ),
                       );
@@ -64,10 +65,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         curve: Curves.ease);
                   },
                   style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                  child: SvgPicture.asset(
-                    "assetName",
-                    color: Colors.white,
-                  ),
+                  child: Icon(Icons.arrow_forward),
                 )),
           ],
         ),

@@ -56,6 +56,7 @@ class Assets {
   static const String imagesImage Popular Product 1 = 'assets/images/Image Popular Product 1.png';
   static const String imagesImage Popular Product 2 = 'assets/images/Image Popular Product 2.png';
   static const String imagesImage Popular Product 3 = 'assets/images/Image Popular Product 3.png';
+  static const String imagesImg = 'assets/images/profile_pic_commu.png';
   static const String imagesLoginBottom = 'assets/images/login_bottom.png';
   static const String imagesMainBottom = 'assets/images/main_bottom.png';
   static const String imagesMainTop = 'assets/images/main_top.png';
@@ -63,7 +64,7 @@ class Assets {
   static const String imagesPattern Success = 'assets/images/Pattern Success.png';
   static const String imagesPaypal = 'assets/images/paypal.png';
   static const String imagesProduct 1 image = 'assets/images/product 1 image.png';
-  static const String imagesProfile Image = 'assets/images/Table Image.png';
+  static const String imagesProfile Image = 'assets/images/Profile Image.png';
   static const String imagesPs4ConsoleBlue1 = 'assets/images/ps4_console_blue_1.png';
   static const String imagesPs4ConsoleBlue2 = 'assets/images/ps4_console_blue_2.png';
   static const String imagesPs4ConsoleBlue3 = 'assets/images/ps4_console_blue_3.png';
@@ -91,6 +92,7 @@ class Assets {
   static const String muliMuliLightItalic = 'assets/fonts/muli/Muli-LightItalic.ttf';
   static const String muliMuliSemiBold = 'assets/fonts/muli/Muli-SemiBold.ttf';
   static const String muliMuliSemiBoldItalic = 'assets/fonts/muli/Muli-Semi-BoldItalic.ttf';
+  static const String profilesImg = 'assets/images/profiles/profile_pic_commu.png';
   static const String profilesProfilePicKevin = 'assets/images/profiles/profile_pic_kevin.jpg';
   static const String profilesProfilePicZulgar = 'assets/images/profiles/profile_pic_zulgar.JPG';
 

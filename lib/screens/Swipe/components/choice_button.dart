@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:woyaa/constants.dart';
 
 class ChoiceButton extends StatelessWidget {
   final double width;
@@ -23,7 +24,7 @@ class ChoiceButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
+        color: kPrimaryColor,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withAlpha(50),

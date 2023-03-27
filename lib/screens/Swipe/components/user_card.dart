@@ -11,7 +11,7 @@ class UserCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height / 1.2,
+        height: MediaQuery.of(context).size.height - 230,
         width: MediaQuery.of(context).size.width,
         child: Stack(children: [
           Container(

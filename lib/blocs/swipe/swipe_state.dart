@@ -16,7 +16,6 @@ class SwipeLoaded extends SwipeState {
 
   @override
   List<Object> get props => [users];
-
-
 }
+
 class SwipeError extends SwipeState {}
