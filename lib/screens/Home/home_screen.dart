@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:woyaa/components/custom_appbar.dart';
 import 'package:woyaa/models/models.dart';
 import 'package:woyaa/screens/Swipe/components/user_card.dart';
+import 'package:woyaa/welcome_theme.dart';
 
 import '../../components/base.dart';
 
@@ -11,61 +12,132 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = User.users[0];
-    return Base(
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Spacer(),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(user.imageUrls[0]),
-                  minRadius: 120,
-                )
-              ]),
-              Row(
+    return Theme(
+      data: welcomeTheme(),
+      child: Base(
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const Spacer(),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(user.imageUrls[0]),
+                    minRadius: 120,
+                  )
+                ]),
+                // Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [Text(user.name, style: Theme.of(context).textTheme.displaySmall)]),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: const [
+                    LabeledNumber(number: 234, label: "chambre"),
+                    LabeledNumber(number: 178, label: "jours avant le mariage"),
+                    LabeledNumber(number: 59, label: "classement"),
+                  ],
+                ),
+                const Spacer(flex: 3),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text(user.name, style: Theme.of(context).textTheme.displaySmall)]),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  LabeledNumber(number: 234, label: "chambre"),
-                  LabeledNumber(number: 178, label: "jours avant le mariage"),
-                  LabeledNumber(number: 59, label: "classement"),
-                ],
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                Text("20 mai 2023, 15h00"),
-              ],),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("Chateau du Bois-Guy"),
-                ],),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("Parigne, Bretagne"),
-                ],),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("Ana 06.52.32.23.27"),
-                ],),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("Yoann 06.09.51.46.28"),
-                ],),
-              const Spacer(),
-            ],
-
-          )),
+                  children: [
+                    Text("Samedi 20 mai 2023 a 14h",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.white)),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Chateau du Bois-Guy",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.white)),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Parigne, Bretagne",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.white)),
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    const Spacer(),
+                    Expanded(
+                      flex: 5,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              foregroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.black),
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(const Color(0xFFE8D1C5)),
+                              shape:
+                                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(40.0),
+                                          side:
+                                              const BorderSide(color: Color(0xFFE8D1C5))))),
+                          onPressed: () => null,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 10.0),
+                                  child: Icon(
+                                    Icons.card_giftcard_rounded,
+                                    color: Colors.black,
+                                    size: 50.0,
+                                    semanticLabel:
+                                        'Text to announce in accessibility modes',
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Text("Faites nous plaisir",
+                                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
+                                    Text("Acceder a notre liste",
+                                      style: Theme.of(context).textTheme.bodyMedium!, textAlign: TextAlign.left,),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Ana 06.52.32.23.27",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.left,),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("anaxyoann@gmail.com",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.left,),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Yoann 06.09.51.46.28",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.left,),
+                  ],
+                ),
+                const Spacer(),
+              ],
+            )),
+      ),
     );
   }
 }
@@ -73,16 +145,24 @@ class HomeScreen extends StatelessWidget {
 class LabeledNumber extends StatelessWidget {
   final int number;
   final String label;
+
   const LabeledNumber({super.key, required this.number, required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("$number"),
-        Text(label),
+        Text("$number",
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .copyWith(color: const Color(0xFFE8D1C5))),
+        Text(label,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: const Color(0xFFE8D1C5))),
       ],
     );
   }
-
 }

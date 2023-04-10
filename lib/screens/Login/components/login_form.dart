@@ -18,7 +18,7 @@ class LoginForm extends StatelessWidget {
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
+            cursorColor: Theme.of(context).primaryColor,
             onSaved: (email) {},
             decoration: const InputDecoration(
               hintText: "email",
@@ -32,6 +32,17 @@ class LoginForm extends StatelessWidget {
           Hero(
             tag: "login_btn",
             child: ElevatedButton(
+              style: ButtonStyle(
+                  foregroundColor:
+                  MaterialStateProperty.all<Color>(Colors.black),
+                  backgroundColor:
+                  MaterialStateProperty.all<Color>(Color(0xFFE8D1C5)),
+                  shape:
+                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40.0),
+                          side:
+                          const BorderSide(color: Color(0xFFE8D1C5))))),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -42,8 +53,12 @@ class LoginForm extends StatelessWidget {
                   ),
                 );
               },
-              child: Text(
-                "commencer".toUpperCase(),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Commencer",
+                  style:  Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),

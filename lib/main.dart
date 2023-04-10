@@ -7,7 +7,8 @@ import 'package:woyaa/models/question.dart';
 import 'package:woyaa/screens/Login/login_screen.dart';
 import 'package:woyaa/screens/Welcome/welcome_screen.dart';
 import 'package:woyaa/constants.dart';
-import 'package:woyaa/theme.dart';
+import 'package:woyaa/main_theme.dart';
+import 'package:woyaa/welcome_theme.dart';
 
 void main() => runApp(const MyApp());
 

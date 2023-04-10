@@ -6,7 +6,7 @@ class ChoiceButton extends StatelessWidget {
   final double height;
   final double size;
   final Color color;
-  final IconData icon;
+  final String icon;
 
   const ChoiceButton({
     Key? key,
@@ -24,7 +24,7 @@ class ChoiceButton extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: kPrimaryColor,
+        color: const Color(0xFFE8D1C5),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withAlpha(50),
@@ -34,7 +34,7 @@ class ChoiceButton extends StatelessWidget {
           ),
         ],
       ),
-      child: Icon(icon, color: color),
+      child: Center(child: Image.asset(icon, fit: BoxFit.scaleDown, width: size, height: size,)),
     );
   }
 }

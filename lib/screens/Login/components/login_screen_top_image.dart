@@ -10,21 +10,34 @@ class LoginScreenTopImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: defaultPadding * 2),
-        Row(
-          children: [
-            const Spacer(),
-            Expanded(
-              flex: 8,
-              child: Image.asset("images/login_text_background.png"),
-            ),
-            const Spacer(),
-          ],
+    return Expanded(
+      child: Stack(children: [
+        OverflowBox(
+          child: Row(
+            children: [
+              const Spacer(flex: 3),
+              Expanded(
+                flex: 14,
+                child: SizedOverflowBox(
+                  size: const Size(800, 1200),
+                  child: Image.asset(
+                    "images/login_welcome_background.png",
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+              ),
+              const Spacer(flex: 1),
+            ],
+          ),
         ),
-        const SizedBox(height: defaultPadding * 2),
-      ],
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(child: Image.asset("images/login_text.png", fit: BoxFit.contain)),
+          ],
+        )
+      ]),
     );
   }
 }

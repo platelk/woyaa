@@ -36,7 +36,21 @@ class SwipeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                const Spacer(flex: 2),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    Text("Pensez vous etre\na table avec ..?",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                                color: const Color(0xFFBF7366),
+                                height: 1.8,
+                                fontFamily: 'Adelia')),
+                  ]),
+                ),
                 Draggable(
                     feedback: UserCard(user: state.users[0]),
                     childWhenDragging: state.users.length > 1
@@ -54,37 +68,40 @@ class SwipeScreen extends StatelessWidget {
                             .add(SwipeRightEvent(user: state.users[0]));
                       }
                     }),
-                const Spacer(),
                 Container(
                   alignment: Alignment.bottomCenter,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Spacer(),
+                      const Spacer(
+                        flex: 2,
+                      ),
                       InkWell(
                         onTap: () {},
                         child: const ChoiceButton(
-                            width: 90,
-                            height: 90,
-                            size: 35,
+                            width: 80,
+                            height: 80,
+                            size: 50,
                             color: Colors.white,
-                            icon: Icons.clear_rounded),
+                            icon: "images/pouce2.png"),
                       ),
                       const Spacer(),
                       InkWell(
+                        highlightColor: Colors.black,
                         onTap: () {},
                         child: const ChoiceButton(
-                            width: 90,
-                            height: 90,
-                            size: 35,
-                            color: Colors.white,
-                            icon: Icons.favorite),
+                            width: 80,
+                            height: 80,
+                            size: 50,
+                            color: Colors.red,
+                            icon: "images/pouce1.png"),
                       ),
-                      const Spacer(),
+                      const Spacer(
+                        flex: 2,
+                      ),
                     ],
                   ),
                 ),
-                const Spacer(flex: 2),
               ],
             ),
           ),

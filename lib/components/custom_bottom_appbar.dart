@@ -18,126 +18,155 @@ class CustomBottomAppBar extends StatefulWidget {
 }
 
 class _CustomBottomAppBar extends State<CustomBottomAppBar> {
-  int _selectedIndex = 0;
+  int selectedIndex = 0;
+
+  _CustomBottomAppBar({this.selectedIndex = 0});
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
     });
   }
 
-  static Size get preferredSize => const Size.fromHeight(86.0);
+  static Size get preferredSize => const Size.fromHeight(70.0);
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          backgroundColor: Color(0xFFBF7366),
-          icon: IconButton(
-            icon: const Icon(Icons.person, color: Colors.white),
-            onPressed: () {
-              _onItemTapped(0);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const HomeScreen();
-                  },
-                ),
-              );
-            },
+    return SizedBox(
+      height: preferredSize.height,
+      child: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        iconSize: 10,
+        elevation: 2,
+        backgroundColor: const Color(0xFFE8D1C5),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 30,
+              icon: Image.asset("images/swipe.png"),
+              onPressed: () {
+                _onItemTapped(1);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const SwipeScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            label: 'Swipe',
           ),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: const Icon(Icons.account_box_outlined, color: Colors.white),
-            onPressed: () {
-              _onItemTapped(1);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return SwipeScreen();
-                  },
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 30,
+              icon: Image.asset("images/resto.png"),
+              onPressed: () {
+                _onItemTapped(3);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const MyTableScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            label: 'Ma Table',
           ),
-          label: 'Swipe',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: const Icon(Icons.list, color: Colors.white),
-            onPressed: () {
-              _onItemTapped(2);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const LeaderBoardScreen();
-                  },
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 30,
+              icon: Image.asset("images/trombii.png"),
+              onPressed: () {
+                _onItemTapped(3);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const TableScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            label: 'Table',
           ),
-          label: 'Leader',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: const Icon(Icons.table_bar, color: Colors.white),
-            onPressed: () {
-              _onItemTapped(3);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const TableScreen();
-                  },
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 30,
+              icon: Image.asset("images/questions.png"),
+              onPressed: () {
+                _onItemTapped(3);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const AnecdotesScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            label: 'Question',
           ),
-          label: 'Table',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: const Icon(Icons.table_bar, color: Colors.white),
-            onPressed: () {
-              _onItemTapped(3);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const MyTableScreen();
-                  },
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 30,
+              icon: Image.asset("images/popodium.png"),
+              onPressed: () {
+                _onItemTapped(2);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const LeaderBoardScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            label: 'Leader',
           ),
-          label: 'Ma Table',
-        ),
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: const Icon(Icons.question_mark_outlined, color: Colors.white),
-            onPressed: () {
-              _onItemTapped(3);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const AnecdotesScreen();
-                  },
-                ),
-              );
-            },
+          BottomNavigationBarItem(
+            backgroundColor: const Color(0xFFF2E7E2),
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 30,
+              icon: Image.asset("images/user.png"),
+              onPressed: () {
+                _onItemTapped(0);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const HomeScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            label: 'Home',
           ),
-          label: 'Question',
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
+        ],
+        currentIndex: selectedIndex,
+        selectedItemColor: const Color(0xFFBF7366),
+      ),
     );
   }
 }

@@ -5,15 +5,19 @@ import 'package:woyaa/responsive.dart';
 
 class Base extends StatelessWidget {
   final Widget child;
+  final bool showAppBar;
+  final int appBarIndex;
 
   const Base({
     Key? key,
     required this.child,
+    this.showAppBar = true,
+    this.appBarIndex = 0,
   }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appBar = CustomBottomAppBar();
+    const appBar = CustomBottomAppBar();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(
@@ -32,7 +36,7 @@ class Base extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: appBar,
+      bottomNavigationBar: showAppBar ? appBar : null,
     );
   }
 }
