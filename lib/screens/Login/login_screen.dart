@@ -48,8 +48,8 @@ class MobileLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
-        const LoginScreenTopImage(),
+      children: [
+      const LoginScreenTopImage(),
         Row(
           children: const [
             Spacer(),

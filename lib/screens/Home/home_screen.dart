@@ -3,7 +3,8 @@ import 'package:woyaa/components/custom_appbar.dart';
 import 'package:woyaa/models/models.dart';
 import 'package:woyaa/screens/Swipe/components/user_card.dart';
 import 'package:woyaa/welcome_theme.dart';
-
+import 'dart:async';
+import 'dart:html' as html;
 import '../../components/base.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,7 +39,7 @@ class HomeScreen extends StatelessWidget {
                     LabeledNumber(number: 59, label: "classement"),
                   ],
                 ),
-                const Spacer(flex: 3),
+                const Spacer(flex: 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -50,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Chateau du Bois-Guy",
+                    Text("Château du Bois-Guy",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.white)),
                   ],
@@ -58,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Parigne, Bretagne",
+                    Text("Parigné, Bretagne",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.white)),
                   ],
@@ -81,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(40.0),
                                           side:
                                               const BorderSide(color: Color(0xFFE8D1C5))))),
-                          onPressed: () => null,
+                          onPressed: _openGiftslist,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
@@ -100,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                                   children: [
                                     Text("Faites nous plaisir",
                                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.left,),
-                                    Text("Acceder a notre liste",
+                                    Text("Accéder à notre liste",
                                       style: Theme.of(context).textTheme.bodyMedium!, textAlign: TextAlign.left,),
                                   ],
                                 ),
@@ -166,3 +167,8 @@ class LabeledNumber extends StatelessWidget {
     );
   }
 }
+
+_openGiftslist() {
+    const u = 'https://www.milleetunelistes.fr/liste/mariage-ana-et-yoann';
+    html.window.open(u, 'new tab');
+  }

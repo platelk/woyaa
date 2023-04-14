@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:woyaa/components/base.dart';
+import 'package:woyaa/constants.dart';
+import 'package:woyaa/tables_theme.dart';
+
 
 import '../../models/user.dart';
 
@@ -8,33 +11,50 @@ class TableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Base(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text("Les invitees", style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.black),),
-          ),
-          // Text("Amsterdam" style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Colors.black)),
-          // Text("Voyage de nos 1an de relation", style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: Colors.black)),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GridView.count(
-              physics: const ScrollPhysics(),
-              shrinkWrap: true,
-              crossAxisSpacing: 2.0,
-              mainAxisSpacing: 2.0,
-              scrollDirection: Axis.vertical,
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this produces 2 rows.
-              crossAxisCount: 4,
-              // Generate 100 widgets that display their index in the List.
-              children: List.generate(100, (index) {
-                return TableGuest(user: User.users[0]);
-              }),
+return Theme(
+      data: tablesTheme(),
+      child: Base(
+        child: Stack(
+          children: [
+            Positioned(bottom: -20, right: -120, child: SizedBox(width: 300, height: 300, child: Image.asset("images/leaf_1.png", fit: BoxFit.scaleDown))),
+            Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: Text(
+                      "Les invités",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge!
+                          .copyWith(color: kBackgroundColor, fontFamily: 'Adelia'),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height - 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: GridView.count(
+                      physics: const ScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      crossAxisCount: 4,
+                      // Create a grid with 2 columns. If you change the scrollDirection to
+                      // horizontal, this produces 2 rows.
+                      // Generate 100 widgets that display their index in the List.
+                      children: List.generate(100, (index) {
+                      return TableGuest(user: User.users[0]);
+                   })),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
