@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:woyaa/responsive.dart';
 
 import '../../../constants.dart';
 
@@ -15,28 +16,26 @@ class LoginScreenTopImage extends StatelessWidget {
         OverflowBox(
           child: Row(
             children: [
-              const Spacer(flex: 3),
+              Responsive.isMobile(context)? const Spacer(flex: 3) : const Spacer(flex: 2),
               Expanded(
                 flex: 14,
-                child: SizedOverflowBox(
-                  size: const Size(800, 1200),
                   child: Image.asset(
                     "images/login_welcome_background.png",
-                    fit: BoxFit.fitWidth,
                   ),
                 ),
-              ),
               const Spacer(flex: 1),
             ],
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(child: Image.asset("images/login_text.png", fit: BoxFit.contain)),
-          ],
-        )
+          Column(
+             children: [
+              const Spacer(flex: 5),
+              Center(child: Image.asset("images/bienvenue_au.png", scale: 4)),
+              const Spacer(),
+              Center(child: Image.asset("images/ana_et_yoann.png", scale: 5)),
+              const Spacer(flex: 3),
+            ],
+          ),
       ]),
     );
   }

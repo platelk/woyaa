@@ -120,22 +120,23 @@ class OnBoardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (image.isNotEmpty) ...[const Spacer(), Image.asset(
+        const Spacer(flex: 8),
+        if (image.isNotEmpty) Image.asset(
           image,
-          height: 250,
-        )],
+          height: 100,
+        ), const Spacer(),
         const Spacer(),
         Text(title,
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
-                .headlineLarge!
+                .headlineMedium!
                 .copyWith(fontWeight: FontWeight.bold, color: Colors.white)),
         const SizedBox(height: 16),
         Text(description, textAlign: TextAlign.center, style: Theme.of(context)
             .textTheme
             .headlineSmall!.copyWith(color: Colors.white)),
-        const Spacer(),
+        const Spacer(flex: 10),
       ],
     );
   }
@@ -146,10 +147,56 @@ final List<OnBoard> data = [
       image: "",
       title: "BRAVO !",
       description: """
-      Vous etes bien inscrits a notre mariage,
-      vous trouverez ici toutes les infos sur l'evenements,
-      des defis, des choses a gagner et plus encore !
+Vous etes bien inscrits a notre mariage,
+vous trouverez ici toutes les infos sur l'evenements,
+des defis, des choses a gagner et plus encore !
       
-      Bonne decouverte !
+Bonne decouverte !
+      """),
+      OnBoard(
+      image: "images/onboarding_swipe.png",
+      title: "Les paris sont faits !",
+      description: """
+Découvrez chaque invité et essayez de deviner qui sera à votre table. 
+       
+Si vous avez vu juste vous gagnerez des points !  
+      """),
+      OnBoard(
+      image: "images/onboarding_table.png",
+      title: "À table !",
+      description: """
+Une fois que vous aurez swipez tous les invités. 
+Retrouvez le nom de votre table et qui partagera ce 
+repas avec vous !  
+      """),
+      OnBoard(
+      image: "images/onboarding_trombi.png",
+      title: "Trombi",
+      description: """
+Retrouvez tous les invités ici après les avoir swipés !  
+      """),
+      OnBoard(
+      image: "images/onboarding_question-block.png",
+      title: "Connaissez vous les mariés ?",
+      description: """
+Trouvez parmi les invités qui a partagé ces moments marquants avec les mariés. 
+      
+Si vous avez bon, gagnez des points !  
+      """),
+      OnBoard(
+      image: "images/onboarding_podium.png",
+      title: "La course vers la victoire !",
+      description: """
+Retrouvez le classement des invités.
+
+Qui emportera le dîner étoilé avec les mariés
+et les autres cadeaux ?! 
+      """),
+      OnBoard(
+      image: "images/onboarding_profile.png",
+      title: "Votre profil",
+      description: """
+Retrouvez toutes les infos
+pratiques pour le mariage !
       """),
 ];

@@ -18,14 +18,16 @@ class LoginForm extends StatelessWidget {
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
+            textAlign: TextAlign.center,
             cursorColor: Theme.of(context).primaryColor,
             onSaved: (email) {},
             decoration: const InputDecoration(
-              hintText: "email",
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
-              ),
+              hintText: "Votre mail",
+              hintStyle: TextStyle(color: kWelcomePrimaryColor, fontWeight: FontWeight.bold),
+              enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(40)),
+              borderSide: BorderSide(color: kWelcomePrimaryColor),
+          ),
             ),
           ),
           const SizedBox(height: defaultPadding),
