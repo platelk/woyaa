@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: woyaa
+  labels:
+    app: woyaa
+    type: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: woyaa
+  template:
+    metadata:
+      labels:
+        app: woyaa
+    spec:
+      containers:
+      - name: web
+        image: platelk/woyaa:0.1
+        env:
+          - name: USER_PG_URL
+            value: "postgresql://admin:psltest@postgres:5432/users"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: woyaa # Sets service name
+  labels:
+    app: woyaa # Labels and Selectors
+spec:
+  type: NodePort # Sets service type
+  ports:
+    - port: 8080 # Sets port to run the postgres application
+  selector:
+    app: woyaa
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: httpd-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+spec:
+  tls:
+    - hosts:
+        - anaxyoann.fr
+      secretName: anaxyoann-secret-tls
+  rules:
+    - host: "anaxyoann.fr"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: woyaa
+                port:
+                  number: 8080

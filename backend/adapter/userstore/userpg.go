@@ -25,7 +25,35 @@ func (u *UserPG) GetByID(c context.Context, id domain.UserID) (*domain.User, err
 		return nil, fmt.Errorf("can't retrieve user: %w", err)
 	}
 	return &domain.User{
-		ID:    domain.UserID(usr.ID),
-		Email: domain.Email(usr.Email),
+		ID:               domain.UserID(usr.ID),
+		FirstName:        usr.FirstName,
+		LastName:         usr.LastName,
+		Email:            domain.Email(usr.Email),
+		Room:             domain.RoomNumber(usr.Room),
+		Table:            domain.TableName(usr.Table),
+		FullPicturePath:  usr.FullPicturePath,
+		RoundPicturePath: usr.RoundPicturePath,
 	}, nil
+}
+
+func (u *UserPG) GetAllUsers(c context.Context) (domain.Users, error) {
+	var usr []userpg.User
+	err := u.db.Query(c, &usr, "SELECT * FROM users")
+	if err != nil {
+		return nil, fmt.Errorf("can't retrieve user: %w", err)
+	}
+	var users []domain.User
+	for _, u := range usr {
+		users = append(users, domain.User{
+			ID:               domain.UserID(u.ID),
+			FirstName:        u.FirstName,
+			LastName:         u.LastName,
+			Email:            domain.Email(u.Email),
+			Room:             domain.RoomNumber(u.Room),
+			Table:            domain.TableName(u.Table),
+			FullPicturePath:  u.FullPicturePath,
+			RoundPicturePath: u.RoundPicturePath,
+		})
+	}
+	return users, nil
 }

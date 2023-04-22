@@ -8,6 +8,7 @@ import (
 
 	"github.com/platelk/woyaa/backend/adapter/accesstokens"
 	"github.com/platelk/woyaa/backend/adapter/credstore"
+	"github.com/platelk/woyaa/backend/adapter/swipestore"
 	"github.com/platelk/woyaa/backend/adapter/userstore"
 	"github.com/platelk/woyaa/backend/infra/userpg"
 	"github.com/platelk/woyaa/backend/transport/http"
@@ -31,13 +32,17 @@ func main() {
 	credStore := credstore.NewUserPG(userPG)
 	tokens := accesstokens.NewJWT()
 	userStore := userstore.NewUserPG(userPG)
+	swipeStore := swipestore.NewUserPG(userPG)
 
 	s := http.NewBuilder().
-		WithJWT(tokens.JWTKey).
+		WithJWT(tokens).
 		WebSite("./build/web").
 		DevUserPGAll(userPG).
 		V1EmailLogin(usecase.NewEmailLogin(credStore, userStore, tokens)).
-		V1UserMe().
+		V1UserMe(usecase.NewGetMyUserUseCase(userStore)).
+		V1User(usecase.NewGetUserUseCase(userStore)).
+		V1UserSwipable(usecase.NewGetSwipableUserUseCase(userStore, swipeStore)).
+		V1UserSwipe(usecase.NewSwipeUserUseCase(swipeStore)).
 		Build()
 
 	if err := s.Start(); err != nil {

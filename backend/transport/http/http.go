@@ -1,9 +1,11 @@
 package http
 
 import (
-	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"github.com/platelk/woyaa/backend/adapter/accesstokens"
+	"github.com/platelk/woyaa/backend/transport/http/custommiddleware"
 )
 
 type Builder struct {
@@ -19,10 +21,8 @@ func NewBuilder() *Builder {
 	}
 }
 
-func (b *Builder) WithJWT(signingKey []byte) *Builder {
-	b.authzMiddleware = echojwt.WithConfig(echojwt.Config{
-		SigningKey: signingKey,
-	})
+func (b *Builder) WithJWT(jwt *accesstokens.JWTAccessToken) *Builder {
+	b.authzMiddleware = custommiddleware.JWT(jwt)
 	return b
 }
 
@@ -46,5 +46,6 @@ type server struct {
 func (s *server) Start() error {
 	s.e.Use(middleware.Logger())
 	s.e.Use(middleware.Recover())
+	s.e.Use(middleware.RequestID())
 	return s.e.Start(s.addr)
 }

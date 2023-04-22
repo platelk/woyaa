@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	UserPGURL string `config:"user_pg_url" default:"postgresql://postgres:mysecretpassword@localhost:6432/users"`
+	UserPGURL string `config:"user_pg_url" default:"${USER_PG_URL | postgresql://postgres:mysecretpassword@localhost:6432/users}"`
 }
 
 func LoadConfig() (*Config, error) {
@@ -20,8 +20,8 @@ func LoadConfig() (*Config, error) {
 		WithOptions(func(opt *config.Options) {
 			opt.DecoderConfig.TagName = "config"
 		}).
-		WithOptions(config.ParseDefault).
-		WithOptions(config.ParseEnv)
+		WithOptions(config.ParseEnv).
+		WithOptions(config.ParseDefault)
 
 	c.AddDriver(yaml.Driver)
 

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/vingarcia/ksql"
@@ -17,15 +18,25 @@ type User struct {
 	FirstName        string `ksql:"first_name"`
 	LastName         string `ksql:"last_name"`
 	Email            string `ksql:"email"`
-	Room             int    `kql:"room"`
+	Room             int    `ksql:"room"`
 	Table            string `ksql:"wedding_table"`
 	FullPicturePath  string `ksql:"full_picture_path"`
 	RoundPicturePath string `ksql:"round_picture_path"`
 }
 
+type Swipes struct {
+	ID           int  `ksql:"id"`
+	UserID       int  `ksql:"user_id"`
+	SwipedUserID int  `ksql:"swiped_user_id"`
+	SwipedRight  bool `ksql:"swiped_right"`
+	// The timeNowUTC modifier will set this field to `time.Now().UTC()` before saving it:
+	SwipedAt time.Time `ksql:"swiped_at,timeNowUTC"`
+}
+
 // UsersTable informs KSQL the name of the table and that it can
 // use the default value for the primary key column name: "id"
 var UsersTable = ksql.NewTable("users")
+var SwipesTable = ksql.NewTable("swipes")
 
 type DB struct {
 	ksql.DB
@@ -42,6 +53,18 @@ func NewDB(ctx context.Context, databaseURL string) (*DB, error) {
 }
 
 func (upg *DB) CreateTables(ctx context.Context) error {
+	err := upg.CreateUsersTable(ctx)
+	if err != nil {
+		return err
+	}
+	err = upg.CreateSwipeTable(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (upg *DB) CreateUsersTable(ctx context.Context) error {
 	_, err := upg.Exec(ctx, `CREATE TABLE IF NOT EXISTS users (
 	  	id INTEGER PRIMARY KEY,
 		first_name TEXT,
@@ -62,10 +85,32 @@ func (upg *DB) CreateTables(ctx context.Context) error {
 	return nil
 }
 
+func (upg *DB) CreateSwipeTable(ctx context.Context) error {
+	_, err := upg.Exec(ctx, `CREATE TABLE IF NOT EXISTS swipes (
+    	  	id SERIAL PRIMARY KEY,
+	  	user_id INTEGER,
+		swiped_user_id INTEGER,
+		swiped_right BOOLEAN,
+		swiped_at TIMESTAMP
+	)`)
+	if err != nil {
+		return fmt.Errorf("can't create table swipes: %w", err)
+	}
+	_, err = upg.Exec(ctx, `CREATE UNIQUE INDEX IF NOT EXISTS swiped_users ON swipes (user_id, swiped_user_id)`)
+	if err != nil {
+		return fmt.Errorf("can't create index swiped_users: %w", err)
+	}
+	return nil
+}
+
 func (upg *DB) DropTables(ctx context.Context) error {
 	_, err := upg.Exec(ctx, "DROP TABLE IF EXISTS users")
 	if err != nil {
 		return fmt.Errorf("can't drop table users: %w", err)
+	}
+	_, err = upg.Exec(ctx, "DROP TABLE IF EXISTS swipes")
+	if err != nil {
+		return fmt.Errorf("can't drop table swipes: %w", err)
 	}
 	return nil
 }

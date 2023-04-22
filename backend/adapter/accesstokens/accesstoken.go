@@ -2,6 +2,7 @@ package accesstokens
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -17,6 +18,9 @@ var jwtKey = []byte("my_secret_key")
 const woyaaIssuer = "woyaa"
 const expirationTime = 24 * time.Hour
 
+var ErrSignatureInvalid = jwt.ErrSignatureInvalid
+var ErrTokenInvalid = errors.New("invalid token")
+
 type Claims struct {
 	jwt.RegisteredClaims
 }
@@ -29,6 +33,29 @@ func NewJWT() *JWTAccessToken {
 	return &JWTAccessToken{
 		JWTKey: jwtKey,
 	}
+}
+
+func (jat *JWTAccessToken) ValidateAccessToken(c context.Context, token string) (*Claims, error) {
+	// Initialize a new instance of `Claims`
+	claims := &Claims{}
+	// Parse the JWT string and store the result in `claims`.
+	// Note that we are passing the key in this method as well. This method will return an error
+	// if the token is invalid (if it has expired according to the expiry time we set on sign in),
+	// or if the signature does not match
+	tkn, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		return jat.JWTKey, nil
+	})
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			return nil, ErrSignatureInvalid
+		}
+		return nil, fmt.Errorf("can't parse token: %w", err)
+	}
+	if !tkn.Valid {
+		return nil, ErrTokenInvalid
+	}
+
+	return claims, nil
 }
 
 func (jat *JWTAccessToken) GenerateAccessToken(_ context.Context, user *domain.User) (domain.AccessToken, error) {

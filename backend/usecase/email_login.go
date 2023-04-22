@@ -21,7 +21,7 @@ type CredentialStore interface {
 	ValidateEmail(c context.Context, credential domain.EmailCredential) (domain.UserID, error)
 }
 
-type UserStore interface {
+type UserStoreByID interface {
 	GetByID(c context.Context, id domain.UserID) (*domain.User, error)
 }
 
@@ -29,7 +29,7 @@ type TokenGenerator interface {
 	GenerateAccessToken(c context.Context, user *domain.User) (domain.AccessToken, error)
 }
 
-func NewEmailLogin(credStore CredentialStore, userStore UserStore, tokenGenerator TokenGenerator) EmailLoginUseCase {
+func NewEmailLogin(credStore CredentialStore, userStore UserStoreByID, tokenGenerator TokenGenerator) EmailLoginUseCase {
 	return func(c context.Context, req *EmailLoginReq) (*EmailLoginResponse, error) {
 		userID, err := credStore.ValidateEmail(c, req.EmailCred)
 		if err != nil {
