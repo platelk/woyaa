@@ -21,7 +21,7 @@ class LeaderBoardScreen extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(user.imageUrls[0]),
+                  backgroundImage: NetworkImage(user.roundPicture),
                 ),
                 Column(children: [
                   Text(user.name),

@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 
@@ -27,12 +28,11 @@ type userResp struct {
 
 func v1UserHandler(getUser usecase.GetUserUseCase) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var req userReq
-		err := c.Bind(&req)
+		userID, err := strconv.Atoi(c.QueryParam("id"))
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, nil)
+			return c.String(http.StatusBadRequest, "can't parse provided id")
 		}
-		id := req.ID
+		id := userID
 		if id == 0 {
 			return c.NoContent(http.StatusBadRequest)
 		}

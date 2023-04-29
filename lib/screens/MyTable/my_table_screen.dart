@@ -89,7 +89,7 @@ class TableGuest extends StatelessWidget {
         ),
         CircleAvatar(
           radius: 30,
-          backgroundImage: NetworkImage(user.imageUrls[0]),
+          backgroundImage: NetworkImage(user.roundPicture),
         ),
         const Spacer(),
         Text(

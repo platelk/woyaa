@@ -36,6 +36,7 @@ func main() {
 
 	s := http.NewBuilder().
 		WithJWT(tokens).
+		//ReverseProxy("http://localhost:51357/").
 		WebSite("./build/web").
 		DevUserPGAll(userPG).
 		V1EmailLogin(usecase.NewEmailLogin(credStore, userStore, tokens)).

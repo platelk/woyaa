@@ -20,7 +20,7 @@ class UserCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5.0),
                 image: DecorationImage(
                   fit: BoxFit.contain,
-                  image: NetworkImage(user.imageUrls[0]),
+                  image: NetworkImage(user.fullPicture),
                 ),
               ),
             ),

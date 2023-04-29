@@ -70,7 +70,7 @@ class TableGuest extends StatelessWidget {
     return Column(
       children: [
         CircleAvatar(
-          backgroundImage: NetworkImage(user.imageUrls[0]),
+          backgroundImage: NetworkImage(user.roundPicture),
         ),
         Center(child: Text(user.name, textAlign: TextAlign.center,)),
       ],

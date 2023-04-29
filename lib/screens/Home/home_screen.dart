@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:woyaa/components/custom_appbar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:woyaa/models/models.dart';
-import 'package:woyaa/screens/Swipe/components/user_card.dart';
 import 'package:woyaa/welcome_theme.dart';
-import 'dart:async';
 import 'dart:html' as html;
+import '../../blocs/me/me_bloc.dart';
 import '../../components/base.dart';
+import '../../models/room.dart';
+import '../../models/table.dart' as wTable;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = User.users[0];
+    return BlocBuilder<MeBloc, MeState>(
+  builder: (context, state) {
+    var user = User(id: 0, firstName: "firstName", lastName: "lastName", email: "email", room: const Room(number: 0), table: wTable.Table(name: ""), fullPicture: "fullPicture", roundPicture: "roundPicture");
+    if (state is MeLoaded) {
+      user = state.me;
+    } else {
+      return Theme(data: welcomeTheme(), child: const Text("loading..."));
+    }
     return Theme(
       data: welcomeTheme(),
       child: Base(
@@ -23,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                 const Spacer(),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(user.imageUrls[0]),
+                    backgroundImage: NetworkImage(user.roundPicture),
                     minRadius: 120,
                   )
                 ]),
@@ -33,9 +41,9 @@ class HomeScreen extends StatelessWidget {
                 const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    LabeledNumber(number: 234, label: "chambre"),
-                    LabeledNumber(number: 178, label: "jours avant le mariage"),
+                  children: [
+                    LabeledNumber(number: user.room.number, label: "chambre"),
+                    LabeledNumber(number: DateTime.parse("2023-05-20").difference(DateTime.now()).inDays, label: "jours avant le mariage"),
                     LabeledNumber(number: 59, label: "classement"),
                   ],
                 ),
@@ -140,6 +148,8 @@ class HomeScreen extends StatelessWidget {
             )),
       ),
     );
+  },
+);
   }
 }
 
