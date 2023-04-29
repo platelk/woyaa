@@ -80,7 +80,7 @@ class SwipeScreen extends StatelessWidget {
                         onTap: () {
                           context
                             .read<SwipeBloc>()
-                            .add(SwipeLeftEvent(user: state.users[0]));
+                            .add(SwipeLeftEvent(token: state.token, user: state.users.first));
                         },
                         child: const ChoiceButton(
                             width: 80,
@@ -95,7 +95,7 @@ class SwipeScreen extends StatelessWidget {
                         onTap: () {
                           context
                             .read<SwipeBloc>()
-                            .add(SwipeRightEvent(user: state.users[0]));
+                            .add(SwipeRightEvent(token: state.token, user: state.users.first));
                         },
                         child: const ChoiceButton(
                             width: 80,

@@ -104,7 +104,7 @@ class TableGuest extends StatelessWidget {
           flex: 2,
         ),
         CircleAvatar(
-          radius: 30,
+          radius: 55,
           backgroundImage: NetworkImage(user.roundPicture),
         ),
         const Spacer(),
