@@ -58,9 +58,23 @@ void _winningSwipeToast(){
     );
  } 
 
+ void _winningSwipeSameTableToast(){
+  Fluttertoast.showToast(
+    msg: "Bien joué il est effectivement à ta table ! Tu gagnes 5 points !",
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    gravity: ToastGravity.TOP,
+    webPosition: "center",
+    backgroundColor: kTablesBackgroundColor,
+    webBgColor: "#2a4368",
+    textColor: Colors.white,
+    fontSize: 16.0,
+    );
+ } 
+
 void _losingSwipeToast(){
   Fluttertoast.showToast(
-    msg: "Pas chance, c'est raté ! Tu perds 1 point !",
+    msg: "Pas de chance, c'est raté ! Tu perds 1 point !",
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,
     gravity: ToastGravity.TOP,
@@ -72,13 +86,16 @@ void _losingSwipeToast(){
     );
  } 
 
-/*
- FToast fToast;
-
- @override
- void initState(){
-  super.initState();
-  fToast = FToast();
-  fToast.init(navigatorKey.current); //je veux récupérer un context
- }
-*/
+ void _losingSwipeSameTableToast(){
+  Fluttertoast.showToast(
+    msg: "C'est raté il ou elle est à ta table ! Tu perds 2 points !",
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    gravity: ToastGravity.TOP,
+    webPosition: "center",
+    backgroundColor: kWelcomeBackgroundColor,
+    webBgColor: "#bf7366",
+    textColor: Colors.white,
+    fontSize: 16.0,
+    );
+ } 

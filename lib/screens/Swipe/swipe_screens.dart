@@ -41,7 +41,7 @@ class SwipeScreen extends StatelessWidget {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                    Text("Pensez vous etre\na table avec ..?",
+                    Text("Pensez vous être\nà table avec ..?",
                         style: Theme.of(context)
                             .textTheme
                             .headlineMedium!
@@ -77,7 +77,11 @@ class SwipeScreen extends StatelessWidget {
                         flex: 2,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          context
+                            .read<SwipeBloc>()
+                            .add(SwipeLeftEvent(user: state.users[0]));
+                        },
                         child: const ChoiceButton(
                             width: 80,
                             height: 80,
@@ -88,7 +92,11 @@ class SwipeScreen extends StatelessWidget {
                       const Spacer(),
                       InkWell(
                         highlightColor: Colors.black,
-                        onTap: () {},
+                        onTap: () {
+                          context
+                            .read<SwipeBloc>()
+                            .add(SwipeRightEvent(user: state.users[0]));
+                        },
                         child: const ChoiceButton(
                             width: 80,
                             height: 80,

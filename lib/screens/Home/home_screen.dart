@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Samedi 20 mai 2023 a 14h",
+                    Text("Samedi 20 mai 2023 à 14h",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.white)),
                   ],
@@ -87,15 +87,12 @@ class HomeScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 10.0),
-                                  child: Icon(
-                                    Icons.card_giftcard_rounded,
-                                    color: Colors.black,
-                                    size: 50.0,
-                                    semanticLabel:
-                                        'Text to announce in accessibility modes',
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child:
+                                    Image.asset("images/gift.png",
+                                      width: 50,
+                                      height: 50,),
                                 ),
                                 Column(
                                   children: [

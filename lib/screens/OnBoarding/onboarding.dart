@@ -60,7 +60,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return const HomeScreen();
+                                  return const SwipeScreen();
                                 },
                               ),
                             );
@@ -147,11 +147,11 @@ final List<OnBoard> data = [
       image: "",
       title: "BRAVO !",
       description: """
-Vous etes bien inscrits a notre mariage,
-vous trouverez ici toutes les infos sur l'evenements,
-des defis, des choses a gagner et plus encore !
+Vous êtes bien inscrits à notre mariage,
+vous trouverez ici toutes les infos sur l'évènement,
+des défis, des choses à gagner et plus encore !
       
-Bonne decouverte !
+Bonne découverte !
       """),
       OnBoard(
       image: "images/onboarding_swipe.png",
@@ -165,9 +165,11 @@ Si vous avez vu juste vous gagnerez des points !
       image: "images/onboarding_table.png",
       title: "À table !",
       description: """
-Une fois que vous aurez swipez tous les invités. 
-Retrouvez le nom de votre table et qui partagera ce 
-repas avec vous !  
+Une fois que vous aurez swipé tous les invités.
+
+Partez à la découverte du nom de votre table et
+des personnes qui partageront ce 
+repas avec vous !
       """),
       OnBoard(
       image: "images/onboarding_trombi.png",
@@ -177,11 +179,12 @@ Retrouvez tous les invités ici après les avoir swipés !
       """),
       OnBoard(
       image: "images/onboarding_question-block.png",
-      title: "Connaissez vous les mariés ?",
+      title: "Connaissez vous vraiment les mariés ?",
       description: """
 Trouvez parmi les invités qui a partagé ces moments marquants avec les mariés. 
       
-Si vous avez bon, gagnez des points !  
+Si vous avez bon,
+gagnez des points !  
       """),
       OnBoard(
       image: "images/onboarding_podium.png",
@@ -189,14 +192,16 @@ Si vous avez bon, gagnez des points !
       description: """
 Retrouvez le classement des invités.
 
-Qui emportera le dîner étoilé avec les mariés
-et les autres cadeaux ?! 
+Qui remportera le
+dîner gastronomique avec
+les mariés et les autres cadeaux ?! 
       """),
       OnBoard(
       image: "images/onboarding_profile.png",
       title: "Votre profil",
       description: """
-Retrouvez toutes les infos
-pratiques pour le mariage !
+Retrouvez toutes
+les infos pratiques 
+pour le mariage !
       """),
 ];

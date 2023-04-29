@@ -16,7 +16,7 @@ class LoginScreenTopImage extends StatelessWidget {
         OverflowBox(
           child: Row(
             children: [
-              Responsive.isMobile(context)? const Spacer(flex: 3) : const Spacer(flex: 2),
+              (Responsive.isMobile(context))? const Spacer(flex: 3) : const Spacer(flex: 2),
               Expanded(
                 flex: 14,
                   child: Image.asset(
