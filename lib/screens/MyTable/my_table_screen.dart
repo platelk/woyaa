@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:woyaa/components/base.dart';
 import 'package:woyaa/constants.dart';
 import 'package:woyaa/tables_theme.dart';
 
+import '../../blocs/me/me_bloc.dart';
+import '../../blocs/tables/tables_bloc.dart';
 import '../../models/user.dart';
 
 class MyTableScreen extends StatelessWidget {
@@ -10,6 +13,15 @@ class MyTableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<TablesBloc, TablesState>(
+  builder: (context, state) {
+    return BlocBuilder<MeBloc, MeState>(
+  builder: (context, meState) {
+    if (meState is! MeLoaded || state is! TablesInitialized) {
+      return Theme(
+        data: tablesTheme(),
+        child: const Base(child: Text("loading.."),));
+    }
     return Theme(
       data: tablesTheme(),
       child: Base(
@@ -31,7 +43,7 @@ class MyTableScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text("Amsterdam",
+                    child: Text(meState.me.tableName,
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge!
@@ -58,11 +70,11 @@ class MyTableScreen extends StatelessWidget {
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
                       // Generate 100 widgets that display their index in the List.
-                      itemCount: 8,
+                      itemCount: state.tables[meState.me.tableName]?.size,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
-                          child: TableGuest(user: User.users[0]),
+                          child: TableGuest(user: state.tables[meState.me.tableName]!.users.length > index ? state.tables[meState.me.tableName]!.users.elementAt(index) : User.unknown),
                         );
                       }),
                 ),
@@ -72,6 +84,10 @@ class MyTableScreen extends StatelessWidget {
         ),
       ),
     );
+  },
+);
+  },
+);
   }
 }
 

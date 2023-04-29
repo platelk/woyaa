@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MeBloc, MeState>(
   builder: (context, state) {
-    var user = User(id: 0, firstName: "firstName", lastName: "lastName", email: "email", room: const Room(number: 0), table: wTable.Table(name: ""), fullPicture: "fullPicture", roundPicture: "roundPicture");
+    var user = const User(id: 0, firstName: "firstName", lastName: "lastName", email: "email", score: 0, room: Room(number: 0), tableName: "", fullPicture: "fullPicture", roundPicture: "roundPicture");
     if (state is MeLoaded) {
       user = state.me;
     } else {

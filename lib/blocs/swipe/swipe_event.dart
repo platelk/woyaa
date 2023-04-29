@@ -18,12 +18,12 @@ class LoadSwipeListEvent extends SwipeEvent {
 
 class LoadingUserEvent extends SwipeEvent {
   final String token;
-  final List<int> userIds;
+  final SwipeList swipeList;
 
-  const LoadingUserEvent({required this.token, required this.userIds});
+  const LoadingUserEvent({required this.token, required this.swipeList});
 
   @override
-  List<Object> get props => [token, userIds];
+  List<Object> get props => [token, swipeList];
 }
 
 class SwipeUserRetrievedEvent extends SwipeEvent {

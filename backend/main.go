@@ -46,7 +46,7 @@ func main() {
 		V1PostEmailLogin(usecase.NewEmailLogin(credStore, userStore, tokens)).
 		V1GetUserMe(usecase.NewGetMyUserUseCase(userStore)).
 		V1GetUser(usecase.NewGetUserUseCase(userStore, scoreRegistry)).
-		V1GetUserSwipable(usecase.NewGetSwipableUserUseCase(userStore, swipeStore, scoreRegistry)).
+		V1GetUserSwipable(usecase.NewGetSwipableUserUseCase(userStore, swipeStore)).
 		V1PostUserSwipe(usecase.NewSwipeUserUseCase(swipeStore, userStore, scoreRegistry)).
 		V1GetUserScore(usecase.NewGetUserScoreUseCase(scoreRegistry)).
 		V1GetTables(usecase.NewGetTables(tableStore)).

@@ -57,6 +57,7 @@ class Assets {
   static const String imagesFeuille = 'assets/images/feuille.png';
   static const String imagesFichier 1 = 'assets/images/Fichier 1.png';
   static const String imagesImg = 'assets/images/img.png';
+  static const String imagesImg2 = 'assets/images/img_2.png';
   static const String imagesLeaf1 = 'assets/images/leaf_1.png';
   static const String imagesLeafLeftCorner = 'assets/images/leaf_left_corner.png';
   static const String imagesLeafRightTopCorner = 'assets/images/leaf_right_top_corner.png';

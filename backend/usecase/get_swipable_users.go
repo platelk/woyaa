@@ -14,7 +14,8 @@ type GetSwipableUserReq struct {
 }
 
 type GetSwipableUserResp struct {
-	Users []domain.UserID
+	Users       []domain.UserID
+	SwipedUsers []domain.UserID
 }
 
 type UserStoreAll interface {
@@ -25,7 +26,7 @@ type SwipeStoreByUser interface {
 	GetAllSwipesOfUserID(c context.Context, userID domain.UserID) (domain.Swipes, error)
 }
 
-func NewGetSwipableUserUseCase(userStore UserStoreAll, swipeStore SwipeStoreByUser, retriever ScoreRetriever) GetSwipableUser {
+func NewGetSwipableUserUseCase(userStore UserStoreAll, swipeStore SwipeStoreByUser) GetSwipableUser {
 	return func(c context.Context, req *GetSwipableUserReq) (*GetSwipableUserResp, error) {
 		users, err := userStore.GetAllUsers(c)
 		if err != nil {
@@ -34,6 +35,6 @@ func NewGetSwipableUserUseCase(userStore UserStoreAll, swipeStore SwipeStoreByUs
 		currentUserSwipe, err := swipeStore.GetAllSwipesOfUserID(c, req.UserID)
 		result := users.IDs().Difference(currentUserSwipe.IDs())
 
-		return &GetSwipableUserResp{Users: result.Keys()}, nil
+		return &GetSwipableUserResp{Users: result.Keys(), SwipedUsers: currentUserSwipe.IDs().Keys()}, nil
 	}
 }

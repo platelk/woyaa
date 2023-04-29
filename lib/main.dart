@@ -14,6 +14,8 @@ import 'package:woyaa/constants.dart';
 import 'package:woyaa/main_theme.dart';
 import 'package:woyaa/welcome_theme.dart';
 
+import 'blocs/tables/tables_bloc.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -28,7 +30,8 @@ class MyApp extends StatelessWidget {
       BlocProvider(create: (_) => AuthenticationBloc()),
       BlocProvider(create: (context) => MeBloc(authBloc: BlocProvider.of<AuthenticationBloc>(context))),
       BlocProvider(create: (context) => UserBloc(authBloc: BlocProvider.of<AuthenticationBloc>(context))),
-      BlocProvider(create: (context) => SwipeBloc(authBloc: BlocProvider.of<AuthenticationBloc>(context), userBloc: BlocProvider.of<UserBloc>(context)))
+      BlocProvider(create: (context) => SwipeBloc(authBloc: BlocProvider.of<AuthenticationBloc>(context), userBloc: BlocProvider.of<UserBloc>(context))),
+      BlocProvider(create: (context) => TablesBloc(authBloc: BlocProvider.of<AuthenticationBloc>(context), userBloc: BlocProvider.of<UserBloc>(context)))
     ], child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'W.O.Y.A.A',

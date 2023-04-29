@@ -40,7 +40,6 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     }
 
     userBloc.stream.listen((state) {
-      print("user initialiazed in stream !");
       if (state is UserInitialized) {
         for (var user in state.users.values) {
           add(SwipeUserRetrievedEvent(token: state.token, user: user));
@@ -49,7 +48,6 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     });
 
     if (userBloc.state is UserInitialized) {
-        print("user bloc is intialized !!");
         for (var user in (userBloc.state as UserInitialized).users.values) {
           add(SwipeUserRetrievedEvent(token: (userBloc.state as UserInitialized).token, user: user));
         }
@@ -59,12 +57,12 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   void _onLoadSwipeListEvent(LoadSwipeListEvent event, Emitter<SwipeState> emit) {
     emit.call(SwipeLoading(token: event.token));
     GetSwipeList(event.token).then((value) {
-      add(LoadingUserEvent(token: event.token, userIds: value));
+      add(LoadingUserEvent(token: event.token, swipeList: value));
     });
   }
 
   void _onLoadingUserEvent(LoadingUserEvent event, Emitter<SwipeState> emit) {
-    for (var userID in event.userIds) {
+    for (var userID in event.swipeList.toSwipe) {
       userBloc.add(UserRequested(token: event.token, requestedUser: userID));
     }
   }
