@@ -36,6 +36,28 @@ func (u *UserPG) GetByID(c context.Context, id domain.UserID) (*domain.User, err
 	}, nil
 }
 
+func (u *UserPG) GetAllByTable(c context.Context, tableName string) (domain.Users, error) {
+	var usr []userpg.User
+	err := u.db.Query(c, &usr, "SELECT * FROM users WHERE wedding_table = $1", tableName)
+	if err != nil {
+		return nil, fmt.Errorf("can't retrieve user: %w", err)
+	}
+	var users []domain.User
+	for _, u := range usr {
+		users = append(users, domain.User{
+			ID:               domain.UserID(u.ID),
+			FirstName:        u.FirstName,
+			LastName:         u.LastName,
+			Email:            domain.Email(u.Email),
+			Room:             domain.RoomNumber(u.Room),
+			Table:            domain.TableName(u.Table),
+			FullPicturePath:  u.FullPicturePath,
+			RoundPicturePath: u.RoundPicturePath,
+		})
+	}
+	return users, nil
+}
+
 func (u *UserPG) GetAllUsers(c context.Context) (domain.Users, error) {
 	var usr []userpg.User
 	err := u.db.Query(c, &usr, "SELECT * FROM users")

@@ -10,19 +10,19 @@ import (
 	"github.com/platelk/woyaa/backend/usecase"
 )
 
-const v1userPath = "/api/v1/user"
+const v1UserScorePath = "/api/v1/user/score"
 
-func (b *Builder) V1GetUser(getUser usecase.GetUserUseCase) *Builder {
-	b.e.GET(v1userPath, v1UserHandler(getUser), b.authzMiddleware)
+func (b *Builder) V1GetUserScore(getUserScore usecase.GetUserScore) *Builder {
+	b.e.GET(v1UserScorePath, v1UserScoreHandler(getUserScore), b.authzMiddleware)
 
 	return b
 }
 
-type userResp struct {
-	User *domain.User `json:"user"`
+type userScoreResp struct {
+	Total int `json:"total"`
 }
 
-func v1UserHandler(getUser usecase.GetUserUseCase) echo.HandlerFunc {
+func v1UserScoreHandler(getUserScore usecase.GetUserScore) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userID, err := strconv.Atoi(c.QueryParam("id"))
 		if err != nil {
@@ -32,10 +32,10 @@ func v1UserHandler(getUser usecase.GetUserUseCase) echo.HandlerFunc {
 		if id == 0 {
 			return c.NoContent(http.StatusBadRequest)
 		}
-		resp, err := getUser(c.Request().Context(), &usecase.GetUserReq{UserID: domain.UserID(id)})
+		resp, err := getUserScore(c.Request().Context(), &usecase.GetUserScoreReq{UserID: domain.UserID(id)})
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
-		return c.JSON(http.StatusOK, userResp{User: resp.User})
+		return c.JSON(http.StatusOK, userScoreResp{Total: resp.Total})
 	}
 }

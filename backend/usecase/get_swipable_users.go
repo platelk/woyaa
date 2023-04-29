@@ -7,7 +7,7 @@ import (
 	"github.com/platelk/woyaa/backend/domain"
 )
 
-type GetSwipableUserUseCase func(c context.Context, req *GetSwipableUserReq) (*GetSwipableUserResp, error)
+type GetSwipableUser func(c context.Context, req *GetSwipableUserReq) (*GetSwipableUserResp, error)
 
 type GetSwipableUserReq struct {
 	UserID domain.UserID
@@ -25,7 +25,7 @@ type SwipeStoreByUser interface {
 	GetAllSwipesOfUserID(c context.Context, userID domain.UserID) (domain.Swipes, error)
 }
 
-func NewGetSwipableUserUseCase(userStore UserStoreAll, swipeStore SwipeStoreByUser) GetSwipableUserUseCase {
+func NewGetSwipableUserUseCase(userStore UserStoreAll, swipeStore SwipeStoreByUser, retriever ScoreRetriever) GetSwipableUser {
 	return func(c context.Context, req *GetSwipableUserReq) (*GetSwipableUserResp, error) {
 		users, err := userStore.GetAllUsers(c)
 		if err != nil {

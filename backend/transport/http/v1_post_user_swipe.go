@@ -11,7 +11,7 @@ import (
 
 const v1UserSwipe = "/api/v1/user/swipe"
 
-func (b *Builder) V1UserSwipe(uc usecase.SwipeUserUseCase) *Builder {
+func (b *Builder) V1PostUserSwipe(uc usecase.SwipeUserUseCase) *Builder {
 	b.e.POST(v1UserSwipe, v1PostUserSwipeHandler(uc), b.authzMiddleware)
 
 	return b
@@ -20,6 +20,13 @@ func (b *Builder) V1UserSwipe(uc usecase.SwipeUserUseCase) *Builder {
 type swipeUserReq struct {
 	SwipedUser  int  `json:"swiped_user"`
 	SwipedRight bool `json:"swiped_right"`
+}
+
+type swipeUserResp struct {
+	FoundMyTable       bool `json:"found_my_table"`
+	NotFoundMyTable    bool `json:"not_found_my_table"`
+	FoundNotMyTable    bool `json:"found_not_my_table"`
+	NotFoundNotMyTable bool `json:"not_found_not_my_table"`
 }
 
 func v1PostUserSwipeHandler(swipeUser usecase.SwipeUserUseCase) echo.HandlerFunc {
@@ -37,7 +44,7 @@ func v1PostUserSwipeHandler(swipeUser usecase.SwipeUserUseCase) echo.HandlerFunc
 		if swipedUserReq.SwipedUser == 0 {
 			return c.JSON(http.StatusBadRequest, nil)
 		}
-		_, err = swipeUser(c.Request().Context(), &usecase.SwipeUserReq{
+		res, err := swipeUser(c.Request().Context(), &usecase.SwipeUserReq{
 			FromUser:    id,
 			SwipedUser:  domain.UserID(swipedUserReq.SwipedUser),
 			SwipedRight: swipedUserReq.SwipedRight,
@@ -45,6 +52,11 @@ func v1PostUserSwipeHandler(swipeUser usecase.SwipeUserUseCase) echo.HandlerFunc
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
-		return c.NoContent(http.StatusOK)
+		return c.JSON(http.StatusOK, &swipeUserResp{
+			FoundMyTable:       res.FoundMyTable,
+			NotFoundMyTable:    res.NotFoundMyTable,
+			FoundNotMyTable:    res.FoundNotMyTable,
+			NotFoundNotMyTable: res.NotFoundNotMyTable,
+		})
 	}
 }

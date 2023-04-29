@@ -11,7 +11,7 @@ import (
 
 const v1LoginEmailPath = "/api/v1/login/email"
 
-func (b *Builder) V1EmailLogin(emailLogin usecase.EmailLoginUseCase) *Builder {
+func (b *Builder) V1PostEmailLogin(emailLogin usecase.EmailLoginUseCase) *Builder {
 	b.e.POST(v1LoginEmailPath, v1EmailLoginHandler(emailLogin))
 
 	return b

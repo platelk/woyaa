@@ -11,7 +11,7 @@ import (
 
 const v1userSwipablePath = "/api/v1/user/swipable"
 
-func (b *Builder) V1UserSwipable(getSwipableUser usecase.GetSwipableUserUseCase) *Builder {
+func (b *Builder) V1GetUserSwipable(getSwipableUser usecase.GetSwipableUser) *Builder {
 	b.e.GET(v1userSwipablePath, v1UserSwipableHandler(getSwipableUser), b.authzMiddleware)
 
 	return b
@@ -21,7 +21,7 @@ type userSwipableResp struct {
 	Users []domain.UserID `json:"users"`
 }
 
-func v1UserSwipableHandler(getSwipableUser usecase.GetSwipableUserUseCase) echo.HandlerFunc {
+func v1UserSwipableHandler(getSwipableUser usecase.GetSwipableUser) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id := GetUserID(c)
 		if id == 0 {
