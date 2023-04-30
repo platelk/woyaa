@@ -31,27 +31,23 @@ class LoginForm extends StatelessWidget {
               });
         }
         var emailController = TextEditingController();
+        final focus = FocusNode();
         return Form(
           child: Column(
             children: [
               TextFormField(
+                scrollPadding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 textAlign: TextAlign.center,
                 cursorColor: Theme.of(context).primaryColor,
-                // onChanged: (email) {
-                //   if (email.isEmpty) {
-                //     return;
-                //   }
-                //   context
-                //       .read<AuthenticationBloc>()
-                //       .add(LogInStartEvent(email: email));
-                // },
                 decoration: const InputDecoration(
                   hintText: "Votre mail",
                   hintStyle: TextStyle(
                       color: kWelcomePrimaryColor, fontWeight: FontWeight.bold),
+                  enabled: true,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
                     borderSide: BorderSide(color: kWelcomePrimaryColor),

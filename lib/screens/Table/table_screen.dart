@@ -51,8 +51,9 @@ return BlocBuilder<UserBloc, UserState>(
                   child: GridView.count(
                       physics: const ScrollPhysics(),
                       shrinkWrap: true,
+                      childAspectRatio: (1 / 1.2),
                       scrollDirection: Axis.vertical,
-                      crossAxisCount: 4,
+                      crossAxisCount: 3,
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
                       // Generate 100 widgets that display their index in the List.
@@ -78,14 +79,21 @@ class TableGuest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 55,
-          backgroundImage: NetworkImage(user.roundPicture),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 150,
+        width: 100,
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 45,
+              backgroundImage: NetworkImage(user.roundPicture),
+            ),
+            Center(child: Text(user.name, textAlign: TextAlign.center,)),
+          ],
         ),
-        Center(child: Text(user.name, textAlign: TextAlign.center,)),
-      ],
+      ),
     );
   }
 }

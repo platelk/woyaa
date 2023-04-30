@@ -44,7 +44,7 @@ class LeaderBoard extends StatelessWidget {
               return const Base(child: Text("loading..."));
             }
             final users = List<User>.from(state.users.values)
-              ..sort((a, b) => a.score - b.score);
+              ..sort((a, b) => b.score - a.score);
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -64,7 +64,7 @@ class LeaderBoard extends StatelessWidget {
                     children: [
                       Spacer(),
                       Expanded(
-                        flex: 4,
+                        flex: 5,
                         child: ElevatedButton(
                           style: ButtonStyle(
                               foregroundColor:
@@ -84,7 +84,7 @@ class LeaderBoard extends StatelessWidget {
                                       )))),
                           onPressed: () {},
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(1.0),
                             child: Row(
                               children: [
                                 Padding(

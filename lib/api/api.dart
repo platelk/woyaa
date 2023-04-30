@@ -4,7 +4,7 @@ import 'package:flutter_svg/avd.dart';
 import '../models/table.dart';
 import '../models/user.dart';
 
-const baseApiURL = "http://localhost:8080";
+const baseApiURL = "http://192.168.86.249:8080";
 
 final apiHttpClient = Dio(); // With default `Options`.
 
@@ -18,20 +18,24 @@ void configureDio() {
 }
 
 Future<String> LogIn(String email) async {
-  final res = await apiHttpClient.post("/api/v1/login/email", data: {'email': email});
+  final res =
+      await apiHttpClient.post("/api/v1/login/email", data: {'email': email});
   accessToken = res.data["access_token"] as String;
 
   return accessToken;
 }
 
 Future<User> GetMe(String token) async {
-  final res = await apiHttpClient.get("/api/v1/user/me", options: Options(headers: {"authorization": "Bearer $token"}));
+  final res = await apiHttpClient.get("/api/v1/user/me",
+      options: Options(headers: {"authorization": "Bearer $token"}));
 
   return User.fromDynamic(res.data["me"]);
 }
 
 Future<User> GetUser(String token, int userID) async {
-  final res = await apiHttpClient.get("/api/v1/user", options: Options(headers: {"authorization": "Bearer $token"}), queryParameters: {"id": userID});
+  final res = await apiHttpClient.get("/api/v1/user",
+      options: Options(headers: {"authorization": "Bearer $token"}),
+      queryParameters: {"id": userID});
 
   return User.fromDynamic(res.data["user"]);
 }
@@ -44,19 +48,39 @@ class SwipeList {
 }
 
 Future<SwipeList> GetSwipeList(String token) async {
-  final res = await apiHttpClient.get("/api/v1/user/swipable", options: Options(headers: {"authorization": "Bearer $token"}));
+  final res = await apiHttpClient.get("/api/v1/user/swipable",
+      options: Options(headers: {"authorization": "Bearer $token"}));
 
-  return SwipeList(toSwipe: List.from((res.data["users"] as List<dynamic>).map((e) =>  e as int)), swiped: List.from((res.data["swiped_users"] as List<dynamic>).map((e) =>  e as int)));
+  return SwipeList(
+      toSwipe:
+          List.from((res.data["users"] as List<dynamic>).map((e) => e as int)),
+      swiped: List.from(
+          (res.data["swiped_users"] as List<dynamic>).map((e) => e as int)));
 }
 
-Future<void> Swipe(String token, int swipedUser, bool swipedRight) async {
-  final res = await apiHttpClient.get("/api/v1/user/swipe", options: Options(headers: {"authorization": "Bearer $token"}), data: {"swiped_user": swipedUser, "swiped_right": swipedRight});
+class SwipeResult {
+  bool foundMyTable = false;
+  bool notFoundMyTable = false;
+  bool foundNotMyTable = false;
+  bool notFoundNotMyTable = false;
 
-  return;
+  SwipeResult({this.foundMyTable = false, this.notFoundMyTable = false, this.foundNotMyTable = false, this.notFoundNotMyTable = false});
+}
+
+Future<SwipeResult> Swipe(String token, int swipedUser, bool swipedRight) async {
+  final res = await apiHttpClient.post("/api/v1/user/swipe",
+      options: Options(headers: {"authorization": "Bearer $token"}),
+      data: {"swiped_user": swipedUser, "swiped_right": swipedRight});
+
+  return SwipeResult(foundMyTable: res.data["found_my_table"], notFoundMyTable: res.data["not_found_my_table"], foundNotMyTable: res.data["found_not_my_table"], notFoundNotMyTable: res.data["not_found_not_my_table"]);
 }
 
 Future<Map<String, Table>> GetTables(String token) async {
-  final res = await apiHttpClient.get("/api/v1/table", options: Options(headers: {"authorization": "Bearer $token"}));
+  final res = await apiHttpClient.get("/api/v1/table",
+      options: Options(headers: {"authorization": "Bearer $token"}));
 
-  return { for (var t in (res.data["tables"] as List).map(Table.fromDynamic)) (t).name : t };
+  return {
+    for (var t in (res.data["tables"] as List).map(Table.fromDynamic))
+      (t).name: t
+  };
 }

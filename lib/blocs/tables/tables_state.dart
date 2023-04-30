@@ -6,7 +6,13 @@ abstract class TablesState extends Equatable {
   List<Object> get props => [];
 }
 
-class TablesInitial extends TablesState {}
+class TablesInitial extends TablesState {
+  final Set<User> users;
+  const TablesInitial({required this.users});
+
+  @override
+  List<Object> get props => [users];
+}
 
 class TablesInitialized extends TablesState {
   final String token;

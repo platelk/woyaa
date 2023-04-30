@@ -29,4 +29,9 @@ class User extends Equatable {
   static List<User> users = [];
 
   String get name => "$firstName $lastName";
+
+  @override
+  String toString() {
+    return name;
+  }
 }

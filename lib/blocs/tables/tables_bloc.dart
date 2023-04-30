@@ -16,7 +16,7 @@ class TablesBloc extends Bloc<TablesEvent, TablesState> {
   AuthenticationBloc authBloc;
   UserBloc userBloc;
 
-  TablesBloc({required this.authBloc, required this.userBloc}) : super(TablesInitial()) {
+  TablesBloc({required this.authBloc, required this.userBloc}) : super( const TablesInitial(users: {}) ) {
     on<LoadingTableEvent>(_onLoadingTableEvent);
     on<TableLoadedEvent>(_onTableLoadedEvent);
     on<UserInTableEvent>(_onUserInTableEvent);
@@ -52,13 +52,27 @@ class TablesBloc extends Bloc<TablesEvent, TablesState> {
   }
 
   void _onTableLoadedEvent(TableLoadedEvent event, Emitter<TablesState> emit) {
-    emit.call(TablesInitialized(token: event.token, tables: event.tables));
+    if (state is TablesInitial) {
+      var s = state as TablesInitial;
+      var tables = event.tables;
+      for (var user in s.users) {
+        tables[user.tableName]?.users.add(user);
+      }
+      emit.call(TablesInitialized(token: event.token, tables: tables));
+    }
+    if (state is TablesInitialized) {
+      emit.call(TablesInitialized(token: event.token, tables: event.tables));
+    }
   }
 
   void _onUserInTableEvent(UserInTableEvent event, Emitter<TablesState> emit) {
     if (state is TablesInitialized) {
       var i = state as TablesInitialized;
       emit.call(TablesInitialized(token: i.token, tables: Map.from(i.tables)..[event.user.tableName]?.users.add(event.user)));
+    }
+    if (state is TablesInitial) {
+      var i = state as TablesInitial;
+      emit.call(TablesInitial(users: Set.from(i.users)..add(event.user)));
     }
   }
 }

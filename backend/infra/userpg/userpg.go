@@ -38,7 +38,7 @@ type Scores struct {
 	UserID  int       `ksql:"user_id"`
 	Value   int       `ksql:"score_value"`
 	Reason  string    `ksql:"reason"`
-	ScoreAt time.Time `ksql:"swiped_at,timeNowUTC"`
+	ScoreAt time.Time `ksql:"score_at,timeNowUTC"`
 }
 
 // UsersTable informs KSQL the name of the table and that it can
@@ -127,7 +127,7 @@ func (upg *DB) CreateScoreTable(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("can't create table swipes: %w", err)
 	}
-	_, err = upg.Exec(ctx, `CREATE UNIQUE INDEX IF NOT EXISTS score_user ON scores (user_id)`)
+	_, err = upg.Exec(ctx, `CREATE INDEX IF NOT EXISTS score_user ON scores (user_id)`)
 	if err != nil {
 		return fmt.Errorf("can't create index swiped_users: %w", err)
 	}

@@ -89,7 +89,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
         add(LoadSwipeListEvent(token: event.token));
       }
     }
-    _losingSwipeToast();
+    Swipe(event.token, event.user.id, false).then(_onSwipeResult);
   }
 
   void _onSwipeRightEvent(SwipeRightEvent event, Emitter<SwipeState> emit) {
@@ -98,7 +98,22 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
         emit.call(SwipeLoaded(token: event.token, users: Set.from((state as SwipeLoaded).users)..remove(event.user)));
       } catch (_) {}
     }
-    _winningSwipeToast();
+    Swipe(event.token, event.user.id, true).then(_onSwipeResult);
+  }
+
+  void _onSwipeResult(SwipeResult res) {
+    if (res.foundMyTable) {
+      _winningSwipeSameTableToast();
+    }
+    if (res.foundNotMyTable) {
+      _winningSwipeToast();
+    }
+    if (res.notFoundMyTable) {
+      _losingSwipeSameTableToast();
+    }
+    if (res.notFoundNotMyTable) {
+      _losingSwipeToast();
+    }
   }
 }
 

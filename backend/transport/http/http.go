@@ -17,7 +17,7 @@ type Builder struct {
 func NewBuilder() *Builder {
 	return &Builder{
 		e:    echo.New(),
-		addr: ":8080",
+		addr: "0.0.0.0:8080",
 	}
 }
 
