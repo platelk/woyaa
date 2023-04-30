@@ -30,13 +30,6 @@ class SwipeScreen extends StatelessWidget {
         }
         if (state.users.isEmpty) {
           return noMoreImage(context);
-          /*Base(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              
-              Image.asset("images/swipe_no_more.png"),
-            ));*/
         }
         return Base(
           child: Padding(
@@ -67,15 +60,7 @@ class SwipeScreen extends StatelessWidget {
                           ? UserCard(user: state.users.elementAt(1))
                           : null,
                       child: UserCard(user: state.users.first),
-                      /*onDragEnd: (drag) {
-                        if (drag.velocity.pixelsPerSecond.dx < 0) {
-                          context.read<SwipeBloc>().add(SwipeLeftEvent(
-                              token: state.token, user: state.users.first));
-                        } else {
-                          context.read<SwipeBloc>().add(SwipeRightEvent(
-                              token: state.token, user: state.users.first));
-                        }
-                      }*/),
+                      ),
                   Positioned(
                     top: -1,
                     left: -1,
