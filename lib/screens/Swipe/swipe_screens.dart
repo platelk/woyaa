@@ -29,7 +29,14 @@ class SwipeScreen extends StatelessWidget {
           return const Base(child: Text('Something went wrong'));
         }
         if (state.users.isEmpty) {
-          return const Base(child: Text('No more !'));
+          return noMoreImage(context);
+          /*Base(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: 
+              
+              Image.asset("images/swipe_no_more.png"),
+            ));*/
         }
         return Base(
           child: Padding(
@@ -37,19 +44,20 @@ class SwipeScreen extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: 0),
+                  padding: const EdgeInsets.only(
+                      top: 16.0, left: 16.0, right: 16.0, bottom: 0),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                    Text("Pensez vous être\nà table avec ..?",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium!
-                            .copyWith(
-                                color: const Color(0xFFBF7366),
-                                height: 1.8,
-                                fontFamily: 'Adelia')),
-                  ]),
+                        Text("Pensez vous être\nà table avec ..?",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium!
+                                .copyWith(
+                                    color: const Color(0xFFBF7366),
+                                    height: 1.8,
+                                    fontFamily: 'Adelia')),
+                      ]),
                 ),
                 Draggable(
                     feedback: UserCard(user: state.users[0]),
@@ -79,8 +87,8 @@ class SwipeScreen extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           context
-                            .read<SwipeBloc>()
-                            .add(SwipeLeftEvent(user: state.users[0]));
+                              .read<SwipeBloc>()
+                              .add(SwipeLeftEvent(user: state.users[0]));
                         },
                         child: const ChoiceButton(
                             width: 80,
@@ -94,8 +102,8 @@ class SwipeScreen extends StatelessWidget {
                         highlightColor: Colors.black,
                         onTap: () {
                           context
-                            .read<SwipeBloc>()
-                            .add(SwipeRightEvent(user: state.users[0]));
+                              .read<SwipeBloc>()
+                              .add(SwipeRightEvent(user: state.users[0]));
                         },
                         child: const ChoiceButton(
                             width: 80,
@@ -117,4 +125,36 @@ class SwipeScreen extends StatelessWidget {
       },
     );
   }
+}
+
+Widget noMoreImage(BuildContext context) {
+  return Base(
+      child: Padding(
+      padding: const EdgeInsets.only(
+        top: 24.0, left: 16.0, right: 16.0, bottom: 8.0),
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Text("Pensez vous être\nà table avec ..?",
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              color: const Color(0xFFBF7366),
+              height: 1.8,
+              fontFamily: 'Adelia')),
+      SizedBox(
+        height: MediaQuery.of(context).size.height - 320,
+        width: MediaQuery.of(context).size.width,
+        child: Column(children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                image: const DecorationImage(
+                  fit: BoxFit.contain,
+                  image: AssetImage("images/swipe_no_more.png"),
+                ),
+              ),
+            ),
+          ),
+        ]),
+      )
+    ]),
+  ));
 }

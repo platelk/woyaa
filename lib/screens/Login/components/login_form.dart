@@ -16,6 +16,7 @@ class LoginForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            autofocus: true,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             textAlign: TextAlign.center,
