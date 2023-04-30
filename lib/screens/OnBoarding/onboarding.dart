@@ -81,7 +81,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                       side:
                                       const BorderSide(color: Color(0xFFE8D1C5))))),
                         child: Padding(
-                          padding: const EdgeInsets.only(top : 16.0, bottom: 16.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Text(
                             "Suivant",
                             style:  Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
@@ -89,6 +89,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ),
                       ),
                   ),
+                 const Padding(padding: EdgeInsets.all(16.0)),
                 ],
               ),
             ),

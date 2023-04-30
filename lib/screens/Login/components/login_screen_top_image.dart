@@ -19,9 +19,7 @@ class LoginScreenTopImage extends StatelessWidget {
               (Responsive.isMobile(context))? const Spacer(flex: 3) : const Spacer(flex: 2),
               Expanded(
                 flex: 14,
-                  child: Image.asset(
-                    "images/login_welcome_background.png",
-                  ),
+                  child: Image.asset("images/login_welcome_background.png"),
                 ),
               const Spacer(flex: 1),
             ],

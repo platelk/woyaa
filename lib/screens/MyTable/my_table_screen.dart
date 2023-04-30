@@ -8,6 +8,18 @@ import '../../blocs/me/me_bloc.dart';
 import '../../blocs/tables/tables_bloc.dart';
 import '../../models/user.dart';
 
+Map<String,String> description ={
+  "Amsterdam" : "Voyage pour notre\npremier anniversaire",
+  "Berlin" : "Ses kebabs et ses boites\n de nuits sélectives",
+  "Valence" : "Entrée dans l’arène\npour un échange de clefs.",
+  "Bali" : "Partir à l'autre bout de la planète\nvoir les tortues sous l'eau.",
+  "Paris" : "Là où tout à commencé\net tout continue.",
+  "Dubrovnik" : "Pouple, pekka,\npiscine et les copains",
+  "Tel Aviv" : "Quatre ans ensemble,\net 31 pitas.",
+  "Rovaniemi" : "La demande en mariage\nsous les aurores boréales",
+  "Londres" : "Départ surprise organisé par Ana."
+};
+
 class MyTableScreen extends StatelessWidget {
   const MyTableScreen({super.key});
 
@@ -42,14 +54,15 @@ class MyTableScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(24.0),
                     child: Text(meState.me.tableName,
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge!
                             .copyWith(color: kBackgroundColor, fontFamily: 'Adelia')),
                   ),
-                  Text("Voyage de nos 1an de relation",
+                    Text(description[meState.me.tableName] ?? "",
+                      textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
@@ -61,7 +74,7 @@ class MyTableScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 180.0),
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height - 200,
+                  height: MediaQuery.of(context).size.height - 355,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                       physics: const ScrollPhysics(),
@@ -108,12 +121,16 @@ class TableGuest extends StatelessWidget {
           backgroundImage: NetworkImage(user.roundPicture),
         ),
         const Spacer(),
-        Text(
-          user.name,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+        Expanded(
+          flex: 6,
+          child: Text(
+            user.name,
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
         const Spacer(
           flex: 2,

@@ -59,36 +59,76 @@ class SwipeScreen extends StatelessWidget {
                                     fontFamily: 'Adelia')),
                       ]),
                 ),
-                Draggable(
-                    feedback: UserCard(user: state.users.first),
-                    childWhenDragging: state.users.length > 1
-                        ? UserCard(user: state.users.elementAt(1))
-                        : null,
-                    child: UserCard(user: state.users.first),
-                    onDragEnd: (drag) {
-                      if (drag.velocity.pixelsPerSecond.dx < 0) {
-                        context
-                            .read<SwipeBloc>()
-                            .add(SwipeLeftEvent(token: state.token, user: state.users.first));
-                      } else {
-                        context
-                            .read<SwipeBloc>()
-                            .add(SwipeRightEvent(token: state.token, user: state.users.first));
-                      }
-                    }),
+                Stack(children: [
+                  Draggable<int>(
+                      data: 1,
+                      feedback: UserCard(user: state.users.first),
+                      childWhenDragging: state.users.length > 1
+                          ? UserCard(user: state.users.elementAt(1))
+                          : null,
+                      child: UserCard(user: state.users.first),
+                      /*onDragEnd: (drag) {
+                        if (drag.velocity.pixelsPerSecond.dx < 0) {
+                          context.read<SwipeBloc>().add(SwipeLeftEvent(
+                              token: state.token, user: state.users.first));
+                        } else {
+                          context.read<SwipeBloc>().add(SwipeRightEvent(
+                              token: state.token, user: state.users.first));
+                        }
+                      }*/),
+                  Positioned(
+                    top: -1,
+                    left: -1,
+                    child: DragTarget<int>(
+                      builder: (
+                      BuildContext context,
+                      List<dynamic> accepted,
+                      List<dynamic> rejected,
+                    ) {
+                      return Container(
+                        height: 500.0,
+                        width: 125.0,
+                        color: Colors.transparent,
+                      );
+                    },
+                      onAccept: (int data){
+                      context.read<SwipeBloc>().add(SwipeLeftEvent(
+                              token: state.token, user: state.users.first));
+                        },
+                    ),
+                  ),
+                  Positioned(
+                    top: -1,
+                    right: -1,
+                    child: DragTarget<int>(builder: (
+                      BuildContext context,
+                      List<dynamic> accepted,
+                      List<dynamic> rejected,
+                    ) {
+                      return Container(
+                        height: 500.0,
+                        width: 125.0,
+                        color: Colors.transparent,
+                      );
+                    },
+                      onAccept: (_){
+                      context.read<SwipeBloc>().add(SwipeRightEvent(
+                              token: state.token, user: state.users.first));
+                        },
+                    ),
+                  ),
+                ]),
+                const Spacer(),
                 Container(
                   alignment: Alignment.bottomCenter,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Spacer(
-                        flex: 2,
-                      ),
+                      const Spacer(flex: 2),
                       InkWell(
                         onTap: () {
-                          context
-                            .read<SwipeBloc>()
-                            .add(SwipeLeftEvent(token: state.token, user: state.users.first));
+                          context.read<SwipeBloc>().add(SwipeLeftEvent(
+                              token: state.token, user: state.users.first));
                         },
                         child: const ChoiceButton(
                             width: 80,
@@ -101,9 +141,8 @@ class SwipeScreen extends StatelessWidget {
                       InkWell(
                         highlightColor: Colors.black,
                         onTap: () {
-                          context
-                            .read<SwipeBloc>()
-                            .add(SwipeRightEvent(token: state.token, user: state.users.first));
+                          context.read<SwipeBloc>().add(SwipeRightEvent(
+                              token: state.token, user: state.users.first));
                         },
                         child: const ChoiceButton(
                             width: 80,
@@ -112,12 +151,11 @@ class SwipeScreen extends StatelessWidget {
                             color: Colors.red,
                             icon: "images/pouce1.png"),
                       ),
-                      const Spacer(
-                        flex: 2,
-                      ),
+                      const Spacer(flex: 2),
                     ],
                   ),
                 ),
+                const Spacer(),
               ],
             ),
           ),
@@ -130,9 +168,9 @@ class SwipeScreen extends StatelessWidget {
 Widget noMoreImage(BuildContext context) {
   return Base(
       child: Padding(
-      padding: const EdgeInsets.only(
-        top: 24.0, left: 16.0, right: 16.0, bottom: 8.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+    padding:
+        const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0, bottom: 8.0),
+    child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
       Text("Pensez vous être\nà table avec ..?",
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
               color: const Color(0xFFBF7366),

@@ -4,7 +4,7 @@ import 'package:flutter_svg/avd.dart';
 import '../models/table.dart';
 import '../models/user.dart';
 
-const baseApiURL = "http://192.168.86.249:8080";
+const baseApiURL = "https://anaxyoann.fr/";
 
 final apiHttpClient = Dio(); // With default `Options`.
 
