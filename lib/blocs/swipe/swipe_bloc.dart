@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/gestures.dart';
-import 'package:woyaa/api/api.dart';
 
+import '../../api/api.dart';
 import '../../models/user.dart';
 import '../../../constants.dart';
 import 'package:flutter/material.dart';

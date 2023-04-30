@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:woyaa/api/api.dart';
 
+import '../../api/api.dart';
 import '../../models/user.dart';
 import '../authentication/authentication_bloc.dart';
 
@@ -51,7 +51,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (state is! UserInitialized) {
       return;
     }
-    print("on user loaded: $event");
     var s = state as UserInitialized;
     emit.call(UserInitialized(token: s.token, users: Map.from(s.users)..[event.user.id] = event.user));
   }

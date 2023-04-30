@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:woyaa/api/api.dart';
 import 'package:woyaa/blocs/authentication/authentication_bloc.dart';
 import 'package:woyaa/blocs/me/me_bloc.dart';
 import 'package:woyaa/blocs/survey/survey_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:woyaa/constants.dart';
 import 'package:woyaa/main_theme.dart';
 import 'package:woyaa/welcome_theme.dart';
 
+import 'api/api.dart';
 import 'blocs/tables/tables_bloc.dart';
 
 void main() => runApp(const MyApp());

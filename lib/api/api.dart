@@ -12,7 +12,7 @@ var accessToken = "";
 
 void configureDio() {
   // Set default configs
-  apiHttpClient.options.baseUrl = baseApiURL;
+  // apiHttpClient.options.baseUrl = baseApiURL;
   apiHttpClient.options.connectTimeout = const Duration(seconds: 5);
   apiHttpClient.options.receiveTimeout = const Duration(seconds: 3);
 }

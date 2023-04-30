@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:woyaa/api/api.dart';
 
+import '../../api/api.dart';
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
@@ -25,7 +25,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   void _onLoggedInEvent(LoggedInEvent event, Emitter<AuthenticationState> emit) {
-    print("loaded state");
     emit.call(LoggedInState(token: event.token));
   }
 }

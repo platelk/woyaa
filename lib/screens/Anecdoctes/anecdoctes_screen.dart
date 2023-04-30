@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:woyaa/blocs/survey/survey_bloc.dart';
@@ -91,7 +93,7 @@ class AnecdotesScreen extends StatelessWidget {
                                 textAlign: TextAlign.center),
                           )),
                       Expanded(
-                        child: AnswersForm(key: Key(question.question), question: question, users: userState.users.values.toList()),
+                        child: SingleChildScrollView(child: AnswersForm(key: Key(question.question), question: question, users: userState.users.values.toList())),
                       ),
                     ]),
                   ),
@@ -225,6 +227,7 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
 
   @override
   void initState() {
+    print("init state user auto complete");
     super.initState();
     autocompleteField = Autocomplete<User>(
       initialValue: TextEditingValue(text: selectUser?.name ?? ""),
@@ -239,6 +242,7 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
               return null;
             },
             onChanged: (value) {
+              print("on change");
               if (value != selectUser?.name) {
                 setState(() {
                   selectUser = null;
@@ -246,7 +250,7 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
               }
             },
             onTap: () {
-              fieldTextEditingController.text = selectUser?.name ?? "";
+              print("on Tap user auto complete");
               widget.onChanged();
             },
             decoration: const InputDecoration(
@@ -262,9 +266,12 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
       },
       displayStringForOption: (option) => option.name,
       optionsBuilder: (TextEditingValue textEditingValue) {
+        print("on option builder");
         if (textEditingValue.text == '') {
+          print("on option builder > no option");
           return const Iterable<User>.empty();
         }
+        print("on option builder > users");
         return widget.users.where((User user) {
           return user.name
               .toLowerCase()
@@ -275,25 +282,31 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
         debugPrint('You just selected $selection');
         selectUser = selection;
         widget.onChanged();
+        print("on selected");
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<User> onSelected, Iterable<User> options) {
+        print("on option View Builder");
         return Align(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.topLeft,
           child: Material(
             child: Container(
-              width: 300,
-              height: 50.0 * options.length,
+              width: min(300, MediaQuery.of(context).size.width),
+              height: max(50.0 * options.length, MediaQuery.of(context).size.height),
               color: const Color(0xFFF7F3F0),
               child: ListView.builder(
-                padding: const EdgeInsets.all(10.0),
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(5.0),
                 itemCount: options.length,
                 itemBuilder: (BuildContext context, int index) {
+                  print("on itemBuilder listView");
                   final User option = options.elementAt(index);
 
                   return GestureDetector(
                     onTap: () {
+                      print("on Tap gesture detector");
                       onSelected(option);
+                      print("on Tap selected gesture detector");
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
@@ -330,6 +343,7 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
 
   @override
   Widget build(BuildContext context) {
+    print("build auto complele");
     return autocompleteField;
   }
 }
