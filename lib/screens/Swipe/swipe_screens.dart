@@ -30,13 +30,6 @@ class SwipeScreen extends StatelessWidget {
         }
         if (state.users.isEmpty) {
           return noMoreImage(context);
-          /*Base(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              
-              Image.asset("images/swipe_no_more.png"),
-            ));*/
         }
         return Base(
           child: Padding(
