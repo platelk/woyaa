@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 
@@ -11,14 +12,10 @@ import (
 
 const v1userPath = "/api/v1/user"
 
-func (b *Builder) V1User(getUser usecase.GetUserUseCase) *Builder {
+func (b *Builder) V1GetUser(getUser usecase.GetUserUseCase) *Builder {
 	b.e.GET(v1userPath, v1UserHandler(getUser), b.authzMiddleware)
 
 	return b
-}
-
-type userReq struct {
-	ID int `json:"id"`
 }
 
 type userResp struct {
@@ -27,12 +24,11 @@ type userResp struct {
 
 func v1UserHandler(getUser usecase.GetUserUseCase) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var req userReq
-		err := c.Bind(&req)
+		userID, err := strconv.Atoi(c.QueryParam("id"))
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, nil)
+			return c.String(http.StatusBadRequest, "can't parse provided id")
 		}
-		id := req.ID
+		id := userID
 		if id == 0 {
 			return c.NoContent(http.StatusBadRequest)
 		}

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:woyaa/components/base.dart';
 import 'package:woyaa/constants.dart';
 import 'package:woyaa/tables_theme.dart';
 
 
+import '../../blocs/users/user_bloc.dart';
 import '../../models/user.dart';
 
 class TableScreen extends StatelessWidget {
@@ -11,7 +13,14 @@ class TableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-return Theme(
+return BlocBuilder<UserBloc, UserState>(
+  builder: (context, state) {
+    if (state is! UserInitialized) {
+      return Theme(
+          data: tablesTheme(),
+          child: const Base(child: Text("loading.."),));
+    }
+    return Theme(
       data: tablesTheme(),
       child: Base(
         child: Stack(
@@ -42,13 +51,14 @@ return Theme(
                   child: GridView.count(
                       physics: const ScrollPhysics(),
                       shrinkWrap: true,
+                      childAspectRatio: (1 / 1.2),
                       scrollDirection: Axis.vertical,
-                      crossAxisCount: 4,
+                      crossAxisCount: 3,
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
                       // Generate 100 widgets that display their index in the List.
-                      children: List.generate(100, (index) {
-                      return TableGuest(user: User.users[0]);
+                      children: List.generate(state.users.length, (index) {
+                      return TableGuest(user: state.users.values.elementAt(index));
                    })),
                 ),
               ),
@@ -57,6 +67,8 @@ return Theme(
         ),
       ),
     );
+  },
+);
   }
 }
 
@@ -67,13 +79,21 @@ class TableGuest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          backgroundImage: NetworkImage(user.imageUrls[0]),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 150,
+        width: 100,
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 45,
+              backgroundImage: NetworkImage(user.roundPicture),
+            ),
+            Center(child: Text(user.name, textAlign: TextAlign.center,)),
+          ],
         ),
-        Center(child: Text(user.name, textAlign: TextAlign.center,)),
-      ],
+      ),
     );
   }
 }

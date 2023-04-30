@@ -25,7 +25,7 @@ class Base extends StatelessWidget {
           children: [
             SizedBox(
               width: Responsive.isDesktop(context) ? 800 : double.infinity,
-              height: MediaQuery.of(context).size.height - appBar.preferredSize.height,
+              height: MediaQuery.of(context).size.height - (showAppBar ? appBar.preferredSize.height : 0),
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[

@@ -60,20 +60,20 @@ class SwipeScreen extends StatelessWidget {
                       ]),
                 ),
                 Draggable(
-                    feedback: UserCard(user: state.users[0]),
+                    feedback: UserCard(user: state.users.first),
                     childWhenDragging: state.users.length > 1
-                        ? UserCard(user: state.users[1])
+                        ? UserCard(user: state.users.elementAt(1))
                         : null,
-                    child: UserCard(user: state.users[0]),
+                    child: UserCard(user: state.users.first),
                     onDragEnd: (drag) {
                       if (drag.velocity.pixelsPerSecond.dx < 0) {
                         context
                             .read<SwipeBloc>()
-                            .add(SwipeLeftEvent(user: state.users[0]));
+                            .add(SwipeLeftEvent(token: state.token, user: state.users.first));
                       } else {
                         context
                             .read<SwipeBloc>()
-                            .add(SwipeRightEvent(user: state.users[0]));
+                            .add(SwipeRightEvent(token: state.token, user: state.users.first));
                       }
                     }),
                 Container(
@@ -87,8 +87,8 @@ class SwipeScreen extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           context
-                              .read<SwipeBloc>()
-                              .add(SwipeLeftEvent(user: state.users[0]));
+                            .read<SwipeBloc>()
+                            .add(SwipeLeftEvent(token: state.token, user: state.users.first));
                         },
                         child: const ChoiceButton(
                             width: 80,
@@ -102,8 +102,8 @@ class SwipeScreen extends StatelessWidget {
                         highlightColor: Colors.black,
                         onTap: () {
                           context
-                              .read<SwipeBloc>()
-                              .add(SwipeRightEvent(user: state.users[0]));
+                            .read<SwipeBloc>()
+                            .add(SwipeRightEvent(token: state.token, user: state.users.first));
                         },
                         child: const ChoiceButton(
                             width: 80,

@@ -11,7 +11,7 @@ import (
 
 const v1userMePath = "/api/v1/user/me"
 
-func (b *Builder) V1UserMe(getMyUser usecase.GetMyUserUseCase) *Builder {
+func (b *Builder) V1GetUserMe(getMyUser usecase.GetMyUserUseCase) *Builder {
 	b.e.GET(v1userMePath, v1UserMeHandler(getMyUser), b.authzMiddleware)
 
 	return b

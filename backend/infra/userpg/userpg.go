@@ -33,10 +33,19 @@ type Swipes struct {
 	SwipedAt time.Time `ksql:"swiped_at,timeNowUTC"`
 }
 
+type Scores struct {
+	ID      int       `ksql:"id"`
+	UserID  int       `ksql:"user_id"`
+	Value   int       `ksql:"score_value"`
+	Reason  string    `ksql:"reason"`
+	ScoreAt time.Time `ksql:"score_at,timeNowUTC"`
+}
+
 // UsersTable informs KSQL the name of the table and that it can
 // use the default value for the primary key column name: "id"
 var UsersTable = ksql.NewTable("users")
 var SwipesTable = ksql.NewTable("swipes")
+var ScoresTable = ksql.NewTable("scores")
 
 type DB struct {
 	ksql.DB
@@ -58,6 +67,10 @@ func (upg *DB) CreateTables(ctx context.Context) error {
 		return err
 	}
 	err = upg.CreateSwipeTable(ctx)
+	if err != nil {
+		return err
+	}
+	err = upg.CreateScoreTable(ctx)
 	if err != nil {
 		return err
 	}
@@ -103,6 +116,24 @@ func (upg *DB) CreateSwipeTable(ctx context.Context) error {
 	return nil
 }
 
+func (upg *DB) CreateScoreTable(ctx context.Context) error {
+	_, err := upg.Exec(ctx, `CREATE TABLE IF NOT EXISTS scores (
+    	  	id SERIAL PRIMARY KEY,
+	  	user_id INTEGER,
+		score_value INTEGER,
+		reason TEXT,
+		score_at TIMESTAMP
+	)`)
+	if err != nil {
+		return fmt.Errorf("can't create table swipes: %w", err)
+	}
+	_, err = upg.Exec(ctx, `CREATE INDEX IF NOT EXISTS score_user ON scores (user_id)`)
+	if err != nil {
+		return fmt.Errorf("can't create index swiped_users: %w", err)
+	}
+	return nil
+}
+
 func (upg *DB) DropTables(ctx context.Context) error {
 	_, err := upg.Exec(ctx, "DROP TABLE IF EXISTS users")
 	if err != nil {
@@ -111,6 +142,10 @@ func (upg *DB) DropTables(ctx context.Context) error {
 	_, err = upg.Exec(ctx, "DROP TABLE IF EXISTS swipes")
 	if err != nil {
 		return fmt.Errorf("can't drop table swipes: %w", err)
+	}
+	_, err = upg.Exec(ctx, "DROP TABLE IF EXISTS scores")
+	if err != nil {
+		return fmt.Errorf("can't drop table scores: %w", err)
 	}
 	return nil
 }

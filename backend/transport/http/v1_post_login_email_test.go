@@ -11,7 +11,7 @@ import (
 )
 
 func TestBuilder_V1EmailLogin_bad_format(t *testing.T) {
-	s := NewBuilder().V1EmailLogin(nil).Build()
+	s := NewBuilder().V1PostEmailLogin(nil).Build()
 
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/login/email", strings.NewReader(`plop"`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMETextHTML)
@@ -22,7 +22,7 @@ func TestBuilder_V1EmailLogin_bad_format(t *testing.T) {
 }
 
 func TestBuilder_V1EmailLogin_empty_email(t *testing.T) {
-	s := NewBuilder().V1EmailLogin(nil).Build()
+	s := NewBuilder().V1PostEmailLogin(nil).Build()
 
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/login/email", strings.NewReader(`{"email": ""}"`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -33,7 +33,7 @@ func TestBuilder_V1EmailLogin_empty_email(t *testing.T) {
 }
 
 func TestBuilder_V1EmailLogin(t *testing.T) {
-	s := NewBuilder().V1EmailLogin(nil).Build()
+	s := NewBuilder().V1PostEmailLogin(nil).Build()
 
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/login/email", strings.NewReader(`{"email": "test@test.com"}"`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)

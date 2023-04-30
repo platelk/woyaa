@@ -7,29 +7,61 @@ abstract class SwipeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadUsersEvent extends SwipeEvent {
-  final List<User> users;
+class LoadSwipeListEvent extends SwipeEvent {
+  final String token;
 
-  const LoadUsersEvent({required this.users});
+  const LoadSwipeListEvent({required this.token});
 
   @override
-  List<Object> get props => [users];
+  List<Object> get props => [token];
+}
+
+class LoadingUserEvent extends SwipeEvent {
+  final String token;
+  final SwipeList swipeList;
+
+  const LoadingUserEvent({required this.token, required this.swipeList});
+
+  @override
+  List<Object> get props => [token, swipeList];
+}
+
+class SwipeUserRetrievedEvent extends SwipeEvent {
+  final String token;
+  final User user;
+
+  const SwipeUserRetrievedEvent({required this.token, required this.user});
+
+  @override
+  List<Object> get props => [token, user];
+}
+
+class UserLoadedEvent extends SwipeEvent {
+  final String token;
+  final List<User> users;
+
+  const UserLoadedEvent({required this.token, required this.users});
+
+  @override
+  List<Object> get props => [token, users];
 }
 
 class SwipeLeftEvent extends SwipeEvent {
+  final String token;
   final User user;
 
-  const SwipeLeftEvent({required this.user});
+  const SwipeLeftEvent({required this.token, required this.user});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [token, user];
 }
 
 class SwipeRightEvent extends SwipeEvent {
+  final String token;
   final User user;
 
-  const SwipeRightEvent({required this.user});
+  const SwipeRightEvent({required this.token, required this.user});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [token, user];
 }

@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
+  namespace: woyaa
   labels:
     app: postgres
 data:
@@ -14,11 +15,12 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: postgres-pv-volume  # Sets PV's name
+  namespace: woyaa
   labels:
     type: local  # Sets PV's type to local
     app: postgres
 spec:
-  storageClassName: manual
+  storageClassName: longhorn
   capacity:
     storage: 5Gi # Sets PV Volume
   accessModes:
@@ -30,10 +32,11 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: postgres-pv-claim  # Sets name of PVC
+  namespace: woyaa
   labels:
     app: postgres
 spec:
-  storageClassName: manual
+  storageClassName: longhorn
   accessModes:
     - ReadWriteMany  # Sets read and write access
   resources:
@@ -44,6 +47,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres  # Sets Deployment name
+  namespace: woyaa
 spec:
   replicas: 1
   selector:
@@ -74,6 +78,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: woyaa
   name: postgres # Sets service name
   labels:
     app: postgres # Labels and Selectors

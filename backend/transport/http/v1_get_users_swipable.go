@@ -11,26 +11,27 @@ import (
 
 const v1userSwipablePath = "/api/v1/user/swipable"
 
-func (b *Builder) V1UserSwipable(getSwipableUser usecase.GetSwipableUserUseCase) *Builder {
+func (b *Builder) V1GetUserSwipable(getSwipableUser usecase.GetSwipableUser) *Builder {
 	b.e.GET(v1userSwipablePath, v1UserSwipableHandler(getSwipableUser), b.authzMiddleware)
 
 	return b
 }
 
 type userSwipableResp struct {
-	Users []domain.UserID `json:"users"`
+	Users       []domain.UserID `json:"users"`
+	SwipedUsers []domain.UserID `json:"swiped_users"`
 }
 
-func v1UserSwipableHandler(getSwipableUser usecase.GetSwipableUserUseCase) echo.HandlerFunc {
+func v1UserSwipableHandler(getSwipableUser usecase.GetSwipableUser) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id := GetUserID(c)
 		if id == 0 {
 			return c.NoContent(http.StatusBadRequest)
 		}
-		resp, err := getSwipableUser(c.Request().Context(), &usecase.GetSwipableUserReq{UserID: domain.UserID(id)})
+		resp, err := getSwipableUser(c.Request().Context(), &usecase.GetSwipableUserReq{UserID: id})
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}
-		return c.JSON(http.StatusOK, userSwipableResp{Users: resp.Users})
+		return c.JSON(http.StatusOK, userSwipableResp{Users: resp.Users, SwipedUsers: resp.SwipedUsers})
 	}
 }

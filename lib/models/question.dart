@@ -2,35 +2,31 @@ import 'package:equatable/equatable.dart';
 
 class Question extends Equatable {
   final int id;
-  final String title;
-  final String body;
-  final String image;
+  final String question;
+  final List<String> images;
   final int answers;
 
   const Question({
     required this.id,
-    required this.image,
-    required this.title,
-    required this.body,
+    required this.images,
+    required this.question,
     required this.answers
   });
 
   @override
-  List<Object?> get props => [id, title, image, body, answers];
+  List<Object?> get props => [id,  images, question, answers];
 
   static List<Question> questions = [
     const Question(
         id: 0,
-        image: "",
-        title: "Yoann a Epitech",
-        body: "Quelle est le pseudo donner a Yoann par les personnes d'epitech",
-        answers: 2,
+        images: [""],
+        question: "Avec qui Yoann est parti aux Etats-Unis pendant son année à l'étranger ?",
+        answers: 5,
     ),
     const Question(
       id: 1,
-      image: "",
-      title: "Ana",
-      body: "Quelle est la nationnalite d'origine d'Ana",
+      images: [""],
+      question: "Avec qui Yoann s'est trompé d'aéroport au moment de prendre un vol ?",
       answers: 1,
     ),
   ];

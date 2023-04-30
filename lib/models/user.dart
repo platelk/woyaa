@@ -1,29 +1,37 @@
 import 'package:equatable/equatable.dart';
+import 'package:woyaa/models/room.dart';
+import 'package:woyaa/models/table.dart';
 
 class User extends Equatable {
   final int id;
-  final String name;
-  final int age;
-  final List<String> imageUrls;
-  final String bio;
-  final String jobTitle;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final int score;
+  final Room room;
+  final String tableName;
+  final String fullPicture;
+  final String roundPicture;
 
-  const User(
-      {required this.id,
-      required this.name,
-      required this.age,
-      required this.imageUrls,
-      required this.bio,
-      required this.jobTitle});
+  const User({required this.id, required this.firstName, required this.lastName, required this.email, required this.score, required this.room, required this.tableName, required this.fullPicture, required this.roundPicture});
+
+  static User fromDynamic(dynamic data) {
+    return User(id: data["id"], firstName: data["first_name"], lastName: data["last_name"], email: data["email"], score: data["score"], room: Room(number: data["room"]), tableName: data["wedding_table"], fullPicture: "/assets${data["full_picture_path"]}", roundPicture: "/assets${data["round_picture_path"]}");
+  }
+
+  static User get unknown {
+    return const User(id: 0, firstName: "inconnue", lastName: "", email: "", score: 0, room: Room(number: -1), tableName: "", fullPicture: "", roundPicture: "");
+  }
 
   @override
-  List<Object?> get props => [id, name, age, imageUrls, bio, jobTitle];
+  List<Object?> get props => [id];
 
-  static List<User> users = [
-    const User(id: 1, name: "Yoann Deshaies", age: 31, imageUrls: ["assets/images/profiles/profile_pic_yoann.png"], bio: "bio", jobTitle: "jobTitle"),
-    const User(id: 1, name: "PLATEL Kevin", age: 29, imageUrls: ["assets/images/profiles/profile_pic_kevin.jpg"], bio: "bio", jobTitle: "jobTitle"),
-    const User(id: 1, name: "Yoann Deshaies", age: 31, imageUrls: ["assets/images/profiles/test_frodon.png"], bio: "bio", jobTitle: "jobTitle"),
-    const User(id: 2, name: "Zulgar", age: 31, imageUrls: ["assets/images/profiles/profile_pic_zulgar.jpg"], bio: "bio", jobTitle: "jobTitle"),
-    const User(id: 1, name: "Yoann Deshaies", age: 31, imageUrls: ["assets/images/profiles/test_frodon.png"], bio: "bio", jobTitle: "jobTitle"),
-  ];
+  static List<User> users = [];
+
+  String get name => "$firstName $lastName";
+
+  @override
+  String toString() {
+    return name;
+  }
 }

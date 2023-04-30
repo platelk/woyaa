@@ -2,11 +2,11 @@
     "name": "woyaa",
     "short_name": "woyaa",
     "start_url": ".",
-    "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "display": "fullscreen",
+    "background_color": "#BF7366",
+    "theme_color": "#BF7366",
+    "description": "Ana X Yoann",
+    "orientation": "portrait",
     "prefer_related_applications": false,
     "icons": [
         {
