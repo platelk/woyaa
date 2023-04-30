@@ -43,12 +43,17 @@ class LoginForm extends StatelessWidget {
                 textInputAction: TextInputAction.next,
                 textAlign: TextAlign.center,
                 cursorColor: Theme.of(context).primaryColor,
+                style: const TextStyle(color: kWelcomePrimaryColor),
                 decoration: const InputDecoration(
                   hintText: "Votre mail",
                   hintStyle: TextStyle(
                       color: kWelcomePrimaryColor, fontWeight: FontWeight.bold),
                   enabled: true,
                   enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                    borderSide: BorderSide(color: kWelcomePrimaryColor),
+                  ),
+                  focusedBorder : OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
                     borderSide: BorderSide(color: kWelcomePrimaryColor),
                   ),

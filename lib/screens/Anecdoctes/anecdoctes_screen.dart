@@ -64,13 +64,13 @@ class AnecdotesScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(20.0),
                         child: Row(
                           children: [
-                            Spacer(),
+                            const Spacer(),
                             for (var image in question.images)
                               CircleAvatar(
                                 radius: 35,
                                 backgroundImage: NetworkImage(image),
                               ),
-                            Spacer(),
+                            const Spacer(),
                           ],
                         ),
                       ),
@@ -90,6 +90,7 @@ class AnecdotesScreen extends StatelessWidget {
                                     .copyWith(color: const Color(0xFF293D84)),
                                 textAlign: TextAlign.center),
                           )),
+                      const Padding(padding: EdgeInsets.all(12.0)),
                       Expanded(
                         child: AnswersForm(key: Key(question.question), question: question, users: userState.users.values.toList()),
                       ),
@@ -159,6 +160,7 @@ class _AnswersFormState extends State<AnswersForm> {
             child: Column(
               children: [
                 ...autoCompleteField,
+                const Spacer(),
                 Row(
                   children: [
                     const Spacer(),
@@ -187,7 +189,7 @@ class _AnswersFormState extends State<AnswersForm> {
                                       side: BorderSide(
                                           color: isDisable ? kTablesBackgroundColor : const Color(0xFFE8D1C5)))),
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(24.0),
                         child: Text(
                           "Valider la reponse",
                           style: Theme.of(context)
@@ -201,6 +203,7 @@ class _AnswersFormState extends State<AnswersForm> {
                     ),
                   ],
                 ),
+              const Spacer(),
               ],
             ));
       },
@@ -233,7 +236,7 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
           FocusNode fieldFocusNode,
           VoidCallback onFieldSubmitted) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(top : 8.0, bottom: 8.0),
           child: TextFormField(
             validator: (value) {
               return null;
