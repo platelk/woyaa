@@ -19,6 +19,9 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
   }
 
   void _onSurveyAnswered(QuestionAnsweredEvent event, Emitter<SurveyState> emit) {
-
+    if (state is SurveyLoaded) {
+      print((state as SurveyLoaded).questions);
+      emit.call(SurveyLoaded(questions: List.from((state as SurveyLoaded).questions)..removeAt(event.questionID)));
+    }
   }
 }
