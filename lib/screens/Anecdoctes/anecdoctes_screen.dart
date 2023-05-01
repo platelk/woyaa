@@ -67,7 +67,7 @@ class AnecdotesScreen extends StatelessWidget {
                       SliverFillRemaining(
                         hasScrollBody: false,
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.height*1.5,
+                          height: MediaQuery.of(context).size.height * 1.5,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(children: [
@@ -88,7 +88,8 @@ class AnecdotesScreen extends StatelessWidget {
                               Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    border: Border.all(color: kPrimaryColor, width: 2),
+                                    border: Border.all(
+                                        color: kPrimaryColor, width: 2),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: Padding(
@@ -97,14 +98,15 @@ class AnecdotesScreen extends StatelessWidget {
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleLarge!
-                                            .copyWith(color: const Color(0xFF293D84)),
+                                            .copyWith(
+                                                color: const Color(0xFF293D84)),
                                         textAlign: TextAlign.center),
                                   )),
                               const Padding(padding: EdgeInsets.all(12.0)),
                               AnswersForm(
-                                          key: Key(question.question),
-                                          question: question,
-                                          users: userState.users.values.toList()),
+                                  key: Key(question.question),
+                                  question: question,
+                                  users: userState.users.values.toList()),
                             ]),
                           ),
                         ),
@@ -181,13 +183,16 @@ class _AnswersFormState extends State<AnswersForm> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ...autoCompleteField,
-                Row(
-                  children: [
-                    PassButton(widget: widget),
-                    const Spacer(),
-                    ValidateButton(
-                        isDisable: isDisable, widget: widget, values: values),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top :8.0),
+                  child: Row(
+                    children: [
+                      PassButton(widget: widget),
+                      const Spacer(),
+                      ValidateButton(
+                          isDisable: isDisable, widget: widget, values: values),
+                    ],
+                  ),
                 ),
               ],
             ));
@@ -209,8 +214,9 @@ class PassButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {
         // Validate returns true if the form is valid, or false otherwise.
-        context.read<SurveyBloc>().add(QuestionPassedEvent(
-            questionID: widget.question.id));
+        context
+            .read<SurveyBloc>()
+            .add(QuestionPassedEvent(questionID: widget.question.id));
       },
       style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
@@ -218,13 +224,10 @@ class PassButton extends StatelessWidget {
           textStyle: Theme.of(context)
               .textTheme
               .bodyLarge!
-              .copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+              .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
-              side: const BorderSide(
-                  color: kTablesBackgroundColor))),
+              side: const BorderSide(color: kTablesBackgroundColor))),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Text(
@@ -232,9 +235,7 @@ class PassButton extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
-              .copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
+              .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -270,7 +271,7 @@ class ValidateButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
           backgroundColor:
-              isDisable ? const Color(0xFFE8D1C5) : kTablesBackgroundColor,
+              isDisable ? const Color(0xFFE8D1C5) : kTrombiBackgroundColor,
           textStyle: Theme.of(context)
               .textTheme
               .bodyLarge!
@@ -279,12 +280,12 @@ class ValidateButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
               side: BorderSide(
                   color: isDisable
-                      ? kTablesBackgroundColor
+                      ? kTrombiBackgroundColor
                       : const Color(0xFFE8D1C5)))),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Text(
-          "Valider la reponse",
+          "Valider la réponse",
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
@@ -376,7 +377,8 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
         }
         return Align(
           alignment: Alignment.topLeft,
-          child: AutoCompleteSuggestion(onSelected: onSelected, options: options),
+          child:
+              AutoCompleteSuggestion(onSelected: onSelected, options: options),
         );
       },
     );
@@ -392,19 +394,15 @@ class AutoCompleteSuggestion extends StatelessWidget {
   AutocompleteOnSelected<User> onSelected;
   Iterable<User> options;
 
-  AutoCompleteSuggestion({
-    super.key,
-    required this.onSelected,
-    required this.options
-  });
+  AutoCompleteSuggestion(
+      {super.key, required this.onSelected, required this.options});
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: Container(
         width: min(500, MediaQuery.of(context).size.width),
-        height: max(
-            50.0 * options.length, MediaQuery.of(context).size.height),
+        height: max(50.0 * options.length, MediaQuery.of(context).size.height),
         color: const Color(0xFFF7F3F0),
         child: ListView.builder(
           padding: const EdgeInsets.all(5.0),
@@ -428,12 +426,9 @@ class AutoCompleteSuggestion extends StatelessWidget {
                     Expanded(
                       child: Text(
                         option.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: kTablesBackgroundColor),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: kTablesBackgroundColor),
                         textAlign: TextAlign.center,
                       ),
                     ),
