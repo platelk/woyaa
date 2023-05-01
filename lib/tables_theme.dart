@@ -15,6 +15,22 @@ ThemeData tablesTheme() {
   );
 }
 
+ThemeData trombiTheme() {
+  return ThemeData(
+    scaffoldBackgroundColor: kTrombiBackgroundColor,
+    fontFamily: "Muli",
+    appBarTheme: tablesAppBarTheme(),
+    textTheme: tablesTextTheme(),
+    inputDecorationTheme: tablesInputDecorationTheme(),
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    colorScheme: trombiColorScheme(),
+  );
+}
+
+ColorScheme trombiColorScheme() {
+  return ColorScheme.fromSeed(seedColor: kTrombiBackgroundColor, primary: kTablesPrimaryColor);
+}
+
 ColorScheme tablesColorScheme() {
   return ColorScheme.fromSeed(seedColor: kTablesBackgroundColor, primary: kTablesPrimaryColor);
 }

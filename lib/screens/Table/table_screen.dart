@@ -17,11 +17,11 @@ return BlocBuilder<UserBloc, UserState>(
   builder: (context, state) {
     if (state is! UserInitialized) {
       return Theme(
-          data: tablesTheme(),
+          data: trombiTheme(),
           child: const Base(child: Text("loading.."),));
     }
     return Theme(
-      data: tablesTheme(),
+      data: trombiTheme(),
       child: Base(
         child: Stack(
           children: [

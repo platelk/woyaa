@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:woyaa/blocs/authentication/authentication_bloc.dart';
 import 'package:woyaa/blocs/me/me_bloc.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     configureDio();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => AuthenticationBloc()),
