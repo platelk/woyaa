@@ -61,7 +61,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
-                    borderSide: BorderSide(color: kWelcomePrimaryColor),
+                    borderSide: BorderSide(color: kTrombiBackgroundColor),
                   ),
                 ),
               ),
@@ -94,7 +94,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               ),
-              const SizedBox(height: defaultPadding),
+              const Padding(padding: EdgeInsets.all(16.0)),
             ],
           ),
         );

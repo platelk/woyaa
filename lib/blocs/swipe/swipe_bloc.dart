@@ -167,7 +167,7 @@ void _winningSwipeToast() {
 
 void _winningSwipeSameTableToast() {
   Fluttertoast.showToast(
-    msg: "Bien joué il est effectivement à ta table ! Tu gagnes 5 points !",
+    msg: "Bien joué il ou elle est bien à ta table ! Tu gagnes 5 points !",
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,
     gravity: ToastGravity.TOP,
