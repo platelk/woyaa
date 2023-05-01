@@ -20,6 +20,7 @@ return BlocBuilder<UserBloc, UserState>(
           data: trombiTheme(),
           child: const Base(child: Text("loading.."),));
     }
+    var users = List<User>.from(state.users.values)..sort((a, b) => a.name.compareTo(b.name));
     return Theme(
       data: trombiTheme(),
       child: Base(
@@ -57,8 +58,8 @@ return BlocBuilder<UserBloc, UserState>(
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
                       // Generate 100 widgets that display their index in the List.
-                      children: List.generate(state.users.length, (index) {
-                      return TableGuest(user: state.users.values.elementAt(index));
+                      children: List.generate(users.length, (index) {
+                      return TableGuest(user: users.elementAt(index));
                    })),
                 ),
               ),

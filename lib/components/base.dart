@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:woyaa/components/custom_appbar.dart';
 import 'package:woyaa/components/custom_bottom_appbar.dart';
 import 'package:woyaa/responsive.dart';
@@ -18,8 +19,9 @@ class Base extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const appBar = CustomBottomAppBar();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Center(
         child: Column(
           children: [

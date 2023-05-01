@@ -46,7 +46,7 @@ func main() {
 		WebSite("./build/web").
 		DevUserPGAll(userPG).
 		V1PostEmailLogin(usecase.NewEmailLogin(credStore, userStore, tokens)).
-		V1GetUserMe(usecase.NewGetMyUserUseCase(userStore)).
+		V1GetUserMe(usecase.NewGetMyUserUseCase(userStore, scoreRegistry)).
 		V1GetUser(usecase.NewGetUserUseCase(userStore, scoreRegistry)).
 		V1GetUserSwipable(usecase.NewGetSwipableUserUseCase(userStore, swipeStore)).
 		V1PostUserSwipe(usecase.NewSwipeUserUseCase(swipeStore, userStore, scoreRegistry)).

@@ -62,44 +62,54 @@ class AnecdotesScreen extends StatelessWidget {
                               height: 300,
                               child: Image.asset("images/leaf_1.png",
                                   fit: BoxFit.scaleDown)))),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          children: [
-                            const Spacer(),
-                            for (var image in question.images)
-                               CircleAvatar(
-                                radius: 35,
-                                backgroundImage: NetworkImage(image),
+                  CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height*1.5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Row(
+                                  children: [
+                                    const Spacer(),
+                                    for (var image in question.images)
+                                      CircleAvatar(
+                                        radius: 35,
+                                        backgroundImage: NetworkImage(image),
+                                      ),
+                                    const Spacer(),
+                                  ],
+                                ),
                               ),
-                            const Spacer(),
-                          ],
+                              Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: kPrimaryColor, width: 2),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Text(question.question,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(color: const Color(0xFF293D84)),
+                                        textAlign: TextAlign.center),
+                                  )),
+                              const Padding(padding: EdgeInsets.all(12.0)),
+                              AnswersForm(
+                                          key: Key(question.question),
+                                          question: question,
+                                          users: userState.users.values.toList()),
+                            ]),
+                          ),
                         ),
                       ),
-                      Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border:
-                                Border.all(color: kPrimaryColor, width: 2),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(question.question,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(color: const Color(0xFF293D84)),
-                                textAlign: TextAlign.center),
-                          )),
-                      const Padding(padding: EdgeInsets.all(12.0)),
-                      Expanded(
-                        child: AnswersForm(key: Key(question.question), question: question, users: userState.users.values.toList()),
-                      ),
-                    ]),
+                    ],
                   ),
                 ],
               ),
@@ -138,17 +148,24 @@ class _AnswersFormState extends State<AnswersForm> {
       for (var i = 0; i < widget.question.answers; i++)
         GlobalKey<_UserAutoCompleteState>()
     ];
-    autoCompleteField = [for (var key in values)
-      UserAutoComplete(users: widget.users, key: key, onChanged: onChange,)];
+    autoCompleteField = [
+      for (var key in values)
+        UserAutoComplete(
+          users: widget.users,
+          key: key,
+          onChanged: onChange,
+        )
+    ];
   }
 
   void onChange() {
-    final areDefined = values.every((element) => element.currentState?.selectUser?.name.isNotEmpty ?? false);
-      if (areDefined == isDisable) {
-        setState(() {
-          isDisable = !areDefined;
-        });
-      }
+    final areDefined = values.every((element) =>
+        element.currentState?.selectUser?.name.isNotEmpty ?? false);
+    if (areDefined == isDisable) {
+      setState(() {
+        isDisable = !areDefined;
+      });
+    }
   }
 
   @override
@@ -161,52 +178,119 @@ class _AnswersFormState extends State<AnswersForm> {
         return Form(
             onChanged: onChange,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ...autoCompleteField,
-                const Spacer(),
                 Row(
                   children: [
+                    PassButton(widget: widget),
                     const Spacer(),
-                    ElevatedButton(
-                      onPressed: isDisable ? null : () {
-                        // Validate returns true if the form is valid, or false otherwise.
-                          context
-                              .read<SurveyBloc>()
-                              .add(QuestionAnsweredEvent(questionID: widget.question.id, answerID: 0, userID: [for (var k in values) k.currentState!.selectUser!.id]));
-                      },
-                      style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: isDisable ? const Color(0xFFE8D1C5) : kTablesBackgroundColor,
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                          shape:
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      side: BorderSide(
-                                          color: isDisable ? kTablesBackgroundColor : const Color(0xFFE8D1C5)))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Text(
-                          "Valider la reponse",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
+                    ValidateButton(
+                        isDisable: isDisable, widget: widget, values: values),
                   ],
                 ),
-              const Spacer(),
               ],
             ));
       },
+    );
+  }
+}
+
+class PassButton extends StatelessWidget {
+  const PassButton({
+    super.key,
+    required this.widget,
+  });
+
+  final AnswersForm widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // Validate returns true if the form is valid, or false otherwise.
+        context.read<SurveyBloc>().add(QuestionPassedEvent(
+            questionID: widget.question.id));
+      },
+      style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: const Color(0xFFE8D1C5),
+          textStyle: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              side: const BorderSide(
+                  color: kTablesBackgroundColor))),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Text(
+          "Passer",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
+
+class ValidateButton extends StatelessWidget {
+  const ValidateButton({
+    super.key,
+    required this.isDisable,
+    required this.widget,
+    required this.values,
+  });
+
+  final bool isDisable;
+  final AnswersForm widget;
+  final List<GlobalKey<_UserAutoCompleteState>> values;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: isDisable
+          ? null
+          : () {
+              // Validate returns true if the form is valid, or false otherwise.
+              context.read<SurveyBloc>().add(QuestionAnsweredEvent(
+                      questionID: widget.question.id,
+                      answerID: 0,
+                      userID: [
+                        for (var k in values) k.currentState!.selectUser!.id
+                      ]));
+            },
+      style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor:
+              isDisable ? const Color(0xFFE8D1C5) : kTablesBackgroundColor,
+          textStyle: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              side: BorderSide(
+                  color: isDisable
+                      ? kTablesBackgroundColor
+                      : const Color(0xFFE8D1C5)))),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Text(
+          "Valider la reponse",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }
@@ -215,7 +299,8 @@ class UserAutoComplete extends StatefulWidget {
   final List<User> users;
   final Function onChanged;
 
-  const UserAutoComplete({super.key, required this.users, required this.onChanged});
+  const UserAutoComplete(
+      {super.key, required this.users, required this.onChanged});
 
   @override
   State<UserAutoComplete> createState() => _UserAutoCompleteState();
@@ -224,6 +309,7 @@ class UserAutoComplete extends StatefulWidget {
 class _UserAutoCompleteState extends State<UserAutoComplete> {
   User? selectUser;
   late Autocomplete<User> autocompleteField;
+  var selected = false;
 
   @override
   void initState() {
@@ -233,8 +319,8 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
           TextEditingController fieldTextEditingController,
           FocusNode fieldFocusNode,
           VoidCallback onFieldSubmitted) {
-        return Padding(
-          padding: const EdgeInsets.only(top : 8.0, bottom: 8.0),
+        var field = Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
           child: TextFormField(
             validator: (value) {
               return null;
@@ -246,6 +332,16 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
                 });
               }
             },
+            onTap: () {
+              setState(() {
+                selected = true;
+              });
+            },
+            onTapOutside: (_) {
+              setState(() {
+                selected = false;
+              });
+            },
             decoration: const InputDecoration(
                 filled: true,
                 fillColor: Color(0xFFF9F9F9),
@@ -256,6 +352,7 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         );
+        return field;
       },
       displayStringForOption: (option) => option.name,
       optionsBuilder: (TextEditingValue textEditingValue) {
@@ -279,49 +376,7 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
         }
         return Align(
           alignment: Alignment.topLeft,
-          child: Material(
-            child: Container(
-              width: min(300, MediaQuery.of(context).size.width),
-              height: max(50.0 * options.length, MediaQuery.of(context).size.height),
-              color: const Color(0xFFF7F3F0),
-              child: ListView.builder(
-                padding: const EdgeInsets.all(5.0),
-                itemCount: options.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final User option = options.elementAt(index);
-
-                  return GestureDetector(
-                    onTap: () {
-                      onSelected(option);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(option.roundPicture),
-                          ),
-                          Expanded(
-                            child: Text(
-                              option.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: kTablesBackgroundColor),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
+          child: AutoCompleteSuggestion(onSelected: onSelected, options: options),
         );
       },
     );
@@ -330,5 +385,65 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
   @override
   Widget build(BuildContext context) {
     return autocompleteField;
+  }
+}
+
+class AutoCompleteSuggestion extends StatelessWidget {
+  AutocompleteOnSelected<User> onSelected;
+  Iterable<User> options;
+
+  AutoCompleteSuggestion({
+    super.key,
+    required this.onSelected,
+    required this.options
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Container(
+        width: min(500, MediaQuery.of(context).size.width),
+        height: max(
+            50.0 * options.length, MediaQuery.of(context).size.height),
+        color: const Color(0xFFF7F3F0),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(5.0),
+          shrinkWrap: true,
+          itemCount: options.length,
+          itemBuilder: (BuildContext context, int index) {
+            final User option = options.elementAt(index);
+
+            return GestureDetector(
+              onTap: () {
+                onSelected(option);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundImage: NetworkImage(option.roundPicture),
+                    ),
+                    Expanded(
+                      child: Text(
+                        option.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: kTablesBackgroundColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
