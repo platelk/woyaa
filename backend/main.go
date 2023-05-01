@@ -53,6 +53,7 @@ func main() {
 		V1GetUserScore(usecase.NewGetUserScoreUseCase(scoreRegistry)).
 		V1GetTables(usecase.NewGetTables(tableStore)).
 		V1GetAllQuestion(usecase.NewGetAllQuestions(questionStore)).
+		V1PostUserAnswers(usecase.NewAnswerQuestion(questionStore, scoreRegistry)).
 		Build()
 
 	if err := s.Start(); err != nil {

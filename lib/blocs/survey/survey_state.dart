@@ -10,9 +10,10 @@ abstract class SurveyState extends Equatable {
 class SurveyLoading extends SurveyState {}
 
 class SurveyLoaded extends SurveyState {
+  final String token;
   final List<Question> questions;
 
-  const SurveyLoaded({required this.questions});
+  const SurveyLoaded({required this.questions, required this.token});
 
   @override
   List<Object> get props => [questions];

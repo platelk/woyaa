@@ -21,7 +21,7 @@ class Base extends StatelessWidget {
     const appBar = CustomBottomAppBar();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           children: [

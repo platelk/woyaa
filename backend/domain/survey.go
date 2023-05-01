@@ -8,11 +8,11 @@ type Question struct {
 	IsAna     bool       `json:"is_ana"`
 	IsYoann   bool       `json:"is_yoann"`
 	NbAnswers int        `json:"nb_answers"`
-	UserIDs   []UserID   `json:"user_ids,omitempty"`
+	UserIDs   UserIDs    `json:"user_ids,omitempty"`
 }
 
 type QuestionAnswer struct {
 	ID         QuestionID `json:"question_id"`
 	FromUserID UserID     `json:"from_user_id"`
-	UserIDs    []UserID   `json:"user_ids"`
+	UserIDs    UserIDs    `json:"user_ids"`
 }

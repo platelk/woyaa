@@ -275,7 +275,7 @@ func (upg *DB) ImportCSV(ctx context.Context, reader *csv.Reader) error {
 		}
 		room, _ := strconv.Atoi(record[4])
 		newUser := User{
-			ID:               id + 1,
+			ID:               id,
 			FirstName:        record[1],
 			LastName:         record[2],
 			Email:            record[3],

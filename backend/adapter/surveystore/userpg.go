@@ -32,6 +32,32 @@ func (u *UserPG) AnswerQuestion(c context.Context, answer domain.QuestionAnswer)
 	return nil
 }
 
+func (u *UserPG) GetOneQuestion(c context.Context, id domain.QuestionID) (domain.Question, error) {
+	var swp []userpg.Survey
+	err := u.db.Query(c, &swp, "select * from survey WHERE question_id = $1", id)
+	if err != nil {
+		return domain.Question{}, fmt.Errorf("can't retrieve question: %w", err)
+	}
+	var questions []domain.Question
+	var question domain.Question
+	questionID := 0
+	for _, s := range swp {
+		if s.QuestionID != questionID {
+			question.NbAnswers = len(question.UserIDs)
+			questions = append(questions, question)
+			question = domain.Question{}
+			questionID = s.QuestionID
+		}
+		question.Question = s.Question
+		question.IsAna = s.IsAna
+		question.IsYoann = s.IsYoann
+		question.UserIDs = append(question.UserIDs, domain.UserID(s.UserID))
+		question.ID = domain.QuestionID(s.QuestionID)
+	}
+	question.NbAnswers = len(question.UserIDs)
+	return question, nil
+}
+
 func (u *UserPG) GetAllQuestion(c context.Context) ([]domain.Question, error) {
 	var swp []userpg.Survey
 	err := u.db.Query(c, &swp, "select * from survey ORDER BY question_id")

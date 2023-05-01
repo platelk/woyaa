@@ -5,8 +5,10 @@ class Question extends Equatable {
   final String question;
   final List<String> images;
   final int answers;
+  List<int> validProposal = [];
+  List<int> invalidProposal = [];
 
-  const Question({
+  Question({
     required this.id,
     required this.images,
     required this.question,
@@ -26,19 +28,17 @@ class Question extends Equatable {
 
   @override
   List<Object?> get props => [id,  images, question, answers];
+}
 
-  static List<Question> questions = [
-    const Question(
-        id: 0,
-        images: ["/photos/photo_ronde/Kevin.png"],
-        question: "Avec qui Yoann est parti aux Etats-Unis pendant son année à l'étranger ?",
-        answers: 3,
-    ),
-    const Question(
-      id: 1,
-      images: ["/photos/photo_ronde/Kevin.png"],
-      question: "Avec qui Yoann s'est trompé d'aéroport au moment de prendre un vol ?",
-      answers: 1,
-    ),
-  ];
+class QuestionAnswerResult {
+  final int id;
+  final bool validated;
+  final List<int> validUserIds;
+  final List<int> notValidUserIds;
+
+  QuestionAnswerResult({required this.id, required this.validated, required this.validUserIds, required this.notValidUserIds});
+
+  static QuestionAnswerResult fromDynamic(dynamic data) {
+    return QuestionAnswerResult(id: data["question_id"], validated: data["validated"], validUserIds: List.from((data["valid_user_ids"] as List<dynamic>).map((e) => e as int)), notValidUserIds: List.from((data["not_valid_user_ids"] as List<dynamic>).map((e) => e as int)));
+  }
 }

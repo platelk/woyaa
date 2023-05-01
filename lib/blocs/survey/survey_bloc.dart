@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:woyaa/api/api.dart';
 
+import '../../constants.dart';
 import '../../models/question.dart';
 import '../authentication/authentication_bloc.dart';
 
@@ -31,11 +34,12 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
 
   void _onQuestionPassed(QuestionPassedEvent event, Emitter<SurveyState> emit) {
     if (state is SurveyLoaded) {
+      var s = state as SurveyLoaded;
       var questions = List<Question>.from((state as SurveyLoaded).questions);
       var questionIdex = questions.indexWhere((question) => question.id == event.questionID);
       var question = questions.removeAt(questionIdex);
       questions.add(question);
-      emit.call(SurveyLoaded(questions: questions));
+      emit.call(SurveyLoaded(token: s.token, questions: questions));
     }
   }
 
@@ -46,13 +50,55 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
   }
 
   void _onSurveyLoaded(LoadQuestionEvent event, Emitter<SurveyState> emit) {
-    emit.call(SurveyLoaded(questions: event.questions));
+    emit.call(SurveyLoaded(token: event.token, questions: event.questions));
   }
 
   void _onSurveyAnswered(QuestionAnsweredEvent event, Emitter<SurveyState> emit) {
     if (state is SurveyLoaded) {
-      print((state as SurveyLoaded).questions);
-      emit.call(SurveyLoaded(questions: List.from((state as SurveyLoaded).questions)..removeWhere((question) => question.id == event.questionID)));
+      var s = state as SurveyLoaded;
+      AnswerQuestion(s.token, event.questionID, event.userID).then((value) {
+        if (value.validated) {
+          _winningQuestionToast();
+          emit.call(SurveyLoaded(questions: List.from((state as SurveyLoaded).questions)..removeWhere((question) => question.id == event.questionID), token: s.token));
+        } else {
+          _losingQuestionToast();
+          var questions = List<Question>.from((state as SurveyLoaded).questions);
+          var idx = questions.indexWhere((question) => question.id == event.questionID);
+          questions[idx].validProposal = value.validUserIds;
+          questions[idx].invalidProposal = value.notValidUserIds;
+          emit.call(SurveyLoaded(questions: questions, token: s.token));
+        }
+
+      });
     }
   }
+}
+
+
+void _winningQuestionToast() {
+  Fluttertoast.showToast(
+    msg: "Bien joué il ou elle est bien à ta table ! Tu gagnes 5 points !",
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    gravity: ToastGravity.TOP,
+    webPosition: "center",
+    backgroundColor: kTablesBackgroundColor,
+    webBgColor: "#2a4368",
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
+}
+
+void _losingQuestionToast() {
+  Fluttertoast.showToast(
+    msg: "Pas de chance, c'est raté ! Tu perds 1 point !",
+    toastLength: Toast.LENGTH_SHORT,
+    timeInSecForIosWeb: 1,
+    gravity: ToastGravity.TOP,
+    webPosition: "center",
+    backgroundColor: kWelcomeBackgroundColor,
+    webBgColor: "#bf7366",
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }

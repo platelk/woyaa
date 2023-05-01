@@ -6,6 +6,12 @@ import (
 	"github.com/zyedidia/generic/set"
 )
 
+type UserIDs []UserID
+
+func (ids UserIDs) ToSet() set.Set[UserID] {
+	return set.NewMapset([]UserID(ids)...)
+}
+
 type UserID int
 
 func (u UserID) String() string {
