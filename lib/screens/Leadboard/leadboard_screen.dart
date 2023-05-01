@@ -20,7 +20,7 @@ class LeaderBoardScreen extends StatelessWidget {
             transform: Matrix4.rotationZ(
               3.1415926535897932 * 1.8 / 2, // here
             ), child: SizedBox(width: 300, height: 300, child: Image.asset("images/leaf_1.png", fit: BoxFit.scaleDown)))),
-        LeaderBoard(),
+        const LeaderBoard(),
       ]),
     );
   }
@@ -62,7 +62,7 @@ class LeaderBoard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       Expanded(
                         flex: 5,
                         child: ElevatedButton(
@@ -120,7 +120,7 @@ class LeaderBoard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                   Expanded(
@@ -137,7 +137,7 @@ class LeaderBoard extends StatelessWidget {
                             return LeaderBoardItem(
                                 highlight: index < 3,
                                 user: users[index],
-                                index: index,
+                                index: index+1,
                                 points: users[index].score);
                           },
                         ),

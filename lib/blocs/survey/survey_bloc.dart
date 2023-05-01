@@ -17,6 +17,7 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
     on<LoadQuestionEvent>(_onSurveyLoaded);
     on<QuestionAnsweredEvent>(_onSurveyAnswered);
     on<LoadingQuestion>(_onSurveyLoading);
+    on<QuestionPassedEvent>(_onQuestionPassed);
 
     authBloc.stream.listen((state) {
       if (state is LoggedInState) {
@@ -28,6 +29,16 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
     }
   }
 
+  void _onQuestionPassed(QuestionPassedEvent event, Emitter<SurveyState> emit) {
+    if (state is SurveyLoaded) {
+      var questions = List<Question>.from((state as SurveyLoaded).questions);
+      var questionIdex = questions.indexWhere((question) => question.id == event.questionID);
+      var question = questions.removeAt(questionIdex);
+      questions.add(question);
+      emit.call(SurveyLoaded(questions: questions));
+    }
+  }
+
   void _onSurveyLoading(LoadingQuestion event, Emitter<SurveyState> emit) {
     GetAllQuestions(event.token).then((value) {
       add(LoadQuestionEvent(token: event.token, questions: value));
@@ -35,7 +46,6 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
   }
 
   void _onSurveyLoaded(LoadQuestionEvent event, Emitter<SurveyState> emit) {
-    print("survey loaded");
     emit.call(SurveyLoaded(questions: event.questions));
   }
 

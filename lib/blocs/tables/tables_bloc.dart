@@ -58,6 +58,7 @@ class TablesBloc extends Bloc<TablesEvent, TablesState> {
       for (var user in s.users) {
         tables[user.tableName]?.users.add(user);
       }
+
       emit.call(TablesInitialized(token: event.token, tables: tables));
     }
     if (state is TablesInitialized) {

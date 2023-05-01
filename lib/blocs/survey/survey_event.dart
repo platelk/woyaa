@@ -26,6 +26,15 @@ class LoadQuestionEvent extends SurveyEvent {
   List<Object> get props => [token, questions];
 }
 
+class QuestionPassedEvent extends SurveyEvent {
+  final int questionID;
+
+  const QuestionPassedEvent({required this.questionID});
+
+  @override
+  List<Object> get props => [questionID];
+}
+
 class QuestionAnsweredEvent extends SurveyEvent {
   final int questionID;
   final int answerID;

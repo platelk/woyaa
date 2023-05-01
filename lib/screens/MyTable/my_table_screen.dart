@@ -34,6 +34,8 @@ class MyTableScreen extends StatelessWidget {
         data: tablesTheme(),
         child: const Base(child: Text("loading.."),));
     }
+    var myTable = state.tables[meState.me.tableName];
+    var myTableUsers = List.from(myTable!.users)..sort((a, b) => a.name.compareTo(b.name));
     return Theme(
       data: tablesTheme(),
       child: Base(
@@ -83,11 +85,11 @@ class MyTableScreen extends StatelessWidget {
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
                       // Generate 100 widgets that display their index in the List.
-                      itemCount: state.tables[meState.me.tableName]?.size,
+                      itemCount: myTable.size,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
-                          child: TableGuest(user: state.tables[meState.me.tableName]!.users.length > index ? state.tables[meState.me.tableName]!.users.elementAt(index) : User.unknown),
+                          child: TableGuest(user: myTableUsers.length > index ? myTableUsers.elementAt(index) : User.unknown),
                         );
                       }),
                 ),
