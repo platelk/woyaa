@@ -29,7 +29,7 @@ class LoginScreenTopImage extends StatelessWidget {
              children: [
               const Spacer(flex: 5),
               Center(child: Image.asset("images/bienvenue_au.png", scale: 4)),
-              const Spacer(),
+              const Padding(padding: EdgeInsets.only(top: 16)),
               Center(child: Image.asset("images/ana_et_yoann.png", scale: 5)),
               const Spacer(flex: 3),
             ],

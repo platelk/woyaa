@@ -55,7 +55,7 @@ class LoginForm extends StatelessWidget {
                   ),
                   focusedBorder : OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
-                    borderSide: BorderSide(color: kWelcomePrimaryColor),
+                    borderSide: BorderSide(color: kTrombiBackgroundColor),
                   ),
                 ),
               ),
@@ -88,7 +88,7 @@ class LoginForm extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: defaultPadding),
+              const Padding(padding: EdgeInsets.all(16.0)),
             ],
           ),
         );

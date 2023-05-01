@@ -9,6 +9,8 @@ const kWelcomeBackgroundColor = Color(0xFFBF7366);
 const kWelcomePrimaryColor = Color(0xFFE8D1C5);
 const kWelcomeTextColor = Color(0xFF000000);
 
-const kTablesBackgroundColor = Color(0xFF2A4368);
+const kTablesBackgroundColor = Color(0xFFBF7366);
 const kTablesPrimaryColor = Color(0xFFE8D1C5);
 const kTablesTextColor = Color(0xFF000000);
+
+const kTrombiBackgroundColor = Color(0xFF2A4368);

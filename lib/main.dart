@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       BlocProvider(create: (context) => TablesBloc(authBloc: BlocProvider.of<AuthenticationBloc>(context), userBloc: BlocProvider.of<UserBloc>(context)))
     ], child: MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'W.O.Y.A.A',
+      title: 'Ana x Yoann',
       theme: theme(),
       home: const LoginScreen(),
     ));
