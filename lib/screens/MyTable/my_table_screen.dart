@@ -56,7 +56,7 @@ class MyTableScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(meState.me.tableName,
                         style: Theme.of(context)
                             .textTheme
