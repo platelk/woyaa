@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 
@@ -37,7 +38,7 @@ func v1EmailLoginHandler(emailLogin usecase.EmailLoginUseCase) echo.HandlerFunc 
 			return c.JSON(http.StatusBadRequest, nil)
 		}
 		// Execute request
-		req, err := emailLogin(c.Request().Context(), &usecase.EmailLoginReq{EmailCred: domain.EmailCredential{Email: domain.Email(emailLoginReq.Email)}})
+		req, err := emailLogin(c.Request().Context(), &usecase.EmailLoginReq{EmailCred: domain.EmailCredential{Email: domain.Email(strings.ToLower(emailLoginReq.Email))}})
 		// return
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())

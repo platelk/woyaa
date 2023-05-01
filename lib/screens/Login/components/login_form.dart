@@ -3,35 +3,41 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:woyaa/blocs/authentication/authentication_bloc.dart';
 import 'package:woyaa/screens/OnBoarding/onboarding.dart';
 
-import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
-import '../../Home/home_screen.dart';
-import '../../Signup/signup_screen.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  bool isLogging = false;
+  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
         final state = context.read<AuthenticationBloc>().state;
-        if (state is LoggedInState) {
+        if (state is LoggedInState && !isLogging) {
+          isLogging = true;
           Future.delayed(const Duration(milliseconds: 500)).then((value) => {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
+                      print("LOGGING STATE");
                       return const OnBoardingScreen();
                     },
                   ),
                 )
               });
         }
-        var emailController = TextEditingController();
-        final focus = FocusNode();
+
         return Form(
           child: Column(
             children: [
@@ -53,7 +59,7 @@ class LoginForm extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(40)),
                     borderSide: BorderSide(color: kWelcomePrimaryColor),
                   ),
-                  focusedBorder : OutlineInputBorder(
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40)),
                     borderSide: BorderSide(color: kWelcomePrimaryColor),
                   ),

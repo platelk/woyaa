@@ -9,6 +9,7 @@ import (
 	"github.com/platelk/woyaa/backend/adapter/accesstokens"
 	"github.com/platelk/woyaa/backend/adapter/credstore"
 	"github.com/platelk/woyaa/backend/adapter/scoresregistry"
+	"github.com/platelk/woyaa/backend/adapter/surveystore"
 	"github.com/platelk/woyaa/backend/adapter/swipestore"
 	"github.com/platelk/woyaa/backend/adapter/tablestore"
 	"github.com/platelk/woyaa/backend/adapter/userstore"
@@ -37,6 +38,7 @@ func main() {
 	swipeStore := swipestore.NewUserPG(userPG)
 	tableStore := tablestore.NewUserPG(userPG)
 	scoreRegistry := scoresregistry.NewUserPG(userPG)
+	questionStore := surveystore.NewUserPG(userPG)
 
 	s := http.NewBuilder().
 		WithJWT(tokens).
@@ -50,6 +52,7 @@ func main() {
 		V1PostUserSwipe(usecase.NewSwipeUserUseCase(swipeStore, userStore, scoreRegistry)).
 		V1GetUserScore(usecase.NewGetUserScoreUseCase(scoreRegistry)).
 		V1GetTables(usecase.NewGetTables(tableStore)).
+		V1GetAllQuestion(usecase.NewGetAllQuestions(questionStore)).
 		Build()
 
 	if err := s.Start(); err != nil {
