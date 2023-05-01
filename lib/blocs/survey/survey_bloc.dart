@@ -77,7 +77,7 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
 
 void _winningQuestionToast() {
   Fluttertoast.showToast(
-    msg: "Bien joué il ou elle est bien à ta table ! Tu gagnes 5 points !",
+    msg: "Bravo ! Bien joué, tu gagnes des points !",
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,
     gravity: ToastGravity.TOP,
@@ -91,7 +91,7 @@ void _winningQuestionToast() {
 
 void _losingQuestionToast() {
   Fluttertoast.showToast(
-    msg: "Pas de chance, c'est raté ! Tu perds 1 point !",
+    msg: "Pas de chance, c'est raté ! Essaye encore.",
     toastLength: Toast.LENGTH_SHORT,
     timeInSecForIosWeb: 1,
     gravity: ToastGravity.TOP,
