@@ -11,7 +11,7 @@ import (
 )
 
 func (b *Builder) DevUserPGAll(pg *userpg.DB) *Builder {
-	return b.DevUserPGImport(pg).DevUserPGDrop(pg).DevUserPGSetup(pg)
+	return b.DevUserPGImport(pg).DevUserPGDrop(pg).DevUserPGSetup(pg).DevUserPGImportSurvey(pg)
 }
 
 func (b *Builder) DevUserPGSetup(pg *userpg.DB) *Builder {
@@ -47,6 +47,18 @@ func (b *Builder) DevUserPGImport(pg *userpg.DB) *Builder {
 	b.e.POST("/dev/userpg/import", func(c echo.Context) error {
 		r := csv.NewReader(c.Request().Body)
 		err := pg.ImportCSV(context.Background(), r)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
+		return c.NoContent(http.StatusOK)
+	})
+	return b
+}
+
+func (b *Builder) DevUserPGImportSurvey(pg *userpg.DB) *Builder {
+	b.e.POST("/dev/userpg/import/survey", func(c echo.Context) error {
+		r := csv.NewReader(c.Request().Body)
+		err := pg.ImportSurveyCSV(context.Background(), r)
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}

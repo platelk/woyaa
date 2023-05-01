@@ -7,13 +7,23 @@ abstract class SurveyEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadQuestionEvent extends SurveyEvent {
-  final List<Question> questions;
+class LoadingQuestion extends SurveyEvent {
+  final String token;
 
-  const LoadQuestionEvent({required this.questions});
+  const LoadingQuestion({required this.token});
 
   @override
-  List<Object> get props => [questions];
+  List<Object> get props => [token];
+}
+
+class LoadQuestionEvent extends SurveyEvent {
+  final String token;
+  final List<Question> questions;
+
+  const LoadQuestionEvent({required this.token, required this.questions});
+
+  @override
+  List<Object> get props => [token, questions];
 }
 
 class QuestionAnsweredEvent extends SurveyEvent {

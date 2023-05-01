@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:woyaa/constants.dart';
 
 class ChoiceButton extends StatelessWidget {
   final double width;
@@ -34,7 +33,13 @@ class ChoiceButton extends StatelessWidget {
           ),
         ],
       ),
-      child: Center(child: Image.asset(icon, fit: BoxFit.scaleDown, width: size, height: size,)),
+      child: Center(
+          child: Image.asset(
+        icon,
+        fit: BoxFit.scaleDown,
+        width: size,
+        height: size,
+      )),
     );
   }
 }

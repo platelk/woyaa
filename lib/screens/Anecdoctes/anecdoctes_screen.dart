@@ -26,6 +26,9 @@ class AnecdotesScreen extends StatelessWidget {
             if (state is! SurveyLoaded) {
               return const Base(child: Text('Something went wrong'));
             }
+            if (state.questions.isEmpty) {
+              return const Base(child: Text('No More !'));
+            }
             final question = state.questions.first;
             return Base(
               child: Stack(
@@ -68,7 +71,7 @@ class AnecdotesScreen extends StatelessWidget {
                           children: [
                             const Spacer(),
                             for (var image in question.images)
-                              CircleAvatar(
+                               CircleAvatar(
                                 radius: 35,
                                 backgroundImage: NetworkImage(image),
                               ),
@@ -94,7 +97,7 @@ class AnecdotesScreen extends StatelessWidget {
                           )),
                       const Padding(padding: EdgeInsets.all(12.0)),
                       Expanded(
-                        child: SingleChildScrollView(child: AnswersForm(key: Key(question.question), question: question, users: userState.users.values.toList())),
+                        child: AnswersForm(key: Key(question.question), question: question, users: userState.users.values.toList()),
                       ),
                     ]),
                   ),
@@ -125,7 +128,6 @@ class AnswersForm extends StatefulWidget {
 
 class _AnswersFormState extends State<AnswersForm> {
   bool isDisable = true;
-  final _formKey = GlobalKey<FormState>();
   late List<UserAutoComplete> autoCompleteField;
   late List<GlobalKey<_UserAutoCompleteState>> values;
 
@@ -137,11 +139,11 @@ class _AnswersFormState extends State<AnswersForm> {
         GlobalKey<_UserAutoCompleteState>()
     ];
     autoCompleteField = [for (var key in values)
-      UserAutoComplete(users: widget.users, key: key, formKey: _formKey, onChanged: onChange,)];
+      UserAutoComplete(users: widget.users, key: key, onChanged: onChange,)];
   }
 
   void onChange() {
-      final areDefined = values.every((element) => element.currentState?.selectUser?.name.isNotEmpty ?? false);
+    final areDefined = values.every((element) => element.currentState?.selectUser?.name.isNotEmpty ?? false);
       if (areDefined == isDisable) {
         setState(() {
           isDisable = !areDefined;
@@ -157,7 +159,6 @@ class _AnswersFormState extends State<AnswersForm> {
           return const Base(child: Center(child: CircularProgressIndicator()));
         }
         return Form(
-            key: _formKey,
             onChanged: onChange,
             child: Column(
               children: [
@@ -169,12 +170,9 @@ class _AnswersFormState extends State<AnswersForm> {
                     ElevatedButton(
                       onPressed: isDisable ? null : () {
                         // Validate returns true if the form is valid, or false otherwise.
-                          for (var k in values) {
-                            print("=> ${k.currentState?.selectUser?.name}");
-                          }
                           context
                               .read<SurveyBloc>()
-                              .add(QuestionAnsweredEvent(questionID: 0, answerID: 0, userID: []));
+                              .add(QuestionAnsweredEvent(questionID: widget.question.id, answerID: 0, userID: [for (var k in values) k.currentState!.selectUser!.id]));
                       },
                       style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -215,10 +213,9 @@ class _AnswersFormState extends State<AnswersForm> {
 
 class UserAutoComplete extends StatefulWidget {
   final List<User> users;
-  final GlobalKey<FormState> formKey;
   final Function onChanged;
 
-  const UserAutoComplete({super.key, required this.users, required this.formKey, required this.onChanged});
+  const UserAutoComplete({super.key, required this.users, required this.onChanged});
 
   @override
   State<UserAutoComplete> createState() => _UserAutoCompleteState();
@@ -230,10 +227,8 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
 
   @override
   void initState() {
-    print("init state user auto complete");
     super.initState();
     autocompleteField = Autocomplete<User>(
-      initialValue: TextEditingValue(text: selectUser?.name ?? ""),
       fieldViewBuilder: (BuildContext context,
           TextEditingController fieldTextEditingController,
           FocusNode fieldFocusNode,
@@ -245,16 +240,11 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
               return null;
             },
             onChanged: (value) {
-              print("on change");
               if (value != selectUser?.name) {
                 setState(() {
                   selectUser = null;
                 });
               }
-            },
-            onTap: () {
-              print("on Tap user auto complete");
-              widget.onChanged();
             },
             decoration: const InputDecoration(
                 filled: true,
@@ -269,12 +259,9 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
       },
       displayStringForOption: (option) => option.name,
       optionsBuilder: (TextEditingValue textEditingValue) {
-        print("on option builder");
         if (textEditingValue.text == '') {
-          print("on option builder > no option");
-          return const Iterable<User>.empty();
+          return widget.users;
         }
-        print("on option builder > users");
         return widget.users.where((User user) {
           return user.name
               .toLowerCase()
@@ -282,14 +269,14 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
         });
       },
       onSelected: (User selection) {
-        debugPrint('You just selected $selection');
         selectUser = selection;
         widget.onChanged();
-        print("on selected");
       },
       optionsViewBuilder: (BuildContext context,
           AutocompleteOnSelected<User> onSelected, Iterable<User> options) {
-        print("on option View Builder");
+        if (options.isEmpty) {
+          return Text("no");
+        }
         return Align(
           alignment: Alignment.topLeft,
           child: Material(
@@ -298,18 +285,14 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
               height: max(50.0 * options.length, MediaQuery.of(context).size.height),
               color: const Color(0xFFF7F3F0),
               child: ListView.builder(
-                shrinkWrap: true,
                 padding: const EdgeInsets.all(5.0),
                 itemCount: options.length,
                 itemBuilder: (BuildContext context, int index) {
-                  print("on itemBuilder listView");
                   final User option = options.elementAt(index);
 
                   return GestureDetector(
                     onTap: () {
-                      print("on Tap gesture detector");
                       onSelected(option);
-                      print("on Tap selected gesture detector");
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(2.0),
@@ -346,7 +329,6 @@ class _UserAutoCompleteState extends State<UserAutoComplete> {
 
   @override
   Widget build(BuildContext context) {
-    print("build auto complele");
     return autocompleteField;
   }
 }

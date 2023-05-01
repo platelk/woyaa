@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_svg/avd.dart';
+import 'package:woyaa/models/question.dart';
 
 import '../models/table.dart';
 import '../models/user.dart';
@@ -12,7 +13,7 @@ var accessToken = "";
 
 void configureDio() {
   // Set default configs
-  // apiHttpClient.options.baseUrl = baseApiURL;
+  apiHttpClient.options.baseUrl = baseApiURL;
   apiHttpClient.options.connectTimeout = const Duration(seconds: 5);
   apiHttpClient.options.receiveTimeout = const Duration(seconds: 3);
 }
@@ -83,4 +84,13 @@ Future<Map<String, Table>> GetTables(String token) async {
     for (var t in (res.data["tables"] as List).map(Table.fromDynamic))
       (t).name: t
   };
+}
+
+Future<List<Question>> GetAllQuestions(String token) async {
+  final res = await apiHttpClient.get("/api/v1/questions",
+      options: Options(headers: {"authorization": "Bearer $token"}));
+
+  return [
+    for (var t in (res.data["questions"] as List)) Question.fromDynamic(t)
+  ];
 }

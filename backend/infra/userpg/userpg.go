@@ -41,11 +41,30 @@ type Scores struct {
 	ScoreAt time.Time `ksql:"score_at,timeNowUTC"`
 }
 
+type Survey struct {
+	ID         int    `ksql:"id"`
+	QuestionID int    `ksql:"question_id"`
+	IsYoann    bool   `ksql:"is_yoann"`
+	IsAna      bool   `ksql:"is_ana"`
+	Question   string `ksql:"question"`
+	UserID     int    `ksql:"user_id"`
+}
+
+type SurveyAnswer struct {
+	ID           int       `ksql:"id"`
+	FromUserID   int       `ksql:"from_user_id"`
+	AnswerUserID int       `ksql:"answer_user_id"`
+	QuestionID   int       `ksql:"question_id"`
+	ScoreAt      time.Time `ksql:"answer_at,timeNowUTC"`
+}
+
 // UsersTable informs KSQL the name of the table and that it can
 // use the default value for the primary key column name: "id"
 var UsersTable = ksql.NewTable("users")
 var SwipesTable = ksql.NewTable("swipes")
 var ScoresTable = ksql.NewTable("scores")
+var SurveyTable = ksql.NewTable("survey")
+var SurveyAnswerTable = ksql.NewTable("survey_answers")
 
 type DB struct {
 	ksql.DB
@@ -71,6 +90,14 @@ func (upg *DB) CreateTables(ctx context.Context) error {
 		return err
 	}
 	err = upg.CreateScoreTable(ctx)
+	if err != nil {
+		return err
+	}
+	err = upg.CreateSurveyTable(ctx)
+	if err != nil {
+		return err
+	}
+	err = upg.CreateSurveyAnswerTable(ctx)
 	if err != nil {
 		return err
 	}
@@ -134,6 +161,43 @@ func (upg *DB) CreateScoreTable(ctx context.Context) error {
 	return nil
 }
 
+func (upg *DB) CreateSurveyTable(ctx context.Context) error {
+	_, err := upg.Exec(ctx, `CREATE TABLE IF NOT EXISTS survey (
+    	  	id SERIAL PRIMARY KEY,
+    	  	is_yoann BOOLEAN,
+    	  	is_ana BOOLEAN,
+	  	user_id INTEGER,
+	  	question_id INTEGER,
+		question TEXT
+	)`)
+	if err != nil {
+		return fmt.Errorf("can't create table swipes: %w", err)
+	}
+	_, err = upg.Exec(ctx, `CREATE INDEX IF NOT EXISTS question_index ON survey (question_id, user_id)`)
+	if err != nil {
+		return fmt.Errorf("can't create index swiped_users: %w", err)
+	}
+	return nil
+}
+
+func (upg *DB) CreateSurveyAnswerTable(ctx context.Context) error {
+	_, err := upg.Exec(ctx, `CREATE TABLE IF NOT EXISTS survey_answers (
+    	  	id SERIAL PRIMARY KEY,
+	  	from_user_id INTEGER,
+	  	answer_user_id INTEGER,
+	  	question_id INTEGER,
+		answer_at TIMESTAMP
+	)`)
+	if err != nil {
+		return fmt.Errorf("can't create table swipes: %w", err)
+	}
+	_, err = upg.Exec(ctx, `CREATE INDEX IF NOT EXISTS answer_question_index ON survey_answers (question_id, from_user_id)`)
+	if err != nil {
+		return fmt.Errorf("can't create index swiped_users: %w", err)
+	}
+	return nil
+}
+
 func (upg *DB) DropTables(ctx context.Context) error {
 	_, err := upg.Exec(ctx, "DROP TABLE IF EXISTS users")
 	if err != nil {
@@ -146,6 +210,51 @@ func (upg *DB) DropTables(ctx context.Context) error {
 	_, err = upg.Exec(ctx, "DROP TABLE IF EXISTS scores")
 	if err != nil {
 		return fmt.Errorf("can't drop table scores: %w", err)
+	}
+	_, err = upg.Exec(ctx, "DROP TABLE IF EXISTS survey")
+	if err != nil {
+		return fmt.Errorf("can't drop table survey: %w", err)
+	}
+	_, err = upg.Exec(ctx, "DROP TABLE IF EXISTS survey_answers")
+	if err != nil {
+		return fmt.Errorf("can't drop table survey_answers: %w", err)
+	}
+	return nil
+}
+
+func (upg *DB) ImportSurveyCSV(ctx context.Context, reader *csv.Reader) error {
+	nbInsert := 0
+	for {
+		record, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+		fmt.Println(record)
+		id, err := strconv.Atoi(record[0])
+		if err != nil {
+			return fmt.Errorf("can't convert id import csv on line %d: %w", nbInsert, err)
+		}
+		isAna, isYoann := len(record[1]) > 0, len(record[2]) > 0
+		question := record[3]
+		for i := 4; i < len(record); i++ {
+			userID, _ := strconv.Atoi(record[i])
+			if userID == 0 {
+				continue
+			}
+			newQuestion := Survey{
+				QuestionID: id,
+				IsYoann:    isYoann,
+				IsAna:      isAna,
+				Question:   question,
+				UserID:     userID,
+			}
+			err = upg.Insert(ctx, SurveyTable, &newQuestion)
+			if err != nil {
+				log.Error().Int("question_id", id).Err(err).Msg("can't insert question")
+			} else {
+				log.Info().Int("question_id", id).Int("user_id", userID).Msg(question)
+			}
+		}
 	}
 	return nil
 }
