@@ -182,8 +182,8 @@ void _winningSwipeSameTableToast() {
 void _losingSwipeToast() {
   Fluttertoast.showToast(
     msg: "Pas de chance, c'est raté ! Tu perds 1 point !",
-    toastLength: Toast.LENGTH_SHORT,
-    timeInSecForIosWeb: 1,
+    toastLength: Toast.LENGTH_LONG,
+    timeInSecForIosWeb: 2,
     gravity: ToastGravity.TOP,
     webPosition: "center",
     backgroundColor: kWelcomeBackgroundColor,
@@ -196,8 +196,8 @@ void _losingSwipeToast() {
 void _losingSwipeSameTableToast() {
   Fluttertoast.showToast(
     msg: "C'est raté il ou elle est à ta table ! Tu perds 2 points !",
-    toastLength: Toast.LENGTH_SHORT,
-    timeInSecForIosWeb: 1,
+    toastLength: Toast.LENGTH_LONG,
+    timeInSecForIosWeb: 2,
     gravity: ToastGravity.TOP,
     webPosition: "center",
     backgroundColor: kWelcomeBackgroundColor,

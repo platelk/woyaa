@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     configureDio();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => AuthenticationBloc()),

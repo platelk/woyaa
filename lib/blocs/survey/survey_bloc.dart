@@ -78,8 +78,8 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
 void _winningQuestionToast() {
   Fluttertoast.showToast(
     msg: "Bravo ! Bien joué, tu gagnes des points !",
-    toastLength: Toast.LENGTH_SHORT,
-    timeInSecForIosWeb: 1,
+    toastLength: Toast.LENGTH_LONG,
+    timeInSecForIosWeb: 2,
     gravity: ToastGravity.TOP,
     webPosition: "center",
     backgroundColor: kTablesBackgroundColor,
@@ -92,8 +92,8 @@ void _winningQuestionToast() {
 void _losingQuestionToast() {
   Fluttertoast.showToast(
     msg: "Pas de chance, c'est raté ! Essaye encore.",
-    toastLength: Toast.LENGTH_SHORT,
-    timeInSecForIosWeb: 1,
+    toastLength: Toast.LENGTH_LONG,
+    timeInSecForIosWeb: 2,
     gravity: ToastGravity.TOP,
     webPosition: "center",
     backgroundColor: kWelcomeBackgroundColor,
