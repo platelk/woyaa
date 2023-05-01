@@ -13,7 +13,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../authentication/authentication_bloc.dart';
 import '../users/user_bloc.dart';
 
-
 part 'swipe_event.dart';
 
 part 'swipe_state.dart';
@@ -22,10 +21,10 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   AuthenticationBloc authBloc;
   UserBloc userBloc;
 
-  SwipeBloc({required this.authBloc, required this.userBloc}) : super(SwipeInitial()) {
+  SwipeBloc({required this.authBloc, required this.userBloc})
+      : super(SwipeInitial()) {
     on<LoadSwipeListEvent>(_onLoadSwipeListEvent);
     on<LoadingUserEvent>(_onLoadingUserEvent);
-    on<UserLoadedEvent>(_onLoadUsersEvent);
     on<SwipeUserRetrievedEvent>(_onSwipeUserRetrievedEvent);
     on<SwipeLeftEvent>(_onSwipeLeftEvent);
     on<SwipeRightEvent>(_onSwipeRightEvent);
@@ -48,13 +47,15 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
     });
 
     if (userBloc.state is UserInitialized) {
-        for (var user in (userBloc.state as UserInitialized).users.values) {
-          add(SwipeUserRetrievedEvent(token: (userBloc.state as UserInitialized).token, user: user));
-        }
+      for (var user in (userBloc.state as UserInitialized).users.values) {
+        add(SwipeUserRetrievedEvent(
+            token: (userBloc.state as UserInitialized).token, user: user));
+      }
     }
   }
 
-  void _onLoadSwipeListEvent(LoadSwipeListEvent event, Emitter<SwipeState> emit) {
+  void _onLoadSwipeListEvent(
+      LoadSwipeListEvent event, Emitter<SwipeState> emit) {
     emit.call(SwipeLoading(token: event.token));
     GetSwipeList(event.token).then((value) {
       add(LoadingUserEvent(token: event.token, swipeList: value));
@@ -62,32 +63,58 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   }
 
   void _onLoadingUserEvent(LoadingUserEvent event, Emitter<SwipeState> emit) {
+    if (state is! SwipeLoaded) {
+      emit.call(SwipeRetrieved(token: event.token, userIds: Set.from(event.swipeList.toSwipe), swipedUserIds: Set.from(event.swipeList.swiped)));
+    }
     for (var userID in event.swipeList.toSwipe) {
+      userBloc.add(UserRequested(token: event.token, requestedUser: userID));
+    }
+    for (var userID in event.swipeList.swiped) {
       userBloc.add(UserRequested(token: event.token, requestedUser: userID));
     }
   }
 
-  void _onSwipeUserRetrievedEvent(SwipeUserRetrievedEvent event, Emitter<SwipeState> emit) {
+  void _onSwipeUserRetrievedEvent(
+      SwipeUserRetrievedEvent event, Emitter<SwipeState> emit) {
     if (state is SwipeLoaded) {
       var s = state as SwipeLoaded;
-      emit.call(SwipeLoaded(token: event.token, users: Set.from(s.users)..add(event.user)));
-    } else {
-      emit.call(SwipeLoaded(token: event.token, users: {event.user}));
+      emit.call(SwipeLoaded(
+        token: event.token,
+        users: {...s.users, if (s.userIds.contains(event.user.id)) event.user},
+        swipedUsers: {...s.swipedUsers, if (s.swipedUserIds.contains(event.user.id)) event.user},
+        userIds: Set.from(s.userIds),
+        swipedUserIds: Set.from(s.swipedUserIds),
+      ));
+    } else if (state is SwipeRetrieved) {
+      var s = state as SwipeRetrieved;
+      emit.call(SwipeLoaded(
+          token: event.token,
+          userIds: s.userIds,
+          swipedUserIds: s.swipedUserIds,
+          users: {
+            if (s.userIds.contains(event.user.id)) event.user
+          },
+          swipedUsers: {
+            if (s.swipedUserIds.contains(event.user.id)) event.user
+          }));
     }
-  }
-
-  void _onLoadUsersEvent(UserLoadedEvent event, Emitter<SwipeState> emit) {
-    emit.call(SwipeLoaded(token: event.token, users: Set.from(event.users)));
   }
 
   void _onSwipeLeftEvent(SwipeLeftEvent event, Emitter<SwipeState> emit) {
     if (state is SwipeLoaded) {
       try {
-        emit.call(SwipeLoaded(token: event.token, users: Set.from((state as SwipeLoaded).users)..remove(event.user)));
+        var s = state as SwipeLoaded;
+        emit.call(SwipeLoaded(
+          token: event.token,
+          users: Set.from(s.users)..remove(event.user),
+          swipedUsers: Set.from(s.swipedUsers)..add(event.user),
+          userIds: Set.from(s.userIds)..remove(event.user.id),
+          swipedUserIds: Set.from(s.swipedUserIds)..add(event.user.id),
+        ));
       } catch (_) {}
-      if ((state as SwipeLoaded).users.length <= 1) {
-        add(LoadSwipeListEvent(token: event.token));
-      }
+      // if ((state as SwipeLoaded).users.length <= 1) {
+      //   add(LoadSwipeListEvent(token: event.token));
+      // }
     }
     Swipe(event.token, event.user.id, false).then(_onSwipeResult);
   }
@@ -95,7 +122,14 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   void _onSwipeRightEvent(SwipeRightEvent event, Emitter<SwipeState> emit) {
     if (state is SwipeLoaded) {
       try {
-        emit.call(SwipeLoaded(token: event.token, users: Set.from((state as SwipeLoaded).users)..remove(event.user)));
+        var s = state as SwipeLoaded;
+        emit.call(SwipeLoaded(
+          token: event.token,
+          users: Set.from(s.users)..remove(event.user),
+          swipedUsers: Set.from(s.swipedUsers)..add(event.user),
+          userIds: Set.from(s.userIds)..remove(event.user.id),
+          swipedUserIds: Set.from(s.swipedUserIds)..add(event.user.id),
+        ));
       } catch (_) {}
     }
     Swipe(event.token, event.user.id, true).then(_onSwipeResult);
@@ -117,7 +151,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   }
 }
 
-void _winningSwipeToast(){
+void _winningSwipeToast() {
   Fluttertoast.showToast(
     msg: "Bien joué ! Tu gagnes 2 points !",
     toastLength: Toast.LENGTH_SHORT,
@@ -128,10 +162,10 @@ void _winningSwipeToast(){
     webBgColor: "#2a4368",
     textColor: Colors.white,
     fontSize: 16.0,
-    );
- } 
+  );
+}
 
- void _winningSwipeSameTableToast(){
+void _winningSwipeSameTableToast() {
   Fluttertoast.showToast(
     msg: "Bien joué il ou elle est bien à ta table ! Tu gagnes 5 points !",
     toastLength: Toast.LENGTH_SHORT,
@@ -142,10 +176,10 @@ void _winningSwipeToast(){
     webBgColor: "#2a4368",
     textColor: Colors.white,
     fontSize: 16.0,
-    );
- } 
+  );
+}
 
-void _losingSwipeToast(){
+void _losingSwipeToast() {
   Fluttertoast.showToast(
     msg: "Pas de chance, c'est raté ! Tu perds 1 point !",
     toastLength: Toast.LENGTH_SHORT,
@@ -156,10 +190,10 @@ void _losingSwipeToast(){
     webBgColor: "#bf7366",
     textColor: Colors.white,
     fontSize: 16.0,
-    );
- } 
+  );
+}
 
- void _losingSwipeSameTableToast(){
+void _losingSwipeSameTableToast() {
   Fluttertoast.showToast(
     msg: "C'est raté il ou elle est à ta table ! Tu perds 2 points !",
     toastLength: Toast.LENGTH_SHORT,
@@ -170,5 +204,5 @@ void _losingSwipeToast(){
     webBgColor: "#bf7366",
     textColor: Colors.white,
     fontSize: 16.0,
-    );
- }
+  );
+}

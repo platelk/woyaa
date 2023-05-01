@@ -22,7 +22,7 @@ class SwipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SwipeBloc, SwipeState>(
       builder: (context, state) {
-        if (state is SwipeLoading) {
+        if (state is SwipeLoading || state is SwipeRetrieved) {
           return const Base(child: Center(child: CircularProgressIndicator()));
         }
         if (state is! SwipeLoaded) {
