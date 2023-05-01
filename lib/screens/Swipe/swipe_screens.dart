@@ -33,7 +33,7 @@ class SwipeScreen extends StatelessWidget {
         }
         return Base(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top : 8.0, bottom: 8.0),
             child: Column(
               children: [
                 Padding(
@@ -72,7 +72,7 @@ class SwipeScreen extends StatelessWidget {
                     ) {
                       return Container(
                         height: 500.0,
-                        width: 125.0,
+                        width: 140.0,
                         color: Colors.transparent,
                       );
                     },
@@ -92,7 +92,7 @@ class SwipeScreen extends StatelessWidget {
                     ) {
                       return Container(
                         height: 500.0,
-                        width: 125.0,
+                        width: 140.0,
                         color: Colors.transparent,
                       );
                     },
