@@ -58,8 +58,8 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
       var s = state as SurveyLoaded;
       AnswerQuestion(s.token, event.questionID, event.userID).then((value) {
         if (value.validated) {
-          _winningQuestionToast();
-          emit.call(SurveyLoaded(questions: List.from((state as SurveyLoaded).questions)..removeWhere((question) => question.id == event.questionID), token: s.token));
+          emit.call(SurveyLoaded(questions: List.from(s.questions)..removeWhere((question) => question.id == event.questionID), token: s.token));
+          _winningQuestionToast(value.validUserIds.length);
         } else {
           _losingQuestionToast();
           var questions = List<Question>.from((state as SurveyLoaded).questions);
@@ -75,9 +75,10 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
 }
 
 
-void _winningQuestionToast() {
+void _winningQuestionToast(int numberOfGuessedPersons) {
+  final int numberOfPoints = numberOfGuessedPersons * 2;
   Fluttertoast.showToast(
-    msg: "Bravo ! Bien joué, tu gagnes des points !",
+    msg: "Bravo ! Bien joué, tu gagnes $numberOfPoints points !",
     toastLength: Toast.LENGTH_LONG,
     timeInSecForIosWeb: 2,
     gravity: ToastGravity.TOP,

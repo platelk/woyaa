@@ -28,16 +28,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MeBloc, MeState>(
       builder: (context, state) {
-        var user = const User(
-            id: 0,
-            firstName: "firstName",
-            lastName: "lastName",
-            email: "email",
-            score: 0,
-            room: Room(number: 0),
-            tableName: "",
-            fullPicture: "fullPicture",
-            roundPicture: "roundPicture");
+        var user = User.unknown;
         if (state is MeLoaded) {
           user = state.me;
         } else {
@@ -92,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CircleAvatar(
-                                  backgroundColor: imageBorderColor["Jaune pastel"], //utiliser ce que tu récupères du CSV dans "Game Team" texto
+                                  backgroundColor: imageBorderColor[user.team], //utiliser ce que tu récupères du CSV dans "Game Team" texto
                                   minRadius: 125.0,
                                 )
                               ]),
@@ -293,7 +284,7 @@ class LabeledNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("$number",
+        Text(number != 0 ? "$number" : "N/A",
             style: Theme.of(context)
                 .textTheme
                 .headlineMedium!
