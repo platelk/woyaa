@@ -2,7 +2,7 @@
     "name": "Ana x Yoann",
     "short_name": "AxY",
     "start_url": ".",
-    "display": "fullscreen",
+    "display": "standalone",
     "background_color": "#BF7366",
     "theme_color": "#BF7366",
     "description": "Mariage Ana & Yoann",

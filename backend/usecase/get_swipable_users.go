@@ -34,7 +34,7 @@ func NewGetSwipableUserUseCase(userStore UserStoreAll, swipeStore SwipeStoreByUs
 		}
 		currentUserSwipe, err := swipeStore.GetAllSwipesOfUserID(c, req.UserID)
 		result := users.IDs().Difference(currentUserSwipe.IDs())
-
+		result.Remove(req.UserID)
 		return &GetSwipableUserResp{Users: result.Keys(), SwipedUsers: currentUserSwipe.IDs().Keys()}, nil
 	}
 }

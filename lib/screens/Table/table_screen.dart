@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:woyaa/blocs/swipe/swipe_bloc.dart';
+import 'package:woyaa/blocs/swipe/swipe_bloc.dart';
 import 'package:woyaa/components/base.dart';
 import 'package:woyaa/constants.dart';
 import 'package:woyaa/tables_theme.dart';
@@ -13,14 +15,16 @@ class TableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-return BlocBuilder<UserBloc, UserState>(
+return BlocBuilder<SwipeBloc, SwipeState>(
+  builder: (context, swipeState) {
+    return BlocBuilder<UserBloc, UserState>(
   builder: (context, state) {
-    if (state is! UserInitialized) {
+    if (state is! UserInitialized || swipeState is! SwipeLoaded) {
       return Theme(
           data: trombiTheme(),
           child: const Base(child: Text("loading.."),));
     }
-    var users = List<User>.from(state.users.values)..sort((a, b) => a.name.compareTo(b.name));
+    var users = List<User>.from(state.users.values)..sort((a, b) => a.name.compareTo(b.name))..removeWhere((element) => swipeState.userIds.contains(element.id));
     return Theme(
       data: trombiTheme(),
       child: Base(
@@ -68,6 +72,8 @@ return BlocBuilder<UserBloc, UserState>(
         ),
       ),
     );
+  },
+);
   },
 );
   }
