@@ -21,7 +21,7 @@ class User extends Equatable {
   }
 
   static User get unknown {
-    return const User(id: 0, team: "N/A", firstName: "inconnue", lastName: "", email: "", score: 0, room: Room(number: -1), tableName: "", fullPicture: "", roundPicture: "");
+    return const User(id: 0, team: "N/A", firstName: "Mystère", lastName: "", email: "", score: 0, room: Room(number: -1), tableName: "", fullPicture: "", roundPicture: "/assests/photos/photo_ronde/Unknown.png");
   }
 
   @override
