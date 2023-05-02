@@ -35,6 +35,7 @@ class MeBloc extends Bloc<MeEvent, MeState> {
   }
 
   void _onLoadedMe(LoadedMe event, Emitter<MeState> emit) {
+    print("me updated: ${event.me.score}");
     emit.call(MeLoaded(me: event.me));
   }
 }

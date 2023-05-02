@@ -34,11 +34,15 @@ class MyApp extends StatelessWidget {
                   authBloc: BlocProvider.of<AuthenticationBloc>(context))),
           BlocProvider(
               create: (context) => SurveyBloc(
-                  authBloc: BlocProvider.of<AuthenticationBloc>(context))),
+                authBloc: BlocProvider.of<AuthenticationBloc>(context),
+                meBloc: BlocProvider.of<MeBloc>(context),
+              )),
           BlocProvider(
               create: (context) => SwipeBloc(
                   authBloc: BlocProvider.of<AuthenticationBloc>(context),
-                  userBloc: BlocProvider.of<UserBloc>(context))),
+                  userBloc: BlocProvider.of<UserBloc>(context),
+                  meBloc: BlocProvider.of<MeBloc>(context),
+              )),
           BlocProvider(
               create: (context) => TablesBloc(
                   authBloc: BlocProvider.of<AuthenticationBloc>(context),

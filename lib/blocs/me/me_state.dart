@@ -25,5 +25,5 @@ class MeLoaded extends MeState {
   const MeLoaded({required this.me});
 
   @override
-  List<Object> get props => [me];
+  List<Object> get props => [me, me.score];
 }
