@@ -21,6 +21,7 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
     on<QuestionAnsweredEvent>(_onSurveyAnswered);
     on<LoadingQuestion>(_onSurveyLoading);
     on<QuestionPassedEvent>(_onQuestionPassed);
+    on<QuestionAnsweredResultEvent>(_onQuestionAnsweredResult);
 
     authBloc.stream.listen((state) {
       if (state is LoggedInState) {
@@ -58,19 +59,24 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
       var s = state as SurveyLoaded;
       AnswerQuestion(s.token, event.questionID, event.userID).then((value) {
         if (value.validated) {
-          emit.call(SurveyLoaded(questions: List.from(s.questions)..removeWhere((question) => question.id == event.questionID), token: s.token));
+          add(QuestionAnsweredResultEvent(questions: List.from(s.questions)..removeWhere((question) => question.id == event.questionID), token: s.token));
           _winningQuestionToast(value.validUserIds.length);
         } else {
           _losingQuestionToast();
           var questions = List<Question>.from((state as SurveyLoaded).questions);
           var idx = questions.indexWhere((question) => question.id == event.questionID);
-          questions[idx].validProposal = value.validUserIds;
-          questions[idx].invalidProposal = value.notValidUserIds;
-          emit.call(SurveyLoaded(questions: questions, token: s.token));
+          if (idx >= 0) {
+            questions[idx].validProposal = value.validUserIds;
+            questions[idx].invalidProposal = value.notValidUserIds;
+          }
+          add(QuestionAnsweredResultEvent(questions: questions, token: s.token));
         }
-
       });
     }
+  }
+
+  void _onQuestionAnsweredResult(QuestionAnsweredResultEvent event, Emitter<SurveyState> emit) {
+    emit.call(SurveyLoaded(token: event.token, questions: event.questions));
   }
 }
 
