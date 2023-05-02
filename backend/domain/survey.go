@@ -1,6 +1,15 @@
 package domain
 
+import (
+	"github.com/zyedidia/generic/set"
+)
+
 type QuestionID int
+type QuestionIDs []QuestionID
+
+func (ids QuestionIDs) ToSet() set.Set[QuestionID] {
+	return set.NewMapset([]QuestionID(ids)...)
+}
 
 type Question struct {
 	ID        QuestionID `json:"question_id"`

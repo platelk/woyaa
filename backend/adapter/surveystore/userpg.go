@@ -32,6 +32,20 @@ func (u *UserPG) AnswerQuestion(c context.Context, answer domain.QuestionAnswer)
 	return nil
 }
 
+func (u *UserPG) GetAnsweredQuestion(c context.Context, user domain.UserID) (domain.QuestionIDs, error) {
+	var answers []userpg.SurveyAnswer
+
+	err := u.db.Query(c, &answers, "select DISTINCT ON(question_id) question_id from survey_answers WHERE from_user_id = $1", user)
+	if err != nil {
+		return nil, fmt.Errorf("can't retrieve question: %w", err)
+	}
+	var questions domain.QuestionIDs
+	for _, answer := range answers {
+		questions = append(questions, domain.QuestionID(answer.QuestionID))
+	}
+	return questions.ToSet().Keys(), nil
+}
+
 func (u *UserPG) GetOneQuestion(c context.Context, id domain.QuestionID) (domain.Question, error) {
 	var swp []userpg.Survey
 	err := u.db.Query(c, &swp, "select * from survey WHERE question_id = $1", id)

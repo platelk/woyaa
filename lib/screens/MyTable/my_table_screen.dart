@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:woyaa/blocs/swipe/swipe_bloc.dart';
 import 'package:woyaa/components/base.dart';
 import 'package:woyaa/constants.dart';
 import 'package:woyaa/tables_theme.dart';
@@ -25,17 +26,19 @@ class MyTableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SwipeBloc, SwipeState>(
+  builder: (context, swipeState) {
     return BlocBuilder<TablesBloc, TablesState>(
   builder: (context, state) {
     return BlocBuilder<MeBloc, MeState>(
   builder: (context, meState) {
-    if (meState is! MeLoaded || state is! TablesInitialized) {
+    if (meState is! MeLoaded || state is! TablesInitialized || swipeState is! SwipeLoaded) {
       return Theme(
         data: tablesTheme(),
         child: const Base(child: Text("loading.."),));
     }
     var myTable = state.tables[meState.me.tableName];
-    var myTableUsers = List.from(myTable!.users)..sort((a, b) => a.name.compareTo(b.name));
+    var myTableUsers = List<User>.from(myTable!.users)..sort((a, b) => a.name.compareTo(b.name))..removeWhere((element) => swipeState.userIds.contains(element.id));
     return Theme(
       data: tablesTheme(),
       child: Base(
@@ -99,6 +102,8 @@ class MyTableScreen extends StatelessWidget {
         ),
       ),
     );
+  },
+);
   },
 );
   },
