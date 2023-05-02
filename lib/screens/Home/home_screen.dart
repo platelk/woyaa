@@ -135,7 +135,9 @@ class HomeScreen extends StatelessWidget {
                                         color: Colors.white)),
                           ],
                         ),
-                        Row(
+                        GestureDetector(
+                          onTap: () => html.window.open('https://goo.gl/maps/wLz2nsx7YJLwbwkR8', 'new tab'),
+                          child : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("Château du Bois-Guy",
@@ -146,8 +148,10 @@ class HomeScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white)),
                           ],
-                        ),
-                        Row(
+                        )),
+                        GestureDetector(
+                          onTap: () => html.window.open('https://rickroll.it/rickroll.mp4', 'new tab'),
+                          child : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("Parigné, Bretagne",
@@ -158,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white)),
                           ],
-                        ),
+                        )),
                         const Spacer(),
                         Row(
                           children: [
