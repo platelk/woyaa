@@ -17,4 +17,7 @@ class LoadedMe extends MeEvent {
   final User me;
 
   const LoadedMe({required this.me});
+
+  @override
+  List<Object> get props => [me, me.score];
 }

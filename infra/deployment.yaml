@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: platelk/woyaa:0.27
+        image: platelk/woyaa:0.28
         env:
           - name: USER_PG_URL
             value: "postgresql://admin:psltest@postgres:5432/users"

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../authentication/authentication_bloc.dart';
+import '../me/me_bloc.dart';
 import '../users/user_bloc.dart';
 
 part 'swipe_event.dart';
@@ -20,8 +21,9 @@ part 'swipe_state.dart';
 class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   AuthenticationBloc authBloc;
   UserBloc userBloc;
+  MeBloc meBloc;
 
-  SwipeBloc({required this.authBloc, required this.userBloc})
+  SwipeBloc({required this.authBloc, required this.userBloc, required this.meBloc})
       : super(SwipeInitial()) {
     on<LoadSwipeListEvent>(_onLoadSwipeListEvent);
     on<LoadingUserEvent>(_onLoadingUserEvent);
@@ -136,17 +138,23 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   }
 
   void _onSwipeResult(SwipeResult res) {
+    var me = meBloc.state as MeLoaded;
     if (res.foundMyTable) {
       _winningSwipeSameTableToast();
+      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score + 5)));
     }
     if (res.foundNotMyTable) {
       _winningSwipeToast();
+      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score + 2)));
     }
     if (res.notFoundMyTable) {
       _losingSwipeSameTableToast();
+      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score - 2)));
     }
     if (res.notFoundNotMyTable) {
       _losingSwipeToast();
+      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score - 1)));
+
     }
   }
 }

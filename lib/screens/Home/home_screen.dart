@@ -4,6 +4,7 @@ import 'package:woyaa/models/models.dart';
 import 'package:woyaa/welcome_theme.dart';
 import 'dart:html' as html;
 import '../../blocs/me/me_bloc.dart';
+import '../../blocs/users/user_bloc.dart';
 import '../../components/base.dart';
 import '../../models/room.dart';
 import '../../models/table.dart' as wTable;
@@ -26,14 +27,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<UserBloc, UserState>(
+  builder: (context, userState) {
     return BlocBuilder<MeBloc, MeState>(
       builder: (context, state) {
-        var user = User.unknown;
-        if (state is MeLoaded) {
-          user = state.me;
-        } else {
+        if (state is! MeLoaded || userState is! UserInitialized) {
           return Theme(data: welcomeTheme(), child: const Text("loading..."));
         }
+        var user = state.me;
+        final users = List<User>.from(userState.users.values)
+          ..removeWhere((element) => element.id == state.me.id)
+          ..add(state.me)
+          ..sort((a, b) => a.name.compareTo(b.name))
+          ..sort((a, b) => b.score - a.score);
+        final classement = users.indexOf(state.me);
         return Theme(
           data: welcomeTheme(),
           child: Base(
@@ -112,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                                         1)
                                     : 0,
                                 label: "jours avant le mariage"),
-                            LabeledNumber(number: 59, label: "classement"),
+                            LabeledNumber(number: classement, label: "classement"),
                           ],
                         ),
                         const Spacer(flex: 2),
@@ -275,6 +282,8 @@ class HomeScreen extends StatelessWidget {
         );
       },
     );
+  },
+);
   }
 }
 

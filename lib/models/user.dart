@@ -16,6 +16,24 @@ class User extends Equatable {
 
   const User({required this.id, required this.firstName, required this.lastName, required this.email, required this.score, required this.room, required this.tableName, required this.fullPicture, required this.roundPicture, required this.team});
 
+   User copyFrom({int? id, String? firstName, String? lastName, String? email, int? score, Room? room, String? tableName, String? fullPicture, String? roundPicture, String? team}) {
+     final user = User(
+         id: id ?? this.id,
+         firstName: firstName ?? this.firstName,
+         lastName: lastName ?? this.lastName,
+         email: email ?? this.email,
+         score: score ?? this.score,
+         room: room ?? this.room,
+         tableName: tableName ?? this.tableName,
+         fullPicture: fullPicture ?? this.fullPicture,
+         roundPicture: roundPicture ?? this.roundPicture,
+         team: team ?? this.team,
+     );
+     print("avant: ${this.score}, apres ${user.score}");
+     return user;
+   }
+
+
   static User fromDynamic(dynamic data) {
     return User(id: data["id"],team: "N/A", firstName: data["first_name"], lastName: data["last_name"], email: data["email"], score: data["score"], room: Room(number: data["room"]), tableName: data["wedding_table"], fullPicture: "/assets${data["full_picture_path"]}", roundPicture: "/assets${data["round_picture_path"]}");
   }
@@ -23,6 +41,8 @@ class User extends Equatable {
   static User get unknown {
     return const User(id: 0, team: "N/A", firstName: "Mystère", lastName: "", email: "", score: 0, room: Room(number: -1), tableName: "", fullPicture: "", roundPicture: "/assets/photos/photo_ronde/Unknown.png");
   }
+
+
 
   @override
   List<Object?> get props => [id];

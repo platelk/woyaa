@@ -44,6 +44,9 @@ class LeaderBoard extends StatelessWidget {
               return const Base(child: Text("loading..."));
             }
             final users = List<User>.from(state.users.values)
+              ..removeWhere((element) => element.id == meState.me.id)
+              ..add(meState.me)
+              ..sort((a, b) => a.name.compareTo(b.name))
               ..sort((a, b) => b.score - a.score);
             return Padding(
               padding: const EdgeInsets.all(8.0),
