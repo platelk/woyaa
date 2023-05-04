@@ -32,6 +32,7 @@ type User struct {
 	Table            TableName  `json:"wedding_table"`
 	FullPicturePath  string     `json:"full_picture_path"`
 	RoundPicturePath string     `json:"round_picture_path"`
+	GameTeam         string     `json:"game_team"`
 }
 
 type Users []User

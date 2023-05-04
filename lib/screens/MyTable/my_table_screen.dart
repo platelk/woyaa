@@ -15,7 +15,7 @@ Map<String,String> description ={
   "Valence" : "Entrée dans l’arène\npour un échange de clefs.",
   "Bali" : "Partir à l'autre bout de la planète\nvoir les tortues sous l'eau.",
   "Paris" : "Là où tout à commencé\net tout continue.",
-  "Dubrovnik" : "Pouple, pekka,\npiscine et les copains",
+  "Dubrovnik" : "Poulpe, pekka,\npiscine et les copains",
   "Tel Aviv" : "Quatre ans ensemble,\net 31 pitas.",
   "Rovaniemi" : "La demande en mariage\nsous les aurores boréales",
   "Londres" : "Départ surprise organisé par Ana."
@@ -38,7 +38,7 @@ class MyTableScreen extends StatelessWidget {
         child: const Base(child: Text("loading.."),));
     }
     var myTable = state.tables[meState.me.tableName];
-    var myTableUsers = List<User>.from(myTable!.users)..sort((a, b) => a.name.compareTo(b.name))..removeWhere((element) => swipeState.userIds.contains(element.id));
+    var myTableUsers = List<User>.from(myTable!.users)..sort((a, b) => a.name.compareTo(b.name))..removeWhere((element) => swipeState.userIds.contains(element.id))..add(meState.me);
     return Theme(
       data: tablesTheme(),
       child: Base(

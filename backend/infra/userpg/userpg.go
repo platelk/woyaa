@@ -22,6 +22,7 @@ type User struct {
 	Table            string `ksql:"wedding_table"`
 	FullPicturePath  string `ksql:"full_picture_path"`
 	RoundPicturePath string `ksql:"round_picture_path"`
+	GameTeam         string `ksql:"game_team"`
 }
 
 type Swipes struct {
@@ -113,7 +114,8 @@ func (upg *DB) CreateUsersTable(ctx context.Context) error {
 		room INTEGER,
 		wedding_table TEXT,
 		full_picture_path TEXT,
-		round_picture_path TEXT
+		round_picture_path TEXT,
+		game_team TEXT
 	)`)
 	if err != nil {
 		return fmt.Errorf("can't create table user: %w", err)
@@ -283,6 +285,7 @@ func (upg *DB) ImportCSV(ctx context.Context, reader *csv.Reader) error {
 			Table:            record[5],
 			FullPicturePath:  record[6],
 			RoundPicturePath: record[7],
+			GameTeam:         record[8],
 		}
 		err = upg.Insert(ctx, UsersTable, &newUser)
 		if err != nil {

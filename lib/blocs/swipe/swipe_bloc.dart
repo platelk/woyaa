@@ -22,6 +22,7 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   AuthenticationBloc authBloc;
   UserBloc userBloc;
   MeBloc meBloc;
+  late User me;
 
   SwipeBloc({required this.authBloc, required this.userBloc, required this.meBloc})
       : super(SwipeInitial()) {
@@ -53,6 +54,14 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
         add(SwipeUserRetrievedEvent(
             token: (userBloc.state as UserInitialized).token, user: user));
       }
+    }
+    meBloc.stream.listen((state) {
+      if (state is MeLoaded) {
+        me = state.me;
+      }
+    });
+    if (meBloc.state is MeLoaded) {
+      me = (meBloc.state as MeLoaded).me;
     }
   }
 
@@ -138,22 +147,21 @@ class SwipeBloc extends Bloc<SwipeEvent, SwipeState> {
   }
 
   void _onSwipeResult(SwipeResult res) {
-    var me = meBloc.state as MeLoaded;
     if (res.foundMyTable) {
       _winningSwipeSameTableToast();
-      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score + 5)));
+      meBloc.add(LoadedMe(me: me.copyFrom(score: me.score + 5)));
     }
     if (res.foundNotMyTable) {
       _winningSwipeToast();
-      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score + 2)));
+      meBloc.add(LoadedMe(me: me.copyFrom(score: me.score + 2)));
     }
     if (res.notFoundMyTable) {
       _losingSwipeSameTableToast();
-      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score - 2)));
+      meBloc.add(LoadedMe(me: me.copyFrom(score: me.score - 2)));
     }
     if (res.notFoundNotMyTable) {
       _losingSwipeToast();
-      meBloc.add(LoadedMe(me: me.me.copyFrom(score: me.me.score - 1)));
+      meBloc.add(LoadedMe(me: me.copyFrom(score: me.score - 1)));
 
     }
   }

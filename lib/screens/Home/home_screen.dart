@@ -34,13 +34,14 @@ class HomeScreen extends StatelessWidget {
         if (state is! MeLoaded || userState is! UserInitialized) {
           return Theme(data: welcomeTheme(), child: const Text("loading..."));
         }
+        print("${state.me.team}");
         var user = state.me;
         final users = List<User>.from(userState.users.values)
           ..removeWhere((element) => element.id == state.me.id)
           ..add(state.me)
           ..sort((a, b) => a.name.compareTo(b.name))
           ..sort((a, b) => b.score - a.score);
-        final classement = users.indexOf(state.me);
+        final classement = users.indexOf(state.me) + 1;
         return Theme(
           data: welcomeTheme(),
           child: Base(

@@ -33,6 +33,7 @@ func (u *UserPG) GetByID(c context.Context, id domain.UserID) (*domain.User, err
 		Table:            domain.TableName(usr.Table),
 		FullPicturePath:  usr.FullPicturePath,
 		RoundPicturePath: usr.RoundPicturePath,
+		GameTeam:         usr.GameTeam,
 	}, nil
 }
 
@@ -53,6 +54,7 @@ func (u *UserPG) GetAllByTable(c context.Context, tableName string) (domain.User
 			Table:            domain.TableName(u.Table),
 			FullPicturePath:  u.FullPicturePath,
 			RoundPicturePath: u.RoundPicturePath,
+			GameTeam:         u.GameTeam,
 		})
 	}
 	return users, nil
@@ -75,6 +77,7 @@ func (u *UserPG) GetAllUsers(c context.Context) (domain.Users, error) {
 			Table:            domain.TableName(u.Table),
 			FullPicturePath:  u.FullPicturePath,
 			RoundPicturePath: u.RoundPicturePath,
+			GameTeam:         u.GameTeam,
 		})
 	}
 	return users, nil

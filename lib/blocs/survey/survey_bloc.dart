@@ -8,6 +8,7 @@ import 'package:woyaa/api/api.dart';
 
 import '../../constants.dart';
 import '../../models/question.dart';
+import '../../models/user.dart';
 import '../authentication/authentication_bloc.dart';
 import '../me/me_bloc.dart';
 
@@ -17,6 +18,7 @@ part 'survey_state.dart';
 class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
   AuthenticationBloc authBloc;
   MeBloc meBloc;
+  late User me;
 
   SurveyBloc({required this.authBloc, required this.meBloc}) : super(SurveyLoading()) {
     on<LoadQuestionEvent>(_onSurveyLoaded);
@@ -32,6 +34,14 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
     });
     if (authBloc.state is LoggedInState) {
       add(LoadingQuestion(token: (authBloc.state as LoggedInState).token));
+    }
+    meBloc.stream.listen((state) {
+      if (state is MeLoaded) {
+        me = state.me;
+      }
+    });
+    if (meBloc.state is MeLoaded) {
+      me = (meBloc.state as MeLoaded).me;
     }
   }
 
@@ -57,13 +67,12 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
   }
 
   void _onSurveyAnswered(QuestionAnsweredEvent event, Emitter<SurveyState> emit) {
-    var me = meBloc.state as MeLoaded;
     if (state is SurveyLoaded) {
       var s = state as SurveyLoaded;
       AnswerQuestion(s.token, event.questionID, event.userID).then((value) {
         if (value.validated) {
           add(QuestionAnsweredResultEvent(questions: List.from(s.questions)..removeWhere((question) => question.id == event.questionID), token: s.token));
-          meBloc.add(LoadedMe(me: me.me.copyFrom(score: value.validUserIds.length * 2)));
+          meBloc.add(LoadedMe(me: me.copyFrom(score: me.score + value.validUserIds.length * 2)));
           _winningQuestionToast(value.validUserIds.length);
         } else {
           _losingQuestionToast();

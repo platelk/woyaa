@@ -35,7 +35,7 @@ class User extends Equatable {
 
 
   static User fromDynamic(dynamic data) {
-    return User(id: data["id"],team: "N/A", firstName: data["first_name"], lastName: data["last_name"], email: data["email"], score: data["score"], room: Room(number: data["room"]), tableName: data["wedding_table"], fullPicture: "/assets${data["full_picture_path"]}", roundPicture: "/assets${data["round_picture_path"]}");
+    return User(id: data["id"],team: data["game_team"], firstName: data["first_name"], lastName: data["last_name"], email: data["email"], score: data["score"], room: Room(number: data["room"]), tableName: data["wedding_table"], fullPicture: "/assets${data["full_picture_path"]}", roundPicture: "/assets${data["round_picture_path"]}");
   }
 
   static User get unknown {
