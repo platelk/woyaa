@@ -72,7 +72,7 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
       AnswerQuestion(s.token, event.questionID, event.userID).then((value) {
         if (value.validated) {
           add(QuestionAnsweredResultEvent(questions: List.from(s.questions)..removeWhere((question) => question.id == event.questionID), token: s.token));
-          meBloc.add(LoadedMe(me: me.copyFrom(score: me.score + value.validUserIds.length * 2)));
+          meBloc.add(LoadedMe(token: s.token, me: me.copyFrom(score: me.score + value.validUserIds.length * 2)));
           _winningQuestionToast(value.validUserIds.length);
         } else {
           _losingQuestionToast();

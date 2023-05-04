@@ -38,7 +38,7 @@ class MyTableScreen extends StatelessWidget {
         child: const Base(child: Text("loading.."),));
     }
     var myTable = state.tables[meState.me.tableName];
-    var myTableUsers = List<User>.from(myTable!.users)..sort((a, b) => a.name.compareTo(b.name))..removeWhere((element) => swipeState.userIds.contains(element.id))..add(meState.me);
+    var myTableUsers = List<User>.from(myTable!.users)..sort((a, b) => a.name.compareTo(b.name))..removeWhere((element) => swipeState.userIds.contains(element.id));
     return Theme(
       data: tablesTheme(),
       child: Base(
@@ -59,7 +59,7 @@ class MyTableScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(meState.me.tableName,
                         style: Theme.of(context)
                             .textTheme

@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import '../../api/api.dart';
 import '../../models/user.dart';
 import '../authentication/authentication_bloc.dart';
+import '../users/user_bloc.dart';
 
 part 'me_event.dart';
 
@@ -13,8 +14,9 @@ part 'me_state.dart';
 
 class MeBloc extends Bloc<MeEvent, MeState> {
   AuthenticationBloc authBloc;
+  UserBloc userBloc;
 
-  MeBloc({required this.authBloc}) : super(MeInitial()) {
+  MeBloc({required this.authBloc, required this.userBloc}) : super(MeInitial()) {
     on<LoadingMe>(_onLoadingMe);
     on<LoadedMe>(_onLoadedMe);
     authBloc.stream.listen((state) {
@@ -30,12 +32,12 @@ class MeBloc extends Bloc<MeEvent, MeState> {
   void _onLoadingMe(LoadingMe event, Emitter<MeState> emit) {
     emit.call(MeLoading(token: event.token));
     GetMe(event.token).then((value) {
-      add(LoadedMe(me: value));
+      add(LoadedMe(me: value, token: event.token));
     });
   }
 
   void _onLoadedMe(LoadedMe event, Emitter<MeState> emit) {
-    print("me updated: ${event.me.score}");
     emit.call(MeLoaded(me: event.me));
+    userBloc.add(UserLoaded(user: event.me, token: event.token));
   }
 }

@@ -14,9 +14,10 @@ class LoadingMe extends MeEvent {
 }
 
 class LoadedMe extends MeEvent {
+  final String token;
   final User me;
 
-  const LoadedMe({required this.me});
+  const LoadedMe({required this.me, required this.token});
 
   @override
   List<Object> get props => [me, me.score];

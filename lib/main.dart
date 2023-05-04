@@ -27,11 +27,13 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => AuthenticationBloc()),
           BlocProvider(
-              create: (context) => MeBloc(
-                  authBloc: BlocProvider.of<AuthenticationBloc>(context))),
-          BlocProvider(
               create: (context) => UserBloc(
                   authBloc: BlocProvider.of<AuthenticationBloc>(context))),
+          BlocProvider(
+              create: (context) => MeBloc(
+                authBloc: BlocProvider.of<AuthenticationBloc>(context),
+                userBloc: BlocProvider.of<UserBloc>(context),
+              )),
           BlocProvider(
               create: (context) => SurveyBloc(
                 authBloc: BlocProvider.of<AuthenticationBloc>(context),
