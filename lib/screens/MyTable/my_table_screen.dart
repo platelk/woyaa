@@ -51,7 +51,7 @@ class MyTableScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
-                      "Table",
+                      "Votre table",
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
