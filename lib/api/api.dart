@@ -5,7 +5,7 @@ import 'package:woyaa/models/question.dart';
 import '../models/table.dart';
 import '../models/user.dart';
 
-const baseApiURL = "https://anaxyoann.fr";
+const baseApiURL = "http://localhost:8080";
 
 final apiHttpClient = Dio(); // With default `Options`.
 
@@ -13,7 +13,7 @@ var accessToken = "";
 
 void configureDio() {
   // Set default configs
-  apiHttpClient.options.baseUrl = baseApiURL;
+  // apiHttpClient.options.baseUrl = baseApiURL;
   apiHttpClient.options.connectTimeout = const Duration(seconds: 5);
   apiHttpClient.options.receiveTimeout = const Duration(seconds: 3);
 }

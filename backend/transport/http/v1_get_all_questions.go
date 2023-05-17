@@ -23,7 +23,11 @@ type getAllQuestionsResp struct {
 
 func v1GetAllQuestions(questions usecase.GetAllQuestions) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		resp, err := questions(c.Request().Context(), &usecase.GetAllQuestionsReq{})
+		id := GetUserID(c)
+		if id == 0 {
+			return c.NoContent(http.StatusUnauthorized)
+		}
+		resp, err := questions(c.Request().Context(), &usecase.GetAllQuestionsReq{UserID: id})
 		if err != nil {
 			return c.String(http.StatusInternalServerError, err.Error())
 		}

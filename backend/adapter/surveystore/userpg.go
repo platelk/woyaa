@@ -32,18 +32,31 @@ func (u *UserPG) AnswerQuestion(c context.Context, answer domain.QuestionAnswer)
 	return nil
 }
 
-func (u *UserPG) GetAnsweredQuestion(c context.Context, user domain.UserID) (domain.QuestionIDs, error) {
+func (u *UserPG) GetAnsweredQuestion(c context.Context, user domain.UserID) (map[domain.QuestionID]domain.UserIDs, error) {
 	var answers []userpg.SurveyAnswer
 
-	err := u.db.Query(c, &answers, "select DISTINCT ON(question_id) question_id from survey_answers WHERE from_user_id = $1", user)
+	err := u.db.Query(c, &answers, "select question_id, answer_user_id from survey_answers WHERE from_user_id = $1 ORDER BY question_id,id DESC", user)
 	if err != nil {
 		return nil, fmt.Errorf("can't retrieve question: %w", err)
 	}
-	var questions domain.QuestionIDs
+	lastQuestionID := -1
+	var proposedUser domain.UserIDs
+	res := make(map[domain.QuestionID]domain.UserIDs)
 	for _, answer := range answers {
-		questions = append(questions, domain.QuestionID(answer.QuestionID))
+		if _, ok := res[domain.QuestionID(answer.QuestionID)]; ok {
+			continue
+		}
+		if answer.QuestionID != lastQuestionID {
+			if lastQuestionID != -1 {
+				res[domain.QuestionID(lastQuestionID)] = proposedUser.ToSet().Keys()
+			}
+			lastQuestionID = answer.QuestionID
+			proposedUser = nil
+		}
+		proposedUser = append(proposedUser, domain.UserID(answer.AnswerUserID))
 	}
-	return questions.ToSet().Keys(), nil
+	fmt.Println("answered question: ", res)
+	return res, nil
 }
 
 func (u *UserPG) GetOneQuestion(c context.Context, id domain.QuestionID) (domain.Question, error) {

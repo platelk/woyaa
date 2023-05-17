@@ -20,7 +20,7 @@ type GetAllQuestionsResp struct {
 
 type QuestionRetriever interface {
 	GetAllQuestion(c context.Context) ([]domain.Question, error)
-	GetAnsweredQuestion(c context.Context, user domain.UserID) (domain.QuestionIDs, error)
+	GetAnsweredQuestion(c context.Context, user domain.UserID) (map[domain.QuestionID]domain.UserIDs, error)
 }
 
 func NewGetAllQuestions(questionRetriever QuestionRetriever) GetAllQuestions {
@@ -33,10 +33,9 @@ func NewGetAllQuestions(questionRetriever QuestionRetriever) GetAllQuestions {
 		if err != nil {
 			return nil, fmt.Errorf("can't retrieve answered questions: %w", err)
 		}
-		questionSet := answeredQuestions.ToSet()
 		var returnedQuestion []domain.Question
 		for _, question := range questions {
-			if questionSet.Has(question.ID) {
+			if answer, ok := answeredQuestions[question.ID]; ok && len(answer) >= len(question.UserIDs) && question.UserIDs.ToSet().Union(answer[:len(question.UserIDs)].ToSet()).Size() == len(question.UserIDs) {
 				continue
 			}
 			returnedQuestion = append(returnedQuestion, question)

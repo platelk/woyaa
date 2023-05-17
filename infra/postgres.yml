@@ -61,6 +61,10 @@ spec:
       containers:
         - name: postgres
           image: postgres:15.2 # Sets Image
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "2"
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432  # Exposes container port

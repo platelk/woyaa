@@ -7,7 +7,7 @@ metadata:
     app: woyaa
     type: web
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app: woyaa
@@ -18,7 +18,14 @@ spec:
     spec:
       containers:
       - name: web
-        image: platelk/woyaa:1.1
+        image: platelk/woyaa:1.13
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "1"
+          limits:
+            memory: "4G"
+            cpu: "2"
         env:
           - name: USER_PG_URL
             value: "postgresql://admin:psltest@postgres:5432/users"

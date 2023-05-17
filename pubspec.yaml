@@ -44,7 +44,6 @@ dependencies:
   cupertino_icons: ^1.0.5
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
-  url_launcher_with_chrome: ^5.7.11
   fluttertoast: ^8.2.1
   logger: ^1.3.0
 

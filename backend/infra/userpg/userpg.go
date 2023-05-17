@@ -224,6 +224,22 @@ func (upg *DB) DropTables(ctx context.Context) error {
 	return nil
 }
 
+func (upg *DB) DropUserTable(ctx context.Context) error {
+	_, err := upg.Exec(ctx, "DROP TABLE IF EXISTS users")
+	if err != nil {
+		return fmt.Errorf("can't drop table users: %w", err)
+	}
+	return nil
+}
+
+func (upg *DB) DropSurveyTable(ctx context.Context) error {
+	_, err := upg.Exec(ctx, "DROP TABLE IF EXISTS survey")
+	if err != nil {
+		return fmt.Errorf("can't drop table users: %w", err)
+	}
+	return nil
+}
+
 func (upg *DB) ImportSurveyCSV(ctx context.Context, reader *csv.Reader) error {
 	nbInsert := 0
 	for {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:woyaa/screens/Home/home_screen.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
   });
@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return HomeScreen();
+                    return const HomeScreen();
                   },
                 ),
               );

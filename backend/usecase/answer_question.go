@@ -25,6 +25,7 @@ type AnswerQuestionRes struct {
 type SurveyAnswers interface {
 	AnswerQuestion(c context.Context, answer domain.QuestionAnswer) error
 	GetOneQuestion(c context.Context, id domain.QuestionID) (domain.Question, error)
+	GetAnsweredQuestion(c context.Context, user domain.UserID) (map[domain.QuestionID]domain.UserIDs, error)
 }
 
 func NewAnswerQuestion(answers SurveyAnswers, scorer Scorer) AnswerQuestion {
@@ -32,6 +33,13 @@ func NewAnswerQuestion(answers SurveyAnswers, scorer Scorer) AnswerQuestion {
 		question, err := answers.GetOneQuestion(ctx, req.QuestionID)
 		if err != nil {
 			return nil, fmt.Errorf("can't retrieve question: %w", err)
+		}
+		questions, err := answers.GetAnsweredQuestion(ctx, req.FromUserID)
+		if err != nil {
+			return nil, fmt.Errorf("can't retrieve answered questions")
+		}
+		if answer, ok := questions[req.QuestionID]; ok && len(answer) >= len(question.UserIDs) && question.UserIDs.ToSet().Union(answer[:len(question.UserIDs)].ToSet()).Size() == len(question.UserIDs) {
+			return nil, fmt.Errorf("question already correctly answered")
 		}
 		err = answers.AnswerQuestion(ctx, domain.QuestionAnswer{
 			ID:         req.QuestionID,

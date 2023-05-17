@@ -44,6 +44,9 @@ func v1PostUserAnswerHandler(question usecase.AnswerQuestion) echo.HandlerFunc {
 			FromUserID:      id,
 			ProposedUserIDs: usrAnswerReq.ProposedUserIDs,
 		})
+		if err != nil {
+			return c.String(http.StatusInternalServerError, err.Error())
+		}
 
 		return c.JSON(http.StatusOK, &userAnswerQuestionRes{
 			QuestionID:      res.QuestionID,
