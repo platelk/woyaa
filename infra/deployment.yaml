@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: platelk/woyaa:1.13
+        image: platelk/woyaa:1.14
         resources:
           requests:
             memory: "1Gi"
