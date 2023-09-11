@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_svg/avd.dart';
+import 'package:woyaa/api/mock.dart';
 import 'package:woyaa/models/question.dart';
 
 import '../models/table.dart';
@@ -16,6 +16,8 @@ void configureDio() {
   // apiHttpClient.options.baseUrl = baseApiURL;
   apiHttpClient.options.connectTimeout = const Duration(seconds: 5);
   apiHttpClient.options.receiveTimeout = const Duration(seconds: 3);
+
+  setupMock(); // <=== This allows local run
 }
 
 Future<String> LogIn(String email) async {
